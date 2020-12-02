@@ -63,9 +63,9 @@ popd
 
 # Debug enviroment source file
 pushd "$SCRIPT_LOCATION"
-rm -f debug_eniroment.sh
-echo "export PATH=${SCRIPT_LOCATION}/fptaylor:${SCRIPT_LOCATION}/gelpia/bin:\$PATH" >> debug_eniroment.sh
-echo "export PYTHONPATH=${SCRIPT_LOCATION}/gelpia/bin:\$PYTHON_PATH" >> debug_eniroment.sh
+rm -f debug_enironment.sh
+echo "export PATH=${SCRIPT_LOCATION}/FPTaylor:${SCRIPT_LOCATION}/gelpia/bin:\$PATH" >> debug_enironment.sh
+echo "export PYTHONPATH=${SCRIPT_LOCATION}/gelpia/bin:\$PYTHON_PATH" >> debug_enironment.sh
 popd
 
 SUCCESS=1

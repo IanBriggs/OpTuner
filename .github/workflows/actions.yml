@@ -2,9 +2,7 @@ name: CI
 
 on:
   push:
-  schedule:
-    - cron: '0 10 * * 1'
-      
+
 jobs:
   build_and_test:
     runs-on: ${{ matrix.os }}
@@ -15,11 +13,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/setup-python@v1
-    - name: Install dependencies
+    - name: Setup opam and OCaml
+      uses: avsm/setup-ocaml@v1
+      with:
+        ocaml-version: 4.11.1
+      run: |
+        opam install -y num
+    - name: Setup python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.9
       run: |
         python3 -m pip install --upgrade pip
         python3 -m pip install --upgrade sly
+    - name Setup other prerequisites
+      run: |
         sudo apt install flex bison wget
     - name: Build requirements
       run: |
