@@ -20,7 +20,7 @@ popd () {
 function finish {
     if [ "$SUCCESS" == 0 ]
     then
-	echo "FPTuner requirements failed to build."
+	echo "OpTuner requirements failed to build."
 	echo "See ${LOG} for details."
     else
 	echo "Success"

@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Setup python
         uses: actions/setup-python@v2
         with:
@@ -26,8 +26,8 @@ jobs:
       - name: Install python packages
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install --upgrade sly
-          
+          python3 -m pip install --upgrade sly z3-solver
+
       - name: Setup ocaml
         uses: avsm/setup-ocaml@v1
         with:
@@ -36,11 +36,15 @@ jobs:
       - name: Install ocaml packages
         run: |
           opam install -y num
-          
+
       - name: Setup other prerequisites
         run: |
           sudo apt install flex bison wget
-          
+
       - name: Run requirements build script
         run: |
           ./requirements/build.sh
+
+      - name: Run OpTuner
+        run: |
+          ./bin/optuner benchmarks/logexp.fpcore -e 1e-4
