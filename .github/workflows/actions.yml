@@ -26,7 +26,7 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         python3 -m pip install --upgrade sly
-    - name Setup other prerequisites
+    - name: Setup other prerequisites
       run: |
         sudo apt install flex bison wget
     - name: Build requirements
