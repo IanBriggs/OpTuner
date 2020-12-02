@@ -17,12 +17,14 @@ jobs:
       uses: avsm/setup-ocaml@v1
       with:
         ocaml-version: 4.11.1
+    - name: Get ocaml packages
       run: |
         opam install -y num
     - name: Setup python
       uses: actions/setup-python@v1
       with:
         python-version: 3.9
+    - name: Setup python packages
       run: |
         python3 -m pip install --upgrade pip
         python3 -m pip install --upgrade sly
