@@ -26,7 +26,7 @@ jobs:
       - name: Install python packages
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install --upgrade sly z3-solver
+          python3 -m pip install --upgrade matplotlib numpy sly z3-solver
 
       - name: Setup ocaml
         uses: avsm/setup-ocaml@v1
