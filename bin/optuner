@@ -203,12 +203,17 @@ def try_error_bound(error_bound, raw_query, args, ssa, names, signatures, rows, 
             logger("    Time to check domains: {}", end - start)
             if valid is None:
                 logger("      Replaced operation and retrying")
+                tuned_res_str = " ".join(tuned_res.tsv()[1])
+                logger("        Altered config: {}", tuned_res_str)
                 while valid is None:
                     start = time.time()
                     valid = tuned_res.check_domains()
                     end = time.time()
                     domain_times.append(end - start)
                     logger("        Time to check domains: {}", end - start)
+                    if valid is None:
+                        tuned_res_str = " ".join(tuned_res.tsv()[1])
+                        logger("        Altered config: {}", tuned_res_str)
                 logger("    Finished replacing, trying 2nd order error")
                 continue
             elif not valid:
@@ -230,7 +235,7 @@ def try_error_bound(error_bound, raw_query, args, ssa, names, signatures, rows, 
     logger("  Total time to find configuration")
     logger("    z3: {}", sum(z3_times))
     logger("    fptaylor: {}", sum(fptaylor_times))
-    logger("    domain: {}", sum(domain_times))
+    logger("    domain: {}\n\n", sum(domain_times))
 
     return found_config(error_bound, res.abs_error, tuned_res, args, ssa, names, signatures, rows, first_header)
 

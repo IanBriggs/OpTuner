@@ -8,7 +8,7 @@ from multiprocessing import Process, Value
 
 import gelpia
 import gelpia_logging
-
+import time
 
 logger = Logger(level=Logger.HIGH, color=Logger.green)
 
@@ -33,11 +33,11 @@ class GelpiaResult:
 
     # Tell gelpia how hard to try
     CONFIG = {
-        "epsilons": (0, 0, 0.1/100),
+        "epsilons": (0, 0, 0),
         "timeout": 60,
         "grace": 0,
         "update": 0,
-        "iters": 0,
+        "iters": 10000,
         "seed": 42,
         "debug": False,
         "src_dir": gelpia.SRC_DIR,
@@ -66,6 +66,8 @@ class GelpiaResult:
             self.min_upper = cached.min_upper
             self.abs_max = cached.abs_max
             return
+
+        start = time.time()
 
         logger("query:\n{}", self.query)
 
@@ -98,6 +100,8 @@ class GelpiaResult:
                     self.min_lower, self.min_upper)
         logger.llog(Logger.HIGH, "max = [{}, {}]",
                     self.max_lower, self.max_upper)
-        logger.llog(Logger.HIGH, "abs_max = {}\n",
+        logger.llog(Logger.HIGH, "abs_max = {}",
                     self.abs_max)
+        logger.llog(Logger.HIGH, "time = {}\n",
+                    time.time() - start)
 
