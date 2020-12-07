@@ -9,7 +9,7 @@ import ast_modifications.all_modifications_ast as all_modifications_ast
 
 import sys
 
-logger = Logger(level=Logger.LOW)
+logger = Logger(level=Logger.MEDIUM)
 
 
 class TunedExpression():

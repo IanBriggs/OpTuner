@@ -22,7 +22,7 @@ class FPTaylorResult:
     # Default configuration for FPTaylor when being used for finding FPTaylor
     # forms
     ERROR_FORM_CONFIG = {
-        "--print-hex-floats": "false",
+        # "--print-hex-floats": "false",
         "--abs-error": "false",
         "--find-bounds": "false",
         "--fp-power2-model": "false",
@@ -31,7 +31,7 @@ class FPTaylorResult:
     }
 
     BOUNDS_CONFIG = {
-        "--print-hex-floats": "false",
+        # "--print-hex-floats": "false",
         "--abs-error": "false",
         "--rel-error": "false",
         "--find-bounds": "true",
@@ -50,7 +50,7 @@ class FPTaylorResult:
     # Default configuration for FPTaylor when being used to check answers given
     # by OpTuner. Try for the best answer possible.
     CHECK_CONFIG = {
-        "--print-hex-floats": "false",
+        # "--print-hex-floats": "false",
         "--abs-error": "true",
         "--fp-power2-model": "true",
         "--opt": "gelpia",
@@ -65,7 +65,7 @@ class FPTaylorResult:
     }
 
     BACKUP_CONFIG = {
-        "--print-hex-floats": "false",
+        # "--print-hex-floats": "false",
         "--abs-error": "true",
         "--fp-power2-model": "true",
         "--opt": "bb",
