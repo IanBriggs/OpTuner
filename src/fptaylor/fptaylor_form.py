@@ -1,7 +1,7 @@
 
 
 from fpcore_ast import Operation
-from fpcore_logging import Logger
+from optuner_logging import Logger
 from fptaylor_lexer import FPTaylorLexer
 from fptaylor_parser import FPTaylorParser
 from gelpia_result import GelpiaResult

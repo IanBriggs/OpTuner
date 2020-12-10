@@ -1,6 +1,6 @@
 
 
-from fpcore_logging import Logger
+from optuner_logging import Logger
 
 import argparse
 

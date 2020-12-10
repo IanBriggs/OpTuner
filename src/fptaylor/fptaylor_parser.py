@@ -1,7 +1,7 @@
 
 
 from exceptions import FPTaylorParseError
-from fpcore_logging import Logger
+from optuner_logging import Logger
 from fptaylor_lexer import FPTaylorLexer
 from sly import Parser
 

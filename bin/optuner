@@ -9,12 +9,13 @@ GIT_DIR = path.split(PYTHON_DIR)[0]
 sys.path.append(PYTHON_DIR)
 sys.path.append(path.join(GIT_DIR, "src"))
 sys.path.append(path.join(GIT_DIR, "src", "fptaylor"))
-sys.path.append(path.join(GIT_DIR, "src", "fpcore_parser", "src"))
+sys.path.append(path.join(GIT_DIR, "src", "fpcore"))
 
 import check_requirements
 
 from datetime import date
-from fpcore_logging import Logger
+from optuner_logging import Logger
+from timing import Timer
 from exceptions import DomainError, UnsupportedError, NoPreError, BadPreError, OpTunerError
 from fpcore_lexer import FPCoreLexer
 from fpcore_parser import FPCoreParser
@@ -31,6 +32,7 @@ import glob
 import shutil
 
 logger = Logger(level=Logger.MEDIUM, color=Logger.green)
+timer = Timer()
 
 def sanitize_name(name):
     bad_chars = {".", ":", " ", "-", ",", "$"}

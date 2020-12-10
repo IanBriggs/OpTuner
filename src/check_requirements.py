@@ -1,6 +1,6 @@
 
 
-from fpcore_logging import Logger
+from optuner_logging import Logger
 
 import os
 import os.path as path
@@ -23,6 +23,7 @@ def append_to_environ(pathname, addition):
         os.environ[pathname] = addition
         logger("new {} = {}", pathname, os.environ[pathname])
 
+# todo: check python version
 
 # External requirements
 try:

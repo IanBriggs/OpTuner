@@ -5,7 +5,7 @@ from exceptions import (BadPreError, DomainError, FeatureError, NoPreError,
                         OperationError, UnsupportedError, VariableError)
 from fpcore_ast import (ASTNode, Binding, Cast, Constant, FPCore, If, Let,
                         LetStar, Number, Operation, Variable, While, WhileStar)
-from fpcore_logging import Logger
+from optuner_logging import Logger
 from single_assignment import SingleAssignment
 
 

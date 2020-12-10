@@ -1,6 +1,7 @@
 
 
-from fpcore_logging import Logger
+from optuner_logging import Logger
+from timing import Timer
 from fpcore_ast import Operation, Variable
 from fptaylor_result import FPTaylorResult
 
@@ -10,6 +11,7 @@ import ast_modifications.all_modifications_ast as all_modifications_ast
 import sys
 
 logger = Logger(level=Logger.MEDIUM)
+timer = Timer()
 
 
 class TunedExpression():

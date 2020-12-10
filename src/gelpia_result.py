@@ -1,7 +1,8 @@
 
 
 from exceptions import GelpiaInfError
-from fpcore_logging import Logger
+from optuner_logging import Logger
+from timing import Timer
 from fractions import Fraction
 from math import isinf
 from multiprocessing import Process, Value
@@ -11,6 +12,7 @@ import gelpia_logging
 import time
 
 logger = Logger(level=Logger.HIGH, color=Logger.green)
+timer = Timer()
 
 
 GELPIA_CACHE = dict()
@@ -33,11 +35,11 @@ class GelpiaResult:
 
     # Tell gelpia how hard to try
     CONFIG = {
-        "epsilons": (0, 0, 0),
+        "epsilons": (0.2, 0.2, 0.1),
         "timeout": 60,
         "grace": 0,
         "update": 0,
-        "iters": 10000,
+        "iters": 0,
         "seed": 42,
         "debug": False,
         "src_dir": gelpia.SRC_DIR,

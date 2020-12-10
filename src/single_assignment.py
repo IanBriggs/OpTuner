@@ -5,7 +5,7 @@ from exceptions import (FPTaylorMatchError, FPTaylorMatchOneError,
                         NameClashError, SingleOperationError,
                         UnreachableError)
 from fpcore_ast import Operation, Number, Variable
-from fpcore_logging import Logger
+from optuner_logging import Logger
 from fptaylor_result import FPTaylorResult
 
 import ast_modifications.all_modifications_ast as all_modifications_ast
