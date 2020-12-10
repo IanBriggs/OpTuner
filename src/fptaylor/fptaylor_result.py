@@ -1,7 +1,8 @@
 
 
 from exceptions import FPTaylorFormError, FPTaylorRuntimeError
-from fpcore_logging import Logger
+from optuner_logging import Logger
+from timing import Timer
 from fptaylor_form import FPTaylorForm
 from fptaylor_lexer import FPTaylorLexer
 from fptaylor_parser import FPTaylorParser
@@ -13,6 +14,7 @@ import tempfile
 
 
 logger = Logger(level=Logger.EXTRA, color=Logger.blue)
+timer = Timer()
 
 
 # query, command -> FPTaylorResult
@@ -38,11 +40,11 @@ class FPTaylorResult:
         "--fp-power2-model": "true",
         "--opt": "gelpia",
         "--opt-exact": "true",
-        "--opt-f-rel-tol": "0.001",
+        "--opt-f-rel-tol": "0.1",
         "--opt-f-abs-tol": "0",
-        "--opt-x-rel-tol": "0",
-        "--opt-x-abs-tol": "0",
-        "--opt-max-iters": "4000000000",
+        "--opt-x-rel-tol": "0.2",
+        "--opt-x-abs-tol": "0.2",
+        "--opt-max-iters": "0",
         "--opt-timeout": "10",
         "--intermediate-opt": "true",
     }
@@ -55,10 +57,10 @@ class FPTaylorResult:
         "--fp-power2-model": "true",
         "--opt": "gelpia",
         #"--opt-exact": "true",
-        "--opt-f-rel-tol": "0.001",
+        "--opt-f-rel-tol": "0.1",
         "--opt-f-abs-tol": "0",
-        "--opt-x-rel-tol": "0",
-        "--opt-x-abs-tol": "0",
+        "--opt-x-rel-tol": "0.2",
+        "--opt-x-abs-tol": "0.2",
         "--opt-max-iters": "4000000000",
         "--opt-timeout": "10",
         "--intermediate-opt": "true",
@@ -70,11 +72,11 @@ class FPTaylorResult:
         "--fp-power2-model": "true",
         "--opt": "bb",
         "--opt-exact": "true",
-        "--opt-f-rel-tol": "1e-100",
-        "--opt-f-abs-tol": "1e-100",
-        "--opt-x-rel-tol": "1e-100",
-        "--opt-x-abs-tol": "1e-100",
-        "--opt-max-iters": "4000000000",
+        "--opt-f-rel-tol": "0.1",
+        "--opt-f-abs-tol": "0",
+        "--opt-x-rel-tol": "0.2",
+        "--opt-x-abs-tol": "0.2",
+        "--opt-max-iters": "0",
         "--opt-timeout": "10",
         "--intermediate-opt": "true",
     }
@@ -229,7 +231,7 @@ class FPTaylorResult:
                 #   0       1        2   3 4      5...
                 #   |       |        |   | |      |
                 #   <index> (<int>): exp = <exp>: <expr>
-                index = int(items[0])
+                index = int(items[0].rstrip(":"))
                 exp = items[4].replace(":", "")
                 expr = " ".join(items[5:])
                 form = FPTaylorForm(exp, expr)
