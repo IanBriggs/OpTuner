@@ -54,3 +54,7 @@ mv ${SCRIPT_LOCATION}/../cost-measurement/*.data ${check_date}
 if [ "$(hostname)" = "warfa" ]; then
     scp -r ${check_date} uwplse.org:/var/www/optuner/
 fi
+
+if command -v nightly-results &>/dev/null; then
+    nightly-results url https://optuner.uwplse.org/${check_date}/
+fi
