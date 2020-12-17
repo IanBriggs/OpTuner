@@ -1,6 +1,6 @@
 
 
-from fpcore_lexer import FPCoreLexer
+from fpcore.fpcore_lexer import FPCoreLexer
 from optuner_logging import Logger
 
 import sys
@@ -10,10 +10,14 @@ logger = Logger(level=Logger.EXTRA)
 
 
 def list_to_str(l, sep=" "):
+    if l is None:
+        return ""
     return sep.join([str(i) for i in l])
 
 
 def list_to_repr(l):
+    if l is None:
+        return ""
     return ", ".join([repr(i) for i in l])
 
 

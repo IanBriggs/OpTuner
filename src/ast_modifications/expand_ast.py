@@ -2,7 +2,7 @@
 
 from ast_modifications.ast_modifier import add_method
 from exceptions import VariableError
-from fpcore_ast import ASTNode, Atom, Variable, Operation
+from fpcore.fpcore_ast import ASTNode, Atom, Variable, Operation
 
 
 

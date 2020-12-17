@@ -35,6 +35,7 @@ pushd "$SCRIPT_LOCATION"
 rm -rf FPTaylor
 git clone https://github.com/soarlab/FPTaylor.git &>> "${LOG}"
 pushd FPTaylor
+git checkout my_sine
 make &>> "${LOG}"
 popd
 popd

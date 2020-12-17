@@ -1,5 +1,10 @@
+*__pycache__
+cost-measurement/bin/
+cost-measurement/glibc/
+cost-measurement/glibc_build/
+cost-measurement/glibc_install/
+cost-measurement/kerns/
 requirements/FPTaylor/
 requirements/debug_enironment.sh
 requirements/gelpia/
 requirements/log.txt
-*__pycache__

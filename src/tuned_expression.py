@@ -1,9 +1,9 @@
 
 
+from fpcore.fpcore_ast import Operation, Variable
+from fptaylor.fptaylor_result import FPTaylorResult, BOUNDS_CONFIG
 from optuner_logging import Logger
 from timing import Timer
-from fpcore_ast import Operation, Variable
-from fptaylor_result import FPTaylorResult
 
 import ast_modifications.all_modifications_ast as all_modifications_ast
 
@@ -69,7 +69,7 @@ class TunedExpression():
                 logger("Checking domain for {}", value)
                 valid_domain = all_modifications_ast.ImplToDomain[value.op]
                 query = "{}\n  {};\n}}".format(preamble, value.args[0])
-                fpt = FPTaylorResult(query, FPTaylorResult.BOUNDS_CONFIG)
+                fpt = FPTaylorResult(query, BOUNDS_CONFIG)
                 assert(fpt.bounds is not None)
                 actual_domain = fpt.bounds
                 logger("  valid domain: {}", valid_domain)

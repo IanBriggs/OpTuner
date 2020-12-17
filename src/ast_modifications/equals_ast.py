@@ -1,7 +1,7 @@
 
 
 from ast_modifications.ast_modifier import add_method
-from fpcore_ast import ASTNode, Atom, Operation, Number
+from fpcore.fpcore_ast import ASTNode, Atom, Operation, Number
 from fractions import Fraction
 
 

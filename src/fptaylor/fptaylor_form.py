@@ -1,9 +1,9 @@
 
 
-from fpcore_ast import Operation
+from fpcore.fpcore_ast import Operation
 from optuner_logging import Logger
-from fptaylor_lexer import FPTaylorLexer
-from fptaylor_parser import FPTaylorParser
+from fptaylor.fptaylor_lexer import FPTaylorLexer
+from fptaylor.fptaylor_parser import FPTaylorParser
 from gelpia_result import GelpiaResult
 
 import fractions

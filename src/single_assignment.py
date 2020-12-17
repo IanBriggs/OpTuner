@@ -4,14 +4,14 @@ from collections import OrderedDict
 from exceptions import (FPTaylorMatchError, FPTaylorMatchOneError,
                         NameClashError, SingleOperationError,
                         UnreachableError)
-from fpcore_ast import Operation, Number, Variable
+from fpcore.fpcore_ast import Operation, Number, Variable
 from optuner_logging import Logger
-from fptaylor_result import FPTaylorResult
+from fptaylor.fptaylor_result import FPTaylorResult, ERROR_FORM_CONFIG
 
 import ast_modifications.all_modifications_ast as all_modifications_ast
 import copy
 
-logger = Logger(level=Logger.HIGH)
+logger = Logger(color=Logger.blue, level=Logger.HIGH)
 
 
 class SingleAssignment:
@@ -109,7 +109,7 @@ class SingleAssignment:
             if value.op in self.search_space["operations"]:
                 self.operations.add(name)
         else:
-            raise UnreachableError()
+            raise UnreachableError(type(value))
         self.assert_unique_name(name)
         self.definitions[name] = value
         if value.can_have_fptaylor_form(self):
@@ -204,7 +204,7 @@ class SingleAssignment:
     def get_fptaylor_forms(self):
         logger("Getting default FPTaylor forms")
         query = self.to_fptaylor()
-        res = FPTaylorResult(query)
+        res = FPTaylorResult(query, config=ERROR_FORM_CONFIG)
         fptaylor_forms = res.fptaylor_forms
         possible = self.get_possible()
         match, unmatched = self.match_fptaylor_forms(fptaylor_forms, possible)
@@ -234,7 +234,7 @@ class SingleAssignment:
                 oper_selection = self.default_oper_selection()
                 oper_selection[target_name] = oper
                 query = self.to_fptaylor(oper_selection=oper_selection)
-                res = FPTaylorResult(query)
+                res = FPTaylorResult(query, config=ERROR_FORM_CONFIG)
                 fptaylor_forms = res.fptaylor_forms
                 new_value = Operation(oper, *default_value.args)
                 possible = self.get_possible({target_name: new_value})

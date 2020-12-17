@@ -1,10 +1,10 @@
 
 
 from exceptions import OpTunerError
-from fpcore_ast import Variable, Number, Operation
+from fpcore.fpcore_ast import Variable, Number, Operation
+from gelpia_result import GelpiaResult
 from optuner_logging import Logger
 from timing import Timer
-from gelpia_result import GelpiaResult
 
 import ast_modifications.all_modifications_ast as all_modifications_ast
 
@@ -12,7 +12,7 @@ import fractions
 import math
 import z3
 
-logger = Logger(level=Logger.HIGH, color=Logger.magenta)
+logger = Logger(level=Logger.EXTRA, color=Logger.magenta)
 timer = Timer()
 
 class Z3Result:

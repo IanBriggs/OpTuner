@@ -4,8 +4,8 @@ from optuner_logging import Logger
 from timing import Timer
 from sly import Parser
 
-import fpcore_ast as ast
-import fpcore_lexer
+import fpcore.fpcore_ast as ast
+import fpcore.fpcore_lexer as fpcore_lexer
 import sys
 
 

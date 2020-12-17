@@ -1,6 +1,6 @@
 
 
-import fpcore_ast
+import fpcore.fpcore_ast
 
 import ast_modifications.can_have_fptaylor_form_ast
 import ast_modifications.equals_ast
@@ -9,8 +9,8 @@ import ast_modifications.infix_str_ast
 import ast_modifications.to_single_assignment_ast
 
 from collections import OrderedDict
-from fpcore_lexer import FPCoreLexer
-from fptaylor_lexer import FPTaylorLexer
+from fpcore.fpcore_lexer import FPCoreLexer
+from fptaylor.fptaylor_lexer import FPTaylorLexer
 from math import inf
 
 

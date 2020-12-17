@@ -2,11 +2,11 @@
 
 from exceptions import FPTaylorParseError
 from optuner_logging import Logger
-from fptaylor_lexer import FPTaylorLexer
+from fptaylor.fptaylor_lexer import FPTaylorLexer
 from sly import Parser
 
 import ast_modifications.all_modifications_ast as all_modifications_ast
-import fpcore_ast
+import fpcore.fpcore_ast as fpcore_ast
 import sys
 
 

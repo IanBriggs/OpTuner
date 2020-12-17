@@ -8,8 +8,6 @@ PYTHON_DIR = path.abspath(path.dirname(__file__))
 GIT_DIR = path.split(PYTHON_DIR)[0]
 sys.path.append(PYTHON_DIR)
 sys.path.append(path.join(GIT_DIR, "src"))
-sys.path.append(path.join(GIT_DIR, "src", "fptaylor"))
-sys.path.append(path.join(GIT_DIR, "src", "fpcore"))
 
 import check_requirements
 
@@ -17,11 +15,11 @@ from datetime import date
 from optuner_logging import Logger
 from timing import Timer
 from exceptions import DomainError, UnsupportedError, NoPreError, BadPreError, OpTunerError
-from fpcore_lexer import FPCoreLexer
-from fpcore_parser import FPCoreParser
+from fpcore.fpcore_lexer import FPCoreLexer
+from fpcore.fpcore_parser import FPCoreParser
 from z3_result import Z3Result
 from tuned_expression import TunedExpression
-from fptaylor_result import FPTaylorResult
+from fptaylor.fptaylor_result import FPTaylorResult, CHECK_CONFIG
 
 import ast_modifications.all_modifications_ast as all_modifications_ast
 import optuner_argument_parser
@@ -89,7 +87,7 @@ def glibc_error(args, ssa, names, signatures, rows, first_header):
     logger("  Getting all glibc configuration")
     query = tuned_res.to_fptaylor()
     start = time.time()
-    res = FPTaylorResult(query, FPTaylorResult.CHECK_CONFIG)
+    res = FPTaylorResult(query, CHECK_CONFIG)
     end = time.time()
     logger("    Time to get 2nd order error: {}", end - start)
     logger("    FPTaylor error bound: {} (2nd order is {})", res.abs_error, res.second_order)
@@ -173,7 +171,7 @@ def try_error_bound(error_bound, raw_query, args, ssa, names, signatures, rows, 
             logger("    Checking 2nd order error")
             query = tuned_res.to_fptaylor()
             start = time.time()
-            res = FPTaylorResult(query, FPTaylorResult.CHECK_CONFIG)
+            res = FPTaylorResult(query, CHECK_CONFIG)
             end = time.time()
             fptaylor_times.append(end - start)
             logger("    Time to get 2nd order error: {}", end - start)

@@ -1,7 +1,7 @@
 
 
 from exceptions import FPTaylorLexError
-from fpcore_lexer import FPCoreLexer
+from fpcore.fpcore_lexer import FPCoreLexer
 from sly import Lexer
 
 import sys

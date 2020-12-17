@@ -244,7 +244,7 @@ class Logger():
             full_message = self._log(formatted_message, warn, sys.stderr)
 
             # If logging has been sent to a file also send message to that file
-            if Logger.LOG_FILE != sys.stdout or Logger.LOG_FILE != sys.stderr:
+            if Logger.LOG_FILE != sys.stdout and Logger.LOG_FILE != sys.stderr:
                 print(Logger.strip_color(full_message), file=Logger.LOG_FILE)
 
     def error(self, message, *args):
@@ -254,5 +254,5 @@ class Logger():
         full_message = self._log(formatted_message, err, sys.stderr)
 
         # If logging has been sent to a file also send message to that file
-        if Logger.LOG_FILE != sys.stdout:
+        if Logger.LOG_FILE != sys.stdout and Logger.LOG_FILE != sys.stderr:
             print(Logger.strip_color(full_message), file=Logger.LOG_FILE)

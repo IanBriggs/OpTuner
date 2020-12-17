@@ -3,9 +3,9 @@
 from exceptions import FPTaylorFormError, FPTaylorRuntimeError
 from optuner_logging import Logger
 from timing import Timer
-from fptaylor_form import FPTaylorForm
-from fptaylor_lexer import FPTaylorLexer
-from fptaylor_parser import FPTaylorParser
+from fptaylor.fptaylor_form import FPTaylorForm
+from fptaylor.fptaylor_lexer import FPTaylorLexer
+from fptaylor.fptaylor_parser import FPTaylorParser
 
 import os
 import shlex
@@ -17,73 +17,54 @@ logger = Logger(level=Logger.EXTRA, color=Logger.blue)
 timer = Timer()
 
 
+ERROR_FORM_CONFIG = {
+    "--abs-error": "false",
+    "--find-bounds": "false",
+    "--fp-power2-model": "false",
+    "--fail-on-exception": "false",
+    "--unique-indices": "true",
+}
+
+BOUNDS_CONFIG = {
+    "--abs-error": "false",
+    "--rel-error": "false",
+    "--find-bounds": "true",
+    "--fp-power2-model": "true",
+    "--opt": "gelpia",
+    "--opt-exact": "true",
+    "--opt-f-rel-tol": "0.1",
+    "--opt-f-abs-tol": "0",
+    "--opt-x-rel-tol": "0.2",
+    "--opt-x-abs-tol": "0.2",
+    "--opt-max-iters": "0",
+    "--opt-timeout": "10",
+    "--intermediate-opt": "true",
+}
+
+# Default configuration for FPTaylor when being used to check answers given
+# by OpTuner. Try for the best answer possible.
+CHECK_CONFIG = {
+    "--abs-error": "true",
+    "--fp-power2-model": "true",
+    "--opt": "gelpia",
+    #"--opt-exact": "true",
+    "--opt-f-rel-tol": "0.1",
+    "--opt-f-abs-tol": "0",
+    "--opt-x-rel-tol": "0.2",
+    "--opt-x-abs-tol": "0.2",
+    "--opt-max-iters": "4000000000",
+    "--opt-timeout": "10",
+    "--intermediate-opt": "true",
+}
+
 # query, command -> FPTaylorResult
 FPTAYLOR_CACHE = dict()
 
 class FPTaylorResult:
-    # Default configuration for FPTaylor when being used for finding FPTaylor
-    # forms
-    ERROR_FORM_CONFIG = {
-        "--print-hex-floats": "false",
-        "--abs-error": "false",
-        "--find-bounds": "false",
-        "--fp-power2-model": "false",
-        "--fail-on-exception": "false",
-        "--unique-indices": "true",
-    }
-
-    BOUNDS_CONFIG = {
-        "--print-hex-floats": "false",
-        "--abs-error": "false",
-        "--rel-error": "false",
-        "--find-bounds": "true",
-        "--fp-power2-model": "true",
-        "--opt": "gelpia",
-        "--opt-exact": "true",
-        "--opt-f-rel-tol": "0.1",
-        "--opt-f-abs-tol": "0",
-        "--opt-x-rel-tol": "0.2",
-        "--opt-x-abs-tol": "0.2",
-        "--opt-max-iters": "0",
-        "--opt-timeout": "10",
-        "--intermediate-opt": "true",
-    }
-
-    # Default configuration for FPTaylor when being used to check answers given
-    # by OpTuner. Try for the best answer possible.
-    CHECK_CONFIG = {
-        "--print-hex-floats": "false",
-        "--abs-error": "true",
-        "--fp-power2-model": "true",
-        "--opt": "gelpia",
-        #"--opt-exact": "true",
-        "--opt-f-rel-tol": "0.1",
-        "--opt-f-abs-tol": "0",
-        "--opt-x-rel-tol": "0.2",
-        "--opt-x-abs-tol": "0.2",
-        "--opt-max-iters": "4000000000",
-        "--opt-timeout": "10",
-        "--intermediate-opt": "true",
-    }
-
-    BACKUP_CONFIG = {
-        "--print-hex-floats": "false",
-        "--abs-error": "true",
-        "--fp-power2-model": "true",
-        "--opt": "bb",
-        "--opt-exact": "true",
-        "--opt-f-rel-tol": "0.1",
-        "--opt-f-abs-tol": "0",
-        "--opt-x-rel-tol": "0.2",
-        "--opt-x-abs-tol": "0.2",
-        "--opt-max-iters": "0",
-        "--opt-timeout": "10",
-        "--intermediate-opt": "true",
-    }
 
     def __init__(self, query, config=None):
         self.query = query
-        self.config = config or FPTaylorResult.ERROR_FORM_CONFIG
+        self.config = config or ERROR_FORM_CONFIG
         self.command = self.get_command()
         key = (self.query, self.command)
         if key in FPTAYLOR_CACHE:
