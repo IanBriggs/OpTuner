@@ -1,271 +1,322 @@
 #!/usr/bin/env python3
 
+import os
 import os.path as path
 import sys
 import time
 
-PYTHON_DIR = path.abspath(path.dirname(__file__))
-GIT_DIR = path.split(PYTHON_DIR)[0]
-sys.path.append(PYTHON_DIR)
-sys.path.append(path.join(GIT_DIR, "src"))
+BIN_DIR = path.abspath(path.dirname(__file__))
+GIT_DIR = path.split(BIN_DIR)[0]
+TIME_DIR = path.join(GIT_DIR, "implementations", "timing")
+KERN_DIR = path.join(TIME_DIR, "kern")
+KERN_MAIN_DIR = path.join(TIME_DIR, "kern_main")
+SRC_DIR = path.join(GIT_DIR, "src")
+GEL_DIR = path.join(GIT_DIR, "requirements", "gelpia", "bin")
+sys.path.append(GEL_DIR)
+sys.path.append(SRC_DIR)
 
-import check_requirements
+path_addition = path.join(GIT_DIR, "requirements", "FPTaylor")
+current = os.environ["PATH"]
+os.environ["PATH"] = "{}:{}".format(path_addition, current)
 
-from datetime import date
-from optuner_logging import Logger
-from timing import Timer
-from exceptions import DomainError, UnsupportedError, NoPreError, BadPreError, OpTunerError
-from fpcore.fpcore_lexer import FPCoreLexer
-from fpcore.fpcore_parser import FPCoreParser
-from z3_result import Z3Result
-from tuned_expression import TunedExpression
-from fptaylor.fptaylor_result import FPTaylorResult, CHECK_CONFIG
 
-import ast_modifications.all_modifications_ast as all_modifications_ast
-import optuner_argument_parser
-import generate_graph
-import generate_aggregated_graph
-import os
-import glob
-import shutil
+import fractions
+import gelpia_interface
+import json
+import argparse
+import fpcore
+import fptaylor
+import ast_modifications.all_modifications
+import accuracy_specification
+import z3
+
+from utils import Timer, Logger
 
 logger = Logger(level=Logger.MEDIUM, color=Logger.green)
 timer = Timer()
 
-def sanitize_name(name):
-    bad_chars = {".", ":", " ", "-", ",", "$"}
-    for c in bad_chars:
-        name = name.replace(c, "_")
-    return name
+
+def parse_args(argv):
+    arg_parser = argparse.ArgumentParser(description="Floating point selector")
+    arg_parser.add_argument("query_files",
+                            type=str,
+                            nargs="+",
+                            help="Files containing the target FPCore(s)")
+    arg_parser.add_argument("-v", "--verbosity",
+                            nargs="?",
+                            default="low",
+                            const="medium",
+                            choices=list(Logger.CONSTANT_DICT),
+                            help="Set output verbosity")
+    arg_parser.add_argument("-l", "--log-file",
+                            nargs="?",
+                            type=str,
+                            help="Redirect logging to given file.")
+    arg_parser.add_argument("-a", "--accuracy-specs",
+                            nargs="?",
+                            type=str,
+                            default=path.join(GIT_DIR, "implementations", "all_specifications.json"),
+                            help="File containing function accuracy specifications")
+    arg_parser.add_argument("-c", "--costs",
+                            nargs="?",
+                            type=str,
+                            default=path.join(GIT_DIR, "implementations", "all_costs.json"),
+                            help="File containing function costs")
+    # arg_parser.add_argument("--nightly",
+    #                         action="store_const",
+    #                         const=True,
+    #                         help="Output in html format, set verbosity to none")
+
+    args = arg_parser.parse_args(argv[1:])
+
+    # Set Log level
+    Logger.set_log_level(Logger.str_to_level(args.verbosity))
+
+    # # Send to stderr if nightly, otherwise check for logfile
+    # if args.nightly:
+    #     Logger.send_log_to_stderr()
+    if args.log_file is not None:
+        Logger.set_log_filename(args.log_file)
+
+    logger("Argument settings:")
+    logger("  query_files: {}", args.query_files)
+    logger("    verbosity: {}", args.verbosity)
+    logger("     log_file: {}", args.log_file)
+
+    return args
 
 
-def found_config(error_bound, fptaylor_error, tuned_res, args, ssa, names, signatures, rows, first_header):
-    # Generate c file
-    if args.cfile:
-        name = sanitize_name(ssa.name)
-        strnum = str(error_bound).replace(".","_").replace("-","m")
-        func_name = "{}_error_{}".format(name, strnum)
-        filename = func_name + ".c"
-        tuned_res.name = func_name
-        content = tuned_res.to_c_function()
-        names.append(func_name)
-        signatures.append(tuned_res.signature)
-        with open(filename, "w") as f:
-            f.write('#include "impls.h"\n\n')
-            f.write(content)
+def max_forms(fpc, e):
+    e.maximums = dict()
+    for wrt in e.forms:
+        e.maximums[wrt] = dict()
+        for k,v in e.forms[wrt].items():
+            query = fpc.to_gelpia(v[1])
+            res = gelpia_interface.Result(query)
+            e.maximums[wrt][k] = res.abs_max
 
-    # Add to data rows
-    header, row = tuned_res.tsv()
-    header = ["ErrorBound"] + header + ["FPTaylorError"]
-
-    if first_header is not None and first_header != header:
-        logger.error("Header mismatch: \n{} \n{}",
-                     first_header, header)
-        sys.exit(1)
+def number_to_z3(n):
+    frac = fractions.Fraction(n)
+    if frac.denominator == 1:
+        return "{}".format(frac.numerator)
+    return "(/ {} {})".format(frac.numerator, frac.denominator)
 
 
-    row = [str(error_bound)] + row + [str(fptaylor_error)]
-    rows.append(row)
-
-    return header, fptaylor_error
-
-
-class fake():
-    pass
-
-
-def glibc_error(args, ssa, names, signatures, rows, first_header):
-    fake_zr = fake()
-    fake_zr.raw_max_error = "glibc"
-    fake_zr.bit_width_choices = {name:{"fp64":"all_64_bit"} for name in ssa.fptaylor_forms}
-    fake_zr.operation_choices = {name:{ssa.definitions[name].op:"all_glibc"} for name in ssa.operations}
-    fake_zr.model = {"all_64_bit": True,
-                     "all_glibc": True,
-                     "total_error": -1.0}
-    tuned_res = TunedExpression(ssa, fake_zr)
-
-    logger("  Getting all glibc configuration")
-    query = tuned_res.to_fptaylor()
-    start = time.time()
-    res = FPTaylorResult(query, CHECK_CONFIG)
-    end = time.time()
-    logger("    Time to get 2nd order error: {}", end - start)
-    logger("    FPTaylor error bound: {} (2nd order is {})", res.abs_error, res.second_order)
-    if (res.div_by_zero
-        or res.log_of_non_positive
-        or res.inf_val
-        or res.abs_error is None):
-        logger.error("Fatal error: glibc error bound not found")
-        sys.exit(1)
-
-    # 3. Check that domains are still valid
-    logger("    Checking domains")
-    start = time.time()
-    valid = tuned_res.check_domains()
-    end = time.time()
-    logger("    Time to check domains: {}", end - start)
-    if valid is None or not valid:
-        logger.error("Fatal error: glibc causes domain violations")
-        sys.exit(1)
-
-    return found_config("glibc", res.abs_error, tuned_res, args, ssa, names, signatures, rows, first_header)
-
-# raw_query -> { tuned_results_str -> (fptaylor_error, domains_passed) }
-TUNED_RES_CACHE = dict()
-
-# raw_query -> { z3_error_bound -> (fptaylor_error, domains_passed, tuned_res) }
-Z3_ERROR_CACHE = dict()
-
-def try_error_bound(error_bound, raw_query, args, ssa, names, signatures, rows, first_header):
-    # Check cache
-    z3_error_bound = 2*error_bound
-    if raw_query not in Z3_ERROR_CACHE:
-        Z3_ERROR_CACHE[raw_query] = dict()
-
-    answers = Z3_ERROR_CACHE[raw_query]
-    for old_z3_error_bound in sorted(answers.keys(), reverse=True):
-        fpt_err, dom_pass, tr = answers[old_z3_error_bound]
-        if fpt_err is not None and fpt_err < error_bound and dom_pass == True:
-            logger("  Used z3_error_cache")
-            return found_config(error_bound, fpt_err, tr, args, ssa, names, signatures, rows, first_header)
-        if fpt_err is None or fpt_err > error_bound:
-            z3_error_bound = min(old_z3_error_bound, z3_error_bound)
-
-    if raw_query not in TUNED_RES_CACHE:
-        TUNED_RES_CACHE[raw_query] = dict()
-    z3_cache = TUNED_RES_CACHE[raw_query]
-
-    z3_times = list()
-    fptaylor_times = list()
-    domain_times = list()
-    while True:
-        z3_error_bound = z3_error_bound/2
-
-        logger("  Trying z3_error_bound: {}".format(z3_error_bound))
-        # 1. Tune to ther error bound
-        try:
-            start = time.time()
-            zr = Z3Result(ssa, z3_error_bound)
-            end = time.time()
-            z3_times.append(end - start)
-            logger("    Time to run z3: {}", end - start)
-        except OpTunerError:
-            ## If we can't get this error bound, all tighter ones will fail
-            logger.error("Unable to satisfy error bound")
-            return None, None
-        tuned_res = TunedExpression(ssa, zr)
-        tuned_res_str = " ".join(tuned_res.tsv()[1])
-        logger("    Chose config: {}", tuned_res_str)
-
-        if tuned_res_str in z3_cache:
-            fpt_err, dom_pass = z3_cache[tuned_res_str]
-            if fpt_err is None or fpt_err > error_bound or dom_pass == False:
-                logger("  Used tuned_res_cache\n")
-                continue
-
-        # If a domain check fails we may be able to replace the op and retry
-        try_with_lower_bound = False
-        while True:
-
-            # 2. Check that second order error is preserved
-            logger("    Checking 2nd order error")
-            query = tuned_res.to_fptaylor()
-            start = time.time()
-            res = FPTaylorResult(query, CHECK_CONFIG)
-            end = time.time()
-            fptaylor_times.append(end - start)
-            logger("    Time to get 2nd order error: {}", end - start)
-            logger("    FPTaylor error bound: {} (2nd order is {})", res.abs_error, res.second_order)
-            answers[z3_error_bound] = (res.abs_error, None, tuned_res)
-            z3_cache[tuned_res_str] = (res.abs_error, None)
-            if res.div_by_zero or res.log_of_non_positive or res.inf_val:
-                logger("  FPTaylor thinks exceptional circumstances are possible")
-                logger("  Retrying with lower bound")
-                try_with_lower_bound = True
-                break
-            elif res.abs_error is None:
-                logger("  FPTaylor did not find an error value")
-                logger("  Retrying with lower bound")
-                try_with_lower_bound = True
-                break
-            elif res.abs_error > error_bound:
-                logger("  error_bound not met")
-                logger("  Retrying with lower bound")
-                try_with_lower_bound = True
-                break
-
-            # 3. Check that domains are still valid
-            logger("    Checking domains")
-            start = time.time()
-            valid = tuned_res.check_domains()
-            end = time.time()
-            domain_times.append(end - start)
-            logger("    Time to check domains: {}", end - start)
-            if valid is None:
-                logger("      Replaced operation and retrying")
-                tuned_res_str = " ".join(tuned_res.tsv()[1])
-                logger("        Altered config: {}", tuned_res_str)
-                while valid is None:
-                    start = time.time()
-                    valid = tuned_res.check_domains()
-                    end = time.time()
-                    domain_times.append(end - start)
-                    logger("        Time to check domains: {}", end - start)
-                    if valid is None:
-                        tuned_res_str = " ".join(tuned_res.tsv()[1])
-                        logger("        Altered config: {}", tuned_res_str)
-                logger("    Finished replacing, trying 2nd order error")
-                continue
-            elif not valid:
-                logger("  Domains are not sound")
-                logger("  Retrying with lower bound")
-                try_with_lower_bound = True
-                answers[z3_error_bound] = (res.abs_error, False, tuned_res)
-                z3_cache[tuned_res_str] = (res.abs_error, False)
-                break
-            else:
-                try_with_lower_bound = False
-                answers[z3_error_bound] = (res.abs_error, True, tuned_res)
-                z3_cache[tuned_res_str] = (res.abs_error, True)
-                break
-
-        if not try_with_lower_bound:
-            break
-
-    logger("  Total time to find configuration")
-    logger("    z3: {}", sum(z3_times))
-    logger("    fptaylor: {}", sum(fptaylor_times))
-    logger("    domain: {}\n\n", sum(domain_times))
-
-    return found_config(error_bound, res.abs_error, tuned_res, args, ssa, names, signatures, rows, first_header)
+def select_options(fpc, e, implementations):
+    if (type(e) != fpcore.Operation
+        or e.op not in implementations):
+        return
+    possible = implementations[e.op]
+    e.domain = fpc.dynamic_range(e.args[0])
+    possible = [a for a in possible
+                if a.domain[0] <= e.domain[0] and a.domain[1] >= e.domain[1]]
+    e.possible_ids = [a.id for a in possible]
+    arg = e.args[0]
+    fptaylor_query = fpc.to_fptaylor(arg)
+    fptaylor_res = fptaylor.Result(fptaylor_query,
+                                   config=fptaylor.ERROR_FORM_CONFIG)
+    fpc.match_fptaylor_forms(fptaylor_res)
 
 
+def generate_z3_impl_bools(e, lines):
+    if not hasattr(e, "possible_ids"):
+        return
+    lines.append("; implementations for {} = {}".format(e.name, e))
+    bool_names = list()
+    for id in e.possible_ids:
+        bool_name = "{}_is_{}".format(e.name, id)
+        bool_names.append(bool_name)
+        line = "(declare-const {} Bool)".format(bool_name)
+        lines.append(line)
+    converted = ["(btoi {})".format(n) for n in bool_names]
+    sum_parts = "\n  ".join(converted)
+    assertion = "(assert (= 1 (+\n  {})))".format(sum_parts)
+    lines.append(assertion)
+    lines.append("")
+
+def generate_z3_epsilons(e, lines, id_mapped_implementations):
+    if not hasattr(e, "possible_ids"):
+        epsilons = list()
+        for wrt, d in e.forms.items():
+            if "epsilon" in d:
+                epsilons.append(d["epsilon"][0])
+        if len(epsilons) == 0:
+            return
+        assert(len(set(epsilons)) == 1)
+        eps = epsilons[0]
+        e.epsilon = number_to_z3(2**int(eps))
+        return
+    epsilon_name = "epsilon_for_{}".format(e.name)
+    lines.append("; epsilon for {} = {}".format(e.name, e))
+    parts = list()
+    for id in e.possible_ids:
+        bool_name = "{}_is_{}".format(e.name, id)
+        eps_val = id_mapped_implementations[id].epsilon
+        parts.append("(* (btor {}) {})".format(bool_name, number_to_z3(eps_val)))
+    sum_parts = "\n  ".join(parts)
+    assignment = "(define-fun {} () Real (+\n  {}))".format(epsilon_name, sum_parts)
+    lines.append(assignment)
+    lines.append("")
+    e.epsilon = epsilon_name
+
+def generate_z3_deltas(e, lines, id_mapped_implementations):
+    if not hasattr(e, "possible_ids"):
+        deltas = list()
+        for wrt, d in e.forms.items():
+            if "delta" in d:
+                deltas.append(d["delta"][0])
+        if len(deltas) == 0:
+            return
+        assert(len(set(deltas)) == 1)
+        delt = deltas[0]
+        e.delta = number_to_z3(2**int(delt))
+        return
+    delta_name = "delta_for_{}".format(e.name)
+    lines.append("; delta for {} = {}".format(e.name, e))
+    parts = list()
+    for id in e.possible_ids:
+        bool_name = "{}_is_{}".format(e.name, id)
+        delt_val = id_mapped_implementations[id].delta
+        parts.append("(* (btor {}) {})".format(bool_name, number_to_z3(delt_val)))
+    sum_parts = "\n  ".join(parts)
+    assignment = "(define-fun {} () Real (+\n  {}))".format(delta_name, sum_parts)
+    lines.append(assignment)
+    lines.append("")
+    e.delta = delta_name
+
+def generate_z3_costs(e, lines, costs, id_mapped_implementations):
+    if not hasattr(e, "possible_ids"):
+        return
+    cost_name = "cost_for_{}".format(e.name)
+    lines.append("; cost for {} = {}".format(e.name, e))
+    parts = list()
+    for id in e.possible_ids:
+        bool_name = "{}_is_{}".format(e.name, id)
+        cost = id_mapped_implementations[id].cost
+        parts.append("(* (btor {}) {})".format(bool_name, cost))
+    sum_parts = "\n  ".join(parts)
+    assignment = "(define-fun {} () Real (+\n  {}))".format(cost_name, sum_parts)
+    lines.append(assignment)
+    lines.append("")
+    costs.append(cost_name)
+
+def generate_z3_error(fpc, wrt, lines):
+    def sum_error_components(e, wrt, lines, parts):
+        if wrt.name not in e.maximums:
+            return
+
+        my_error_name = "error_from_{}_wrt_{}".format(e.name, wrt.name)
+
+        if ("epsilon" in e.maximums[wrt.name]
+            and "delta" in e.maximums[wrt.name]):
+            my_epsilon = e.epsilon
+            my_delta = e.delta
+            my_eps_mul = number_to_z3(e.maximums[wrt.name]["epsilon"])
+            my_del_mul = number_to_z3(e.maximums[wrt.name]["delta"])
+            line = "(define-fun {} () Real\n  (+ (* {} {}) (* {} {})))".format(my_error_name,
+                                                                                 my_epsilon,
+                                                                                 my_eps_mul,
+                                                                                 my_delta,
+                                                                                 my_del_mul)
+        elif ("epsilon" in e.maximums[wrt.name]
+              and "delta" not in e.maximums[wrt.name]):
+            my_epsilon = e.epsilon
+            my_eps_mul = number_to_z3(e.maximums[wrt.name]["epsilon"])
+            line = "(define-fun {} () Real\n  (* {} {}))".format(my_error_name,
+                                                                 my_epsilon,
+                                                                 my_eps_mul)
+        elif ("epsilon" not in e.maximums[wrt.name]
+              and "delta" in e.maximums[wrt.name]):
+            my_delta = e.delta
+            my_del_mul = number_to_z3(e.maximums[wrt.name]["delta"])
+            line = "(define-fun {} () Real\n  (* {} {}))".format(my_error_name,
+                                                                 my_delta,
+                                                                 my_del_mul)
+        else:
+            return
+
+        lines.append(line)
+        parts.append(my_error_name)
+
+    error_name = "total_error_for_{}".format(wrt.name)
+    lines.append("; total error for {} = {}".format(wrt.name, wrt))
+    parts = list()
+    fpc.for_each(lambda e: sum_error_components(e, wrt, lines, parts))
+    sum_parts = "\n  ".join(parts)
+    assignment = "(define-fun {} () Real (+\n  {}))".format(error_name, sum_parts)
+    lines.append(assignment)
+    lines.append("")
+    return error_name
+
+def generate_z3_domain_error(fpc, e, lines):
+    if not hasattr(e, "possible_ids"):
+        return
+    arg = e.args[0]
+    e.domain_error = generate_z3_error(fpc, arg, lines)
+
+def generate_z3_domain_bounding(fpc, e, lines, id_mapped_implementations):
+    if not hasattr(e, "possible_ids"):
+        return
+    arg = e.args[0]
+    real_domain = fpc.dynamic_range(arg)
+    for id in e.possible_ids:
+        impl = id_mapped_implementations[id]
+        lower_gap = real_domain[0] - impl.domain[0]
+        upper_gap = impl.domain[1] - real_domain[1]
+        min_gap = min(lower_gap, upper_gap)
+        boolean = "{}_is_{}".format(e.name, id)
+        assertion = "(assert (=> {} (<= {} {})))".format(boolean, e.domain_error, number_to_z3(min_gap))
+        lines.append(assertion)
+    lines.append("")
+
+def z3_comment_banner(message, lines):
+    max_len = 80 - 4 - 2
+    space_len = max_len - len(message)
+    lines.append("; +"+"-"*76+"+")
+    lines.append("; + "+message+" "*space_len + " +")
+    lines.append("; +"+"-"*76+"+")
+
+def extract_fpcore_name(fpc):
+    for p in fpc.properties:
+        if p.name.source == "name":
+            name = p.value
+            name = name.replace(" ", "_")
+            name = name.replace("\"", "")
+            name = name.replace(".", "_")
+            name = name.replace("$", "_")
+            name = name.replace("-", "_")
+            name = name.replace(":", "_")
+            name = name.replace(",", "_")
+            name = name.replace("__", "_")
+            fpc.name = name
+            return
 
 def main(argv):
-    args = optuner_argument_parser.parse_args(argv)
+    args = parse_args(argv)
 
-    # Grab all functions from the modifications table
-    sins = [row[1] for row in all_modifications_ast.OperationTable
-            if row[0] == "sin"]
-    exps = [row[1] for row in all_modifications_ast.OperationTable
-            if row[0] == "exp"]
-    logs = [row[1] for row in all_modifications_ast.OperationTable
-            if row[0] == "log"]
-    tans = [row[1] for row in all_modifications_ast.OperationTable
-            if row[0] == "tan"]
-    operations = {"sin": sins,
-                  "exp": exps,
-                  "log": logs,
-                  "tan": tans}
+    accuracy_specs = accuracy_specification.read_file(args.accuracy_specs)
 
-    # Setup the search space
-    search_space = {"bit_widths": ["fp64"], #args.bit_widths,
-                    "operations": operations}
+    with open(args.costs, "r") as f:
+        data = f.read()
+    costs = json.loads(data)
 
-    lexer = FPCoreLexer()
-    parser = FPCoreParser()
+    for A in accuracy_specs:
+        cname = A.cname
+        A.set_cost(costs[cname])
 
-    graph_datafiles = list()
+    functions = set(a.operation for a in accuracy_specs)
+    implementations = {f:list() for f in functions}
+    id_mapped_implementations = dict()
+    for A in accuracy_specs:
+        implementations[A.operation].append(A)
+    for f in functions:
+        idx = 0
+        for A in implementations[f]:
+            A.id = "{}_{}".format(f, idx)
+            id_mapped_implementations[A.id] = A
+            idx += 1
+
+    fpcores = list()
     for query_file in args.query_files:
         try:
             with open(query_file, "r") as f:
@@ -275,135 +326,158 @@ def main(argv):
             logger.error("Unable to find file '{}'", query_file)
             continue
 
-        # todo: add try catch for lex and parse errors
-        tokens = lexer.tokenize(text)
-        fpcores = parser.parse(tokens)
+        this_fpcores = fpcore.parse(text)
 
-        if len(fpcores) == 0:
+        if len(this_fpcores) == 0:
             logger.error("No FPCore found in file '{}'", query_file)
             continue
 
-        for fpcore in fpcores:
+        fpcores.extend(this_fpcores)
+
+    for fpc in fpcores:
+        logger.blog("Processing", fpc)
+
+        fpc.remove_let()
+        fpc.reject_unsupported()
+        fpc.extract_input_domains()
+        fpc.set_name()
+        extract_fpcore_name(fpc)
+        logger.blog("Converted", fpc.pretty_internals())
+
+        fptaylor_query = fpc.to_fptaylor()
+        fptaylor_res = fptaylor.Result(fptaylor_query,
+                                       config=fptaylor.ERROR_FORM_CONFIG)
+        fpc.match_fptaylor_forms(fptaylor_res)
+        logger.blog("Matched", fpc.pretty_internals())
+
+        fpc.for_each(lambda e: select_options(fpc, e, implementations))
+        logger.blog("Optioned", fpc.pretty_internals())
+
+        fpc.for_each(lambda e: max_forms(fpc, e))
+        logger.blog("Maxed", fpc.pretty_internals())
+
+        lines = [
+            "; +"+"-"*76+"+",
+            "; + Utility functions"+" "*58+"+",
+            "; +"+"-"*76+"+",
+            "(define-fun btoi ((b Bool)) Int",
+            "  (ite b 1 0))",
+            "",
+            "(define-fun btor ((b Bool)) Real",
+            "  (ite b 1.0 0.0))",
+            "",
+            ]
+        z3_comment_banner("Implementation choices", lines)
+        fpc.for_each(lambda e: generate_z3_impl_bools(e, lines))
+
+        z3_comment_banner("Epsilons", lines)
+        fpc.for_each(lambda e: generate_z3_epsilons(e, lines, id_mapped_implementations))
+
+        z3_comment_banner("Deltas", lines)
+        fpc.for_each(lambda e: generate_z3_deltas(e, lines, id_mapped_implementations))
+
+        z3_comment_banner("Domain errors", lines)
+        fpc.for_each(lambda e: generate_z3_domain_error(fpc, e, lines))
+
+        z3_comment_banner("Domain bounding", lines)
+        fpc.for_each(lambda e: generate_z3_domain_bounding(fpc, e, lines, id_mapped_implementations))
+
+        z3_comment_banner("Top level error", lines)
+        top_level_error = generate_z3_error(fpc, fpc.expression, lines)
+        lines.append("(declare-const total_error Real)")
+        lines.append("(assert (= total_error {}))".format(top_level_error))
+
+        costs = list()
+        z3_comment_banner("Costs", lines)
+        fpc.for_each(lambda e: generate_z3_costs(e, lines, costs, id_mapped_implementations))
+        sum_parts = "\n  ".join(costs)
+        lines.append("(declare-const total_cost Real)")
+        lines.append("(assert (= total_cost (+\n  {})))".format(sum_parts))
+
+        lines.append("(minimize total_error)")
+        lines.append("(minimize total_cost)")
+        lines.append("(set-option :opt.priority pareto)")
+        lines.append("(check_sat)")
+
+        functions = list()
+
+        ctx = z3.Context("model_validate", "true")
+        z3_query = "\n".join(lines)
+        logger.blog("Z3 Query", z3_query)
+        optimizer = z3.Optimize(ctx=ctx)
+        optimizer.from_string(z3_query)
+        while True:
+            state = optimizer.check()
+            if str(state) != "sat":
+                break
+            z3_model = optimizer.model()
+            model = {d.name(): z3_model[d] for d in z3_model}
+            choices = {k for k,v in model.items() if (k != "total_error" and k != "total_cost") and v == True}
+            raw_assignment = {name.split("_is_")[0]: name.split("_is_")[1] for name in choices}
+            assignment = {k: id_mapped_implementations[v] for k,v in raw_assignment.items()}
+
             try:
-                signatures = list()
-                names = list()
-                ssa = fpcore.to_single_assignment(search_space)
-                logger("-"*80)
-                logger("Starting fpcore {}", ssa.name)
-                if args.nightly:
-                    print("<h1>{}</h1>".format(ssa.name), flush=True)
-                else:
-                    print(ssa.name, flush=True)
+                fpt_query = fpc.to_fptaylor(fpc.expression, assignment)
+                fpt_res = fptaylor.Result(fpt_query, fptaylor.CHECK_CONFIG)
+                error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
+                model_error = float(fractions.Fraction(str(model["total_error"])))
+                cost = float(fractions.Fraction(str(model["total_cost"])))
+                print("{}\t{}\t{}".format(cost, model_error, error))
+                functions.append({"error": error,
+                                  "assignment": assignment,
+                                  "cost": cost})
+            except Exception:
+                pass
 
-                start = time.time()
-                ssa.get_fptaylor_forms()
-                end = time.time()
-                logger("Time to get taylor forms: {}", end - start)
+        functions.sort(key=lambda f: f["error"])
+        h_name = "{}.h".format(fpc.name)
+        c_name = "{}.c".format(fpc.name)
+        time_c_name = "time_{}.c".format(fpc.name)
+        h_lines = ['#include "glibc_functions.h"',
+                   '#include "metalibm_functions.h"',
+                   '#include "mpfr_functions.h"',
+                   '\n',]
+        c_lines = ['#include "{}"'.format(h_name),
+                   '\n']
+        time_c_lines = ['#include "time_func.h"',
+                        '#include "{}"'.format(h_name),
+                        '#define ENTRY_COUNT ({})'.format(len(functions)),
+                        'double lows[{}] = {{{}}};'.format(len(fpc.domains), ",".join(str(d[0]) for d in fpc.domains.values())),
+                        'double highs[{}] = {{{}}};'.format(len(fpc.domains), ",".join(str(d[1]) for d in fpc.domains.values())),
+                        'entry ENTRIES[ENTRY_COUNT] = {']
 
-                start = time.time()
-                ssa.get_fptaylor_maximums()
-                end = time.time()
-                logger("Time to maximize forms: {}\n", end - start)
+        for i, func in enumerate(functions):
+            function_name = "{}_{}".format(fpc.name, i)
+            body = fpc.to_c(function_name, fpc.expression, func["assignment"])
+            h_lines.append(body.splitlines()[0]+";")
+            c_lines.append(body)
+            time_c_lines.append('{{ {}, {}, "{}", lows, highs, {} }},'.format(function_name, len(fpc.domains), function_name, func["error"]))
 
-                first_header = None
-                rows = []
-                fptaylor_errors = []
-                for e in args.error:
-                    logger("Getting configuration for {}", e)
-                    header, achieved_error = try_error_bound(e, str(fpcore), args, ssa, names, signatures, rows, first_header)
-                    if first_header is None:
-                        first_header = header
-                    if achieved_error is None:
-                        break
-                    fptaylor_errors.append(achieved_error)
+        time_c_lines.extend(['};',
+                             'int main(int argc, char** argv)',
+                             '{',
+                             'process_entries(argc, argv, ENTRY_COUNT, ENTRIES);',
+                             '}'])
 
-                _, achieved_error = glibc_error(args, ssa, names, signatures, rows, first_header)
-                fptaylor_errors.append(achieved_error)
 
-                if args.cfile:
-                    time_name = "{}_time.c".format(sanitize_name(ssa.name))
-                    time_contents = ['#include "timing.h"',
-                                     '#include "xmalloc.h"',
-                                     '#include <float.h>',
-                                     '#include <math.h>',
-                                     '#include <stdio.h>']
-                    for name,domain in ssa.inputs.items():
-                        time_contents.append("const fp64 {}_LOW = {};".format(name, domain[0]))
-                        time_contents.append("const fp64 {}_HIGH = {};".format(name, domain[1]))
-                    time_contents.extend(["double "+s+";" for s in signatures])
-                    time_contents.append("#define FUNC_COUNT ({})".format(len(signatures)))
-                    functype = {1:"unop_fp64", 2:"binop_fp64", 3:"triop_fp64", 4:"quadop_fp64", 5:"quintop_fp64", 6:"hexop_fp64"}[len(ssa.inputs)]
-                    time_contents.append("{} FUNCTIONS[FUNC_COUNT] = {{{}}};".format(functype, ",".join(names)))
-                    time_contents.append("char* NAMES[FUNC_COUNT] = {{{}}};".format(",".join(['"'+n+'"' for n in names])))
-                    time_contents.append("char* ERRORS[FUNC_COUNT] = {{{}}};".format(",".join(['"'+str(e)+'"' for e in fptaylor_errors])))
-                    time_contents.extend(["int main(int argc, char** argv){",
-                                          "size_t log2_values = 18;",
-                                          "size_t secs = 10;",
-                                          "size_t runs = 4;",
-                                          "if (argc > 1) { log2_values = strtoul(argv[1], NULL, 10); }",
-                                          "if (argc > 2) { secs = strtoul(argv[2], NULL, 10); }",
-                                          "if (argc > 3) { runs = strtoul(argv[3], NULL, 10); }",
-                                          "timing_data_fp64* data = time_{}({},".format(functype,
-                                                                                        ",".join(["{}_LOW,{}_HIGH".format(n,n) for n in ssa.inputs])),
-                                          "FUNC_COUNT, FUNCTIONS, NAMES, ERRORS, log2_values, runs, secs);"
-                                          "print_timing_data_fp64(data);",
-                                          "free_timing_data_fp64(data);",
-                                          "return 0;",
-                                          "}"])
-                    with open(time_name, "w") as f:
-                        f.write("\n".join(time_contents))
-                    cfiles = glob.glob("*.c")
-                    destfiles = [path.join(GIT_DIR, "cost-measurement/kerns/{}".format(c)) for c in cfiles]
-                    try:
-                        os.mkdir(path.join(GIT_DIR,"cost-measurement/kerns"))
-                    except FileExistsError:
-                        pass
-                    for src,dest in zip(cfiles, destfiles):
-                        shutil.move(src, dest)
-                    datafile, times = generate_graph.graph(time_name)
-                    graph_datafiles.append(datafile)
-                    first_header.append("Runtime(ns)")
-                    for row,t in zip(rows, times):
-                        row.append(str(t))
+        with open(path.join(KERN_DIR, h_name), "w") as f:
+            f.write("\n".join(h_lines))
 
-                if args.nightly:
-                    print("<table>")
-                    print("<tr><th>" + "</th><th>".join(first_header) + "</th></tr>")
-                    for row in rows:
-                        print("<tr><td>" + "</td><td>".join(row) + "</td></tr>")
-                    print("</table>")
-                    print("<img src='{}_time.png'>".format(sanitize_name(ssa.name)))
-                else:
-                    print("\t".join(first_header))
-                    for row in rows:
-                        print("\t".join(row))
+        with open(path.join(KERN_DIR, c_name), "w") as f:
+            f.write("\n".join(c_lines))
 
-            except DomainError as e:
-                if e.lower is None and e.upper is None:
-                    logger.error("No domain defined for '{}'", e.name)
-                elif e.lower is None:
-                    logger.error("No lower bound defined for '{}'", e.name)
-                else:
-                    logger.error("No upper bound defined for '{}'", e.name)
+        with open(path.join(KERN_MAIN_DIR, time_c_name), "w") as f:
+            f.write("\n".join(time_c_lines))
 
-            except UnsupportedError as e:
-                msg = "Found unsupported FPCore language statement type '{}'"
-                logger.error(msg, e.statement_type)
 
-            except NoPreError:
-                logger.error("No :pre property defined")
-
-            except BadPreError as e:
-                logger.error("Unable to process precondition: '{}'", e.pre)
 
 
 if __name__ == "__main__":
-    start = time.time()
+    timer.start()
     try:
         retval = main(sys.argv)
     except KeyboardInterrupt:
         retval = 1
-
-    end = time.time()
-    logger("Total time: {}", end - start)
+    timer.stop()
+    logger("Total time: {}", timer.elapsed())
     sys.exit(retval)

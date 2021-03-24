@@ -1,0 +1,56 @@
+{
+    "operation": "sin",
+    "cname": "sin_glibc",
+    "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.220446049250313e-16
+}
+{
+    "operation": "cos",
+    "cname": "cos_glibc",
+    "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.220446049250313e-16
+}
+{
+    "operation": "tan",
+    "cname": "tan_glibc",
+    "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.220446049250313e-16
+}
+{
+    "operation": "exp",
+    "cname": "exp_glibc",
+    "domain": [-1.7976931348623157e+308, 709.782712893384],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.220446049250313e-16
+}
+{
+    "operation": "log",
+    "cname": "log_glibc",
+    "domain": [0.0, 1.7976931348623157e+308],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.220446049250313e-16
+}
+{
+    "operation": "asin",
+    "cname": "asin_glibc",
+    "domain": [-1.0, 1.0],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.220446049250313e-16
+}
+{
+    "operation": "acos",
+    "cname": "acos_glibc",
+    "domain": [-1.0, 1.0],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.220446049250313e-16
+}
+{
+    "operation": "atan",
+    "cname": "atan_glibc",
+    "domain": [-1.5707963267948966, 1.5707963267948966],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.220446049250313e-16
+}

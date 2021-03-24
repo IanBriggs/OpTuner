@@ -31,29 +31,40 @@ trap finish EXIT
 
 # FPTaylor with my_sin
 echo "Installing FPTaylor"
-pushd "$SCRIPT_LOCATION"
-rm -rf FPTaylor
-git clone https://github.com/soarlab/FPTaylor.git &>> "${LOG}"
-pushd FPTaylor
-git checkout my_sine
-make &>> "${LOG}"
-popd
-popd
+if [ -f "$SCRIPT_LOCATION/FPTaylor/done_fptaylor" ]; then
+    echo "FPTaylor already installed"
+else
+    pushd "$SCRIPT_LOCATION"
+    rm -rf FPTaylor
+    git clone https://github.com/soarlab/FPTaylor.git &>> "${LOG}"
+    pushd FPTaylor
+    git checkout indices
+    make &>> "${LOG}"
+    touch done_fptaylor
+    popd
+    popd
+fi
 
 # gelpia
 echo "Installing Gelpia"
-pushd "$SCRIPT_LOCATION"
-rm -rf gelpia
-git clone https://github.com/soarlab/gelpia.git &>> "${LOG}"
-pushd gelpia
-SUCCESS=-1
-pushd requirements
-./build.sh | sed "s|^|    |g"
-popd
-SUCCESS=1
-make &>> "${LOG}"
-popd
-popd
+if [ -f "$SCRIPT_LOCATION/gelpia/done_gelpia" ]; then
+    echo "Gelpia already installed"
+else
+    pushd "$SCRIPT_LOCATION"
+    rm -rf gelpia
+    git clone https://github.com/soarlab/gelpia.git &>> "${LOG}"
+    pushd gelpia
+    SUCCESS=-1
+    pushd requirements
+    sed "s|downloads|versaweb.dl|g" build.sh -i
+    ./build.sh | sed "s|^|    |g"
+    popd
+    SUCCESS=0
+    make &>> "${LOG}"
+    touch done_gelpia
+    popd
+    popd
+fi
 
 # symbolic link gelpia
 pushd "$SCRIPT_LOCATION"
