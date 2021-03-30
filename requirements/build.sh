@@ -79,6 +79,7 @@ fi
 # symbolic link gelpia
 echo "Connecting Gelpia to FPTaylor"
 cd "${SCRIPT_LOCATION}/FPTaylor"
+rm -f gelpia
 ln -s ../gelpia gelpia
 
 
