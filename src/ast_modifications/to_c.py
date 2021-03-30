@@ -41,7 +41,10 @@ def to_c(self, assignment, lines):
         op = assignment[self.name].cname
 
     body = None
-    if len(self.args) == 1 and self.op in UNARY_PREFIX:
+    if len(self.args) == 1 and self.op == "inv":
+        body = "1/{}".format(arg_names[0])
+
+    elif len(self.args) == 1 and self.op in UNARY_PREFIX:
         body = "{}{}".format(op, arg_names[0])
 
     elif len(self.args) == 2 and self.op in INFIX:
