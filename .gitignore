@@ -18,6 +18,8 @@ implementations/metalibm/requirements/activate
 implementations/metalibm/requirements/gappa-1.3.5/
 implementations/metalibm/requirements/metalibm/
 implementations/mpfr/obj/
+implementations/oracle/bin/
+implementations/oracle/obj/
 implementations/timing/bin/
 implementations/timing/json/
 implementations/timing/kern/

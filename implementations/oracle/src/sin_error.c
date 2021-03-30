@@ -1,7 +1,7 @@
 
 
+#include "crlibm_functions.h"
 #include "glibc_functions.h"
-#include "hand_generated_functions.h"
 #include "metalibm_functions.h"
 #include "mpfr_functions.h"
 #include "oracle_functions.h"
@@ -11,20 +11,9 @@
 #include <stdlib.h>
 
 
-#define ENTRY_COUNT (27)
+#define ENTRY_COUNT (18)
 
 entry ENTRIES[ENTRY_COUNT] = {
-                              {rord_01_sin_fp64, "rord_01_sin_fp64"},
-                              {rord_03_sin_fp64, "rord_03_sin_fp64"},
-                              {rord_05_sin_fp64, "rord_05_sin_fp64"},
-                              {rord_07_sin_fp64, "rord_07_sin_fp64"},
-                              {rord_09_sin_fp64, "rord_09_sin_fp64"},
-                              {rord_11_sin_fp64, "rord_11_sin_fp64"},
-                              {rord_13_sin_fp64, "rord_13_sin_fp64"},
-                              {rord_15_sin_fp64, "rord_15_sin_fp64"},
-                              {rord_17_sin_fp64, "rord_17_sin_fp64"},
-                              {rord_19_sin_fp64, "rord_19_sin_fp64"},
-
                               {ml2_sin_1, "ml2_sin_1"},
                               {ml2_sin_3, "ml2_sin_3"},
                               {ml2_sin_5, "ml2_sin_5"},
@@ -41,6 +30,8 @@ entry ENTRIES[ENTRY_COUNT] = {
                               {ml_sin_3, "ml_sin_3"},
                               {ml_sin_4, "ml_sin_4"},
                               {ml_sin_5, "ml_sin_5"},
+
+                              {sin_crlibm, "sin_crlibm"},
 
                               {sin_glibc, "sin_glibc"},
 

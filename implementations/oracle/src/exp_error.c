@@ -1,7 +1,7 @@
 
 
+#include "crlibm_functions.h"
 #include "glibc_functions.h"
-#include "hand_generated_functions.h"
 #include "metalibm_functions.h"
 #include "mpfr_functions.h"
 #include "oracle_functions.h"
@@ -11,22 +11,9 @@
 #include <stdlib.h>
 
 
-#define ENTRY_COUNT (37)
+#define ENTRY_COUNT (26)
 
 entry ENTRIES[ENTRY_COUNT] = {
-                              {rord_01_exp_fp64, "rord_01_exp_fp64"},
-                              {rord_02_exp_fp64, "rord_02_exp_fp64"},
-                              {rord_03_exp_fp64, "rord_03_exp_fp64"},
-                              {rord_04_exp_fp64, "rord_04_exp_fp64"},
-                              {rord_05_exp_fp64, "rord_05_exp_fp64"},
-                              {rord_06_exp_fp64, "rord_06_exp_fp64"},
-                              {rord_07_exp_fp64, "rord_07_exp_fp64"},
-                              {rord_08_exp_fp64, "rord_08_exp_fp64"},
-                              {rord_09_exp_fp64, "rord_09_exp_fp64"},
-                              {rord_10_exp_fp64, "rord_10_exp_fp64"},
-                              {rord_11_exp_fp64, "rord_11_exp_fp64"},
-                              {rord_12_exp_fp64, "rord_12_exp_fp64"},
-
                               {ml2_exp_1, "ml2_exp_1"},
                               {ml2_exp_2, "ml2_exp_2"},
                               {ml2_exp_3, "ml2_exp_3"},
@@ -51,6 +38,8 @@ entry ENTRIES[ENTRY_COUNT] = {
                               {ml_exp_10, "ml_exp_10"},
                               {ml_exp_11, "ml_exp_11"},
                               {ml_exp_12, "ml_exp_12"},
+
+                              {exp_crlibm, "exp_crlibm"},
 
                               {exp_glibc, "exp_glibc"},
 

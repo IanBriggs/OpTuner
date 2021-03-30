@@ -1,7 +1,7 @@
 
 
+#include "crlibm_functions.h"
 #include "glibc_functions.h"
-#include "hand_generated_functions.h"
 #include "metalibm_functions.h"
 #include "mpfr_functions.h"
 #include "oracle_functions.h"
@@ -11,27 +11,9 @@
 #include <stdlib.h>
 
 
-#define ENTRY_COUNT (51)
+#define ENTRY_COUNT (35)
 
 entry ENTRIES[ENTRY_COUNT] = {
-                              {rord_01_log_fp64, "rord_01_log_fp64"},
-                              {rord_02_log_fp64, "rord_02_log_fp64"},
-                              {rord_03_log_fp64, "rord_03_log_fp64"},
-                              {rord_04_log_fp64, "rord_04_log_fp64"},
-                              {rord_05_log_fp64, "rord_05_log_fp64"},
-                              {rord_06_log_fp64, "rord_06_log_fp64"},
-                              {rord_07_log_fp64, "rord_07_log_fp64"},
-                              {rord_08_log_fp64, "rord_08_log_fp64"},
-                              {rord_09_log_fp64, "rord_09_log_fp64"},
-                              {rord_10_log_fp64, "rord_10_log_fp64"},
-                              {rord_11_log_fp64, "rord_11_log_fp64"},
-                              {rord_12_log_fp64, "rord_12_log_fp64"},
-                              {rord_13_log_fp64, "rord_13_log_fp64"},
-                              {rord_14_log_fp64, "rord_14_log_fp64"},
-                              {rord_15_log_fp64, "rord_15_log_fp64"},
-                              {rord_16_log_fp64, "rord_16_log_fp64"},
-                              {rord_17_log_fp64, "rord_17_log_fp64"},
-
                               {ml2_log_1, "ml2_log_1"},
                               {ml2_log_2, "ml2_log_2"},
                               {ml2_log_3, "ml2_log_3"},
@@ -65,6 +47,8 @@ entry ENTRIES[ENTRY_COUNT] = {
                               {ml_log_14, "ml_log_14"},
                               {ml_log_15, "ml_log_15"},
                               {ml_log_16, "ml_log_16"},
+
+                              {log_crlibm, "log_crlibm"},
 
                               {log_glibc, "log_glibc"},
 

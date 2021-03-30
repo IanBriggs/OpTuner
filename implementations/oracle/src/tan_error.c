@@ -1,7 +1,7 @@
 
 
+#include "crlibm_functions.h"
 #include "glibc_functions.h"
-#include "hand_generated_functions.h"
 #include "metalibm_functions.h"
 #include "mpfr_functions.h"
 #include "oracle_functions.h"
@@ -11,25 +11,9 @@
 #include <stdlib.h>
 
 
-#define ENTRY_COUNT (30)
+#define ENTRY_COUNT (16)
 
 entry ENTRIES[ENTRY_COUNT] = {
-                              {rord_01_tan_fp64, "rord_01_tan_fp64"},
-                              {rord_03_tan_fp64, "rord_03_tan_fp64"},
-                              {rord_05_tan_fp64, "rord_05_tan_fp64"},
-                              {rord_07_tan_fp64, "rord_07_tan_fp64"},
-                              {rord_09_tan_fp64, "rord_09_tan_fp64"},
-                              {rord_11_tan_fp64, "rord_11_tan_fp64"},
-                              {rord_13_tan_fp64, "rord_13_tan_fp64"},
-                              {rord_15_tan_fp64, "rord_15_tan_fp64"},
-                              {rord_17_tan_fp64, "rord_17_tan_fp64"},
-                              {rord_19_tan_fp64, "rord_19_tan_fp64"},
-                              {rord_21_tan_fp64, "rord_21_tan_fp64"},
-                              {rord_23_tan_fp64, "rord_23_tan_fp64"},
-                              {rord_25_tan_fp64, "rord_25_tan_fp64"},
-                              {rord_27_tan_fp64, "rord_27_tan_fp64"},
-                              {rord_29_tan_fp64, "rord_29_tan_fp64"},
-
                               {ml2_tan_1, "ml2_tan_1"},
                               {ml2_tan_3, "ml2_tan_3"},
                               {ml2_tan_5, "ml2_tan_5"},
@@ -45,6 +29,8 @@ entry ENTRIES[ENTRY_COUNT] = {
                               {ml2_tan_25, "ml2_tan_25"},
 
                               {tan_glibc, "tan_glibc"},
+
+                              {tan_crlibm, "tan_crlibm"},
 
                               {tan_mpfr, "tan_mpfr"},
 };

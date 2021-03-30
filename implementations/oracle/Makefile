@@ -1,11 +1,14 @@
+
+
 CC ?= gcc
 CFLAGS ?= -Wall -Wextra -Wconversion -O3 -march=native -mtune=native -fno-builtin -DNDEBUG
+CFLAGS += -Iinclude
+
+CRLIBM_O = ../crlibm/obj/crlibm_functions.a
+CRLIBM_I = ../crlibm/include/
 
 GLIBC_O = ../glibc/obj/glibc_functions.o
 GLIBC_I = ../glibc/include/
-
-HAND_O = ../hand_generated/obj/hand_generated_functions.o
-HAND_I = ../hand_generated/include
 
 METALIBM_O = ../metalibm/obj/metalibm_functions.a
 METALIBM_I = ../metalibm/include
@@ -19,8 +22,8 @@ ORACLE_I = include
 TABLE_O = obj/table_generation.o
 TABLE_I = include
 
-OBJ = ${GLIBC_O} ${HAND_O} ${METALIBM_O} ${MPFR_O} ${ORACLE_O} ${TABLE_O}
-INC = -I${GLIBC_I} -I${HAND_I} -I${METALIBM_I} -I${MPFR_I} -I${ORACLE_I} -I${TABLE_I}
+OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O} ${ORACLE_O} ${TABLE_O}
+INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I} -I${ORACLE_I} -I${TABLE_I}
 
 
 BINS = $(foreach s,$(wildcard src/*_error.c),$(patsubst src/%_error.c,bin/%_error,$s))
@@ -34,11 +37,11 @@ bin/%_error: src/%_error.c ${OBJ} | bin
 	$(CC) ${CFLAGS} ${INC} $< ${OBJ} -lmpfr -lm -o $@
 
 
+${CRLIBM_O}:
+	$(MAKE) -C ../crlibm
+
 ${GLIBC_O}:
 	$(MAKE) -C ../glibc
-
-${HAND_O}:
-	$(MAKE) -C ../hand_generated
 
 ${METALIBM_O}:
 	$(MAKE) -C ../metalibm
@@ -47,10 +50,10 @@ ${MPFR_O}:
 	$(MAKE) -C ../mpfr
 
 ${ORACLE_O}: src/oracle_functions.c include/oracle_functions.h | obj
-	$(CC) ${CFLAGS} -Iinclude $< -c -o $@
+	$(CC) ${CFLAGS} $< -c -o $@
 
 ${TABLE_O}: src/table_generation.c include/table_generation.h | obj
-	$(CC) ${CFLAGS} -Iinclude $< -c -o $@
+	$(CC) ${CFLAGS} $< -c -o $@
 
 
 
