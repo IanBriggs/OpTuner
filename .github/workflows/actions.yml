@@ -39,7 +39,7 @@ jobs:
 
       - name: Setup other prerequisites
         run: |
-          sudo apt install flex bison wget
+          sudo apt install flex bison wget libsollya-dev
 
       - name: Run requirements build script
         run: |
@@ -47,4 +47,4 @@ jobs:
 
       - name: Run OpTuner
         run: |
-          ./bin/optuner benchmarks/logexp.fpcore -e 1e-4
+          ./bin/optuner benchmarks/logexp.fpcore
