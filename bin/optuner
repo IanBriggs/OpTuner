@@ -459,7 +459,12 @@ def main(argv):
                              'process_entries(argc, argv, ENTRY_COUNT, ENTRIES);',
                              '}'])
 
+        if not path.isdir(KERN_DIR):
+            os.mkdir(KERN_DIR)
 
+        if not path.isdir(KERN_MAIN_DIR):
+            os.mkdir(KERN_MAIN_DIR)
+        
         with open(path.join(KERN_DIR, h_name), "w") as f:
             f.write("\n".join(h_lines))
 
