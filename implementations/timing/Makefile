@@ -1,11 +1,12 @@
 CC ?= gcc
 CFLAGS ?= -Wall -Wextra -Wconversion -O3 -march=native -mtune=native -fno-builtin -DNDEBUG
 
+
+CRLIBM_O = ../crlibm/obj/crlibm_functions.a
+CRLIBM_I = ../crlibm/include
+
 GLIBC_O = ../glibc/obj/glibc_functions.o
 GLIBC_I = ../glibc/include/
-
-HAND_O = ../hand_generated/obj/hand_generated_functions.o
-HAND_I = ../hand_generated/include
 
 METALIBM_O = ../metalibm/obj/metalibm_functions.a
 METALIBM_I = ../metalibm/include
@@ -15,8 +16,9 @@ MPFR_I = ../mpfr/include
 
 
 
-OBJ = ${GLIBC_O} ${HAND_O} ${METALIBM_O} ${MPFR_O}
-INC = -I${GLIBC_I} -I${HAND_I} -I${METALIBM_I} -I${MPFR_I}
+
+OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O}
+INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I}
 
 
 CFILES = $(filter-out src/time_all.c,$(wildcard src/*.c))
@@ -46,14 +48,14 @@ obj/%.o: kern/%.c ${IFILES} ${KERNIFILES} | obj
 	$(CC) ${CFLAGS} ${INC} -Iinclude -Ikern $< -c -o $@
 
 
+${CRLIBM_O}:
+	$(MAKE) -C ../crlibm
+
 ${GLIBC_O}:
 	$(MAKE) -C ../glibc
 
 ${MPFR_O}:
 	$(MAKE) -C ../mpfr
-
-${HAND_O}:
-	$(MAKE) -C ../hand_generated
 
 
 

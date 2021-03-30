@@ -2,16 +2,16 @@
 
 #include "time_func.h"
 
+#include "crlibm_functions.h"
 #include "glibc_functions.h"
-#include "hand_generated_functions.h"
 #include "mpfr_functions.h"
 #include "metalibm_functions.h"
 
 
 
 
-#define ENTRY_COUNT (142)
-// (251)
+#define ENTRY_COUNT (146)
+
 
 
 double exp_low[1] = {-5.0};
@@ -36,35 +36,11 @@ double raw_tan_high[1] = {0.7853981633974483};
 
 entry ENTRIES[ENTRY_COUNT] = \
   {
+   { exp_crlibm, 1, "exp_crlibm", exp_low, exp_high, -1 },
+
    { exp_glibc, 1, "exp_glibc", exp_low, exp_high, -1 },
 
    { exp_mpfr, 1, "exp_mpfr", exp_low, exp_high, -1 },
-
-   /* { ord_01_exp_fp64, 1, "ord_01_exp_fp64", raw_exp_low, raw_exp_high, -1 }, */
-   /* { ord_02_exp_fp64, 1, "ord_02_exp_fp64", raw_exp_low, raw_exp_high, -1 }, */
-   /* { ord_03_exp_fp64, 1, "ord_03_exp_fp64", raw_exp_low, raw_exp_high, -1 }, */
-   /* { ord_04_exp_fp64, 1, "ord_04_exp_fp64", raw_exp_low, raw_exp_high, -1 }, */
-   /* { ord_05_exp_fp64, 1, "ord_05_exp_fp64", raw_exp_low, raw_exp_high, -1 }, */
-   /* { ord_06_exp_fp64, 1, "ord_06_exp_fp64", raw_exp_low, raw_exp_high, -1 }, */
-   /* { ord_07_exp_fp64, 1, "ord_07_exp_fp64", raw_exp_low, raw_exp_high, -1 }, */
-   /* { ord_08_exp_fp64, 1, "ord_08_exp_fp64", raw_exp_low, raw_exp_high, -1 }, */
-   /* { ord_09_exp_fp64, 1, "ord_09_exp_fp64", raw_exp_low, raw_exp_high, -1 }, */
-   /* { ord_10_exp_fp64, 1, "ord_10_exp_fp64", raw_exp_low, raw_exp_high, -1 }, */
-   /* { ord_11_exp_fp64, 1, "ord_11_exp_fp64", raw_exp_low, raw_exp_high, -1 }, */
-   /* { ord_12_exp_fp64, 1, "ord_12_exp_fp64", raw_exp_low, raw_exp_high, -1 }, */
-
-   /* { rord_01_exp_fp64, 1, "rord_01_exp_fp64", exp_low, exp_high, -1 }, */
-   /* { rord_02_exp_fp64, 1, "rord_02_exp_fp64", exp_low, exp_high, -1 }, */
-   /* { rord_03_exp_fp64, 1, "rord_03_exp_fp64", exp_low, exp_high, -1 }, */
-   /* { rord_04_exp_fp64, 1, "rord_04_exp_fp64", exp_low, exp_high, -1 }, */
-   /* { rord_05_exp_fp64, 1, "rord_05_exp_fp64", exp_low, exp_high, -1 }, */
-   /* { rord_06_exp_fp64, 1, "rord_06_exp_fp64", exp_low, exp_high, -1 }, */
-   /* { rord_07_exp_fp64, 1, "rord_07_exp_fp64", exp_low, exp_high, -1 }, */
-   /* { rord_08_exp_fp64, 1, "rord_08_exp_fp64", exp_low, exp_high, -1 }, */
-   /* { rord_09_exp_fp64, 1, "rord_09_exp_fp64", exp_low, exp_high, -1 }, */
-   /* { rord_10_exp_fp64, 1, "rord_10_exp_fp64", exp_low, exp_high, -1 }, */
-   /* { rord_11_exp_fp64, 1, "rord_11_exp_fp64", exp_low, exp_high, -1 }, */
-   /* { rord_12_exp_fp64, 1, "rord_12_exp_fp64", exp_low, exp_high, -1 }, */
 
    { ml2_raw_exp_1, 1, "ml2_raw_exp_1", raw_exp_low, raw_exp_high, -1 },
    { ml2_raw_exp_2, 1, "ml2_raw_exp_2", raw_exp_low, raw_exp_high, -1 },
@@ -105,45 +81,11 @@ entry ENTRIES[ENTRY_COUNT] = \
    { ml_exp_12, 1, "ml_exp_12", exp_low, exp_high, -1 },
 
 
+   { log_crlibm, 1, "log_crlibm", log_low, log_high, -1 },
+
    { log_glibc, 1, "log_glibc", log_low, log_high, -1 },
 
    { log_mpfr, 1, "log_mpfr", log_low, log_high, -1 },
-
-   /* { ord_01_log_fp64, 1, "ord_01_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_02_log_fp64, 1, "ord_02_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_03_log_fp64, 1, "ord_03_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_04_log_fp64, 1, "ord_04_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_05_log_fp64, 1, "ord_05_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_06_log_fp64, 1, "ord_06_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_07_log_fp64, 1, "ord_07_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_08_log_fp64, 1, "ord_08_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_09_log_fp64, 1, "ord_09_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_10_log_fp64, 1, "ord_10_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_11_log_fp64, 1, "ord_11_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_12_log_fp64, 1, "ord_12_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_13_log_fp64, 1, "ord_13_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_14_log_fp64, 1, "ord_14_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_15_log_fp64, 1, "ord_15_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_16_log_fp64, 1, "ord_16_log_fp64", raw_log_low, raw_log_high, -1 }, */
-   /* { ord_17_log_fp64, 1, "ord_17_log_fp64", raw_log_low, raw_log_high, -1 }, */
-
-   /* { rord_01_log_fp64, 1, "rord_01_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_02_log_fp64, 1, "rord_02_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_03_log_fp64, 1, "rord_03_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_04_log_fp64, 1, "rord_04_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_05_log_fp64, 1, "rord_05_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_06_log_fp64, 1, "rord_06_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_07_log_fp64, 1, "rord_07_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_08_log_fp64, 1, "rord_08_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_09_log_fp64, 1, "rord_09_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_10_log_fp64, 1, "rord_10_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_11_log_fp64, 1, "rord_11_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_12_log_fp64, 1, "rord_12_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_13_log_fp64, 1, "rord_13_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_14_log_fp64, 1, "rord_14_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_15_log_fp64, 1, "rord_15_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_16_log_fp64, 1, "rord_16_log_fp64", log_low, log_high, -1 }, */
-   /* { rord_17_log_fp64, 1, "rord_17_log_fp64", log_low, log_high, -1 }, */
 
    { ml2_raw_log_1, 1, "ml2_raw_log_1", raw_log_low, raw_log_high, -1 },
    { ml2_raw_log_2, 1, "ml2_raw_log_2", raw_log_low, raw_log_high, -1 },
@@ -197,31 +139,11 @@ entry ENTRIES[ENTRY_COUNT] = \
    { ml_log_16, 1, "ml_log_16", log_low, log_high, -1 },
 
 
+   { sin_crlibm, 1, "sin_crlibm", sin_low, sin_high, -1 },
+
    { sin_glibc, 1, "sin_glibc", sin_low, sin_high, -1 },
 
    { sin_mpfr, 1, "sin_mpfr", sin_low, sin_high, -1 },
-
-   /* { ord_01_sin_fp64, 1, "ord_01_sin_fp64", raw_sin_low, raw_sin_high, -1 }, */
-   /* { ord_03_sin_fp64, 1, "ord_03_sin_fp64", raw_sin_low, raw_sin_high, -1 }, */
-   /* { ord_05_sin_fp64, 1, "ord_05_sin_fp64", raw_sin_low, raw_sin_high, -1 }, */
-   /* { ord_07_sin_fp64, 1, "ord_07_sin_fp64", raw_sin_low, raw_sin_high, -1 }, */
-   /* { ord_09_sin_fp64, 1, "ord_09_sin_fp64", raw_sin_low, raw_sin_high, -1 }, */
-   /* { ord_11_sin_fp64, 1, "ord_11_sin_fp64", raw_sin_low, raw_sin_high, -1 }, */
-   /* { ord_13_sin_fp64, 1, "ord_13_sin_fp64", raw_sin_low, raw_sin_high, -1 }, */
-   /* { ord_15_sin_fp64, 1, "ord_15_sin_fp64", raw_sin_low, raw_sin_high, -1 }, */
-   /* { ord_17_sin_fp64, 1, "ord_17_sin_fp64", raw_sin_low, raw_sin_high, -1 }, */
-   /* { ord_19_sin_fp64, 1, "ord_19_sin_fp64", raw_sin_low, raw_sin_high, -1 }, */
-
-   /* { rord_01_sin_fp64, 1, "rord_01_sin_fp64", sin_low, sin_high, -1 }, */
-   /* { rord_03_sin_fp64, 1, "rord_03_sin_fp64", sin_low, sin_high, -1 }, */
-   /* { rord_05_sin_fp64, 1, "rord_05_sin_fp64", sin_low, sin_high, -1 }, */
-   /* { rord_07_sin_fp64, 1, "rord_07_sin_fp64", sin_low, sin_high, -1 }, */
-   /* { rord_09_sin_fp64, 1, "rord_09_sin_fp64", sin_low, sin_high, -1 }, */
-   /* { rord_11_sin_fp64, 1, "rord_11_sin_fp64", sin_low, sin_high, -1 }, */
-   /* { rord_13_sin_fp64, 1, "rord_13_sin_fp64", sin_low, sin_high, -1 }, */
-   /* { rord_15_sin_fp64, 1, "rord_15_sin_fp64", sin_low, sin_high, -1 }, */
-   /* { rord_17_sin_fp64, 1, "rord_17_sin_fp64", sin_low, sin_high, -1 }, */
-   /* { rord_19_sin_fp64, 1, "rord_19_sin_fp64", sin_low, sin_high, -1 }, */
 
    { ml2_raw_sin_1, 1, "ml2_raw_sin_1", raw_sin_low, raw_sin_high, -1 },
    { ml2_raw_sin_3, 1, "ml2_raw_sin_3", raw_sin_low, raw_sin_high, -1 },
@@ -252,41 +174,11 @@ entry ENTRIES[ENTRY_COUNT] = \
    { ml_sin_5, 1, "ml_sin_5", sin_low, sin_high, -1 },
 
 
+   { tan_crlibm, 1, "tan_crlibm", tan_low, tan_high, -1 },
+
    { tan_glibc, 1, "tan_glibc", tan_low, tan_high, -1 },
 
    { tan_mpfr, 1, "tan_mpfr", tan_low, tan_high, -1 },
-
-   /* { ord_01_tan_fp64, 1, "ord_01_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_03_tan_fp64, 1, "ord_03_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_05_tan_fp64, 1, "ord_05_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_07_tan_fp64, 1, "ord_07_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_09_tan_fp64, 1, "ord_09_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_11_tan_fp64, 1, "ord_11_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_13_tan_fp64, 1, "ord_13_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_15_tan_fp64, 1, "ord_15_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_17_tan_fp64, 1, "ord_17_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_19_tan_fp64, 1, "ord_19_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_21_tan_fp64, 1, "ord_21_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_23_tan_fp64, 1, "ord_23_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_25_tan_fp64, 1, "ord_25_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_27_tan_fp64, 1, "ord_27_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-   /* { ord_29_tan_fp64, 1, "ord_29_tan_fp64", raw_tan_low, raw_tan_high, -1 }, */
-
-   /* { rord_01_tan_fp64, 1, "rord_01_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_03_tan_fp64, 1, "rord_03_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_05_tan_fp64, 1, "rord_05_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_07_tan_fp64, 1, "rord_07_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_09_tan_fp64, 1, "rord_09_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_11_tan_fp64, 1, "rord_11_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_13_tan_fp64, 1, "rord_13_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_15_tan_fp64, 1, "rord_15_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_17_tan_fp64, 1, "rord_17_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_19_tan_fp64, 1, "rord_19_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_21_tan_fp64, 1, "rord_21_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_23_tan_fp64, 1, "rord_23_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_25_tan_fp64, 1, "rord_25_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_27_tan_fp64, 1, "rord_27_tan_fp64", tan_low, tan_high, -1 }, */
-   /* { rord_29_tan_fp64, 1, "rord_29_tan_fp64", tan_low, tan_high, -1 }, */
 
    { ml2_raw_tan_1, 1, "ml2_raw_tan_1", raw_tan_low, raw_tan_high, -1 },
    { ml2_raw_tan_3, 1, "ml2_raw_tan_3", raw_tan_low, raw_tan_high, -1 },
