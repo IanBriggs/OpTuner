@@ -10,7 +10,7 @@ jobs:
         os:
           - ubuntu-18.04
         ocaml-version:
-          - 4.11.0
+          - ocaml-base-compiler.4.11.0
         python-version:
           - 3.8
     runs-on: ${{ matrix.os }}
