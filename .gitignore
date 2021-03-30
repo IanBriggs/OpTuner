@@ -4,6 +4,10 @@ cost-measurement/glibc/
 cost-measurement/glibc_build/
 cost-measurement/glibc_install/
 cost-measurement/kerns/
+implementations/crlibm/obj/
+implementations/crlibm/requirements/crlibm/
+implementations/crlibm/requirements/debug_enironment.sh
+implementations/crlibm/requirements/log.txt
 implementations/glibc/glibc/
 implementations/glibc/glibc_build/
 implementations/glibc/glibc_install/
