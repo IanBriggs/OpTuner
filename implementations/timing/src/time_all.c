@@ -6,11 +6,12 @@
 #include "glibc_functions.h"
 #include "mpfr_functions.h"
 #include "metalibm_functions.h"
+#include "openlibm_functions.h"
 #include "vdt_functions.h"
 
 
 
-#define ENTRY_COUNT (150)
+#define ENTRY_COUNT (154)
 
 
 
@@ -41,6 +42,8 @@ entry ENTRIES[ENTRY_COUNT] = \
    { exp_glibc, 1, "exp_glibc", exp_low, exp_high, -1 },
 
    { exp_mpfr, 1, "exp_mpfr", exp_low, exp_high, -1 },
+
+   { exp_openlibm, 1, "exp_openlibm", exp_low, exp_high, -1 },
 
    { exp_vdt, 1, "exp_vdt", exp_low, exp_high, -1 },
 
@@ -88,6 +91,8 @@ entry ENTRIES[ENTRY_COUNT] = \
    { log_glibc, 1, "log_glibc", log_low, log_high, -1 },
 
    { log_mpfr, 1, "log_mpfr", log_low, log_high, -1 },
+
+   { log_openlibm, 1, "log_openlibm", log_low, log_high, -1 },
 
    { log_vdt, 1, "log_vdt", log_low, log_high, -1 },
 
@@ -149,6 +154,8 @@ entry ENTRIES[ENTRY_COUNT] = \
 
    { sin_mpfr, 1, "sin_mpfr", sin_low, sin_high, -1 },
 
+   { sin_openlibm, 1, "sin_openlibm", sin_low, sin_high, -1 },
+
    { sin_vdt, 1, "sin_vdt", sin_low, sin_high, -1 },
 
    { ml2_raw_sin_1, 1, "ml2_raw_sin_1", raw_sin_low, raw_sin_high, -1 },
@@ -185,6 +192,8 @@ entry ENTRIES[ENTRY_COUNT] = \
    { tan_glibc, 1, "tan_glibc", tan_low, tan_high, -1 },
 
    { tan_mpfr, 1, "tan_mpfr", tan_low, tan_high, -1 },
+
+   { tan_openlibm, 1, "tan_openlibm", tan_low, tan_high, -1 },
 
    { tan_vdt, 1, "tan_vdt", tan_low, tan_high, -1 },
 
