@@ -4,6 +4,7 @@
 #include "glibc_functions.h"
 #include "metalibm_functions.h"
 #include "mpfr_functions.h"
+#include "openlibm_functions.h"
 #include "vdt_functions.h"
 
 #include "oracle_functions.h"
@@ -13,7 +14,7 @@
 #include <stdlib.h>
 
 
-#define ENTRY_COUNT (17)
+#define ENTRY_COUNT (18)
 
 entry ENTRIES[ENTRY_COUNT] = {
                               {ml2_tan_1, "ml2_tan_1"},
@@ -33,6 +34,8 @@ entry ENTRIES[ENTRY_COUNT] = {
                               {tan_glibc, "tan_glibc"},
 
                               {tan_crlibm, "tan_crlibm"},
+
+                              {tan_openlibm, "tan_openlibm"},
 
                               {tan_vdt, "tan_vdt"},
 
