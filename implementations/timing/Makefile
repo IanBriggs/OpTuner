@@ -14,11 +14,14 @@ METALIBM_I = ../metalibm/include
 MPFR_O = ../mpfr/obj/mpfr_functions.o
 MPFR_I = ../mpfr/include
 
+VDT_O = ../vdt/obj/vdt_functions.a
+VDT_I = ../vdt/include
 
 
 
-OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O}
-INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I}
+
+OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O} ${VDT_O}
+INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I} -I${VDT_I}
 
 
 CFILES = $(filter-out src/time_all.c,$(wildcard src/*.c))
@@ -57,6 +60,8 @@ ${GLIBC_O}:
 ${MPFR_O}:
 	$(MAKE) -C ../mpfr
 
+${VDT_O}:
+	$(MAKE) -C ../vdt
 
 
 bin:

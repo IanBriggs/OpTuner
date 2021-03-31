@@ -25,6 +25,11 @@ implementations/timing/json/
 implementations/timing/kern/
 implementations/timing/kern_main/
 implementations/timing/obj/
+implementations/vdt/obj/
+implementations/vdt/requirements/debug_enironment.sh
+implementations/vdt/requirements/log.txt
+implementations/vdt/requirements/vdt/
+implementations/vdt/requirements/vdt_src/
 requirements/FPTaylor/
 requirements/debug_enironment.sh
 requirements/gelpia/
