@@ -4,6 +4,8 @@
 #include "glibc_functions.h"
 #include "metalibm_functions.h"
 #include "mpfr_functions.h"
+#include "vdt_functions.h"
+
 #include "oracle_functions.h"
 #include "table_generation.h"
 
@@ -11,7 +13,7 @@
 #include <stdlib.h>
 
 
-#define ENTRY_COUNT (35)
+#define ENTRY_COUNT (36)
 
 entry ENTRIES[ENTRY_COUNT] = {
                               {ml2_log_1, "ml2_log_1"},
@@ -49,6 +51,8 @@ entry ENTRIES[ENTRY_COUNT] = {
                               {ml_log_16, "ml_log_16"},
 
                               {log_crlibm, "log_crlibm"},
+
+                              {log_vdt, "log_vdt"},
 
                               {log_glibc, "log_glibc"},
 

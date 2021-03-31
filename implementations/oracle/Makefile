@@ -16,14 +16,18 @@ METALIBM_I = ../metalibm/include
 MPFR_O = ../mpfr/obj/mpfr_functions.o
 MPFR_I = ../mpfr/include
 
+VDT_O = ../vdt/obj/vdt_functions.a
+VDT_I = ../vdt/include/
+
+
 ORACLE_O = obj/oracle_functions.o
 ORACLE_I = include
 
 TABLE_O = obj/table_generation.o
 TABLE_I = include
 
-OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O} ${ORACLE_O} ${TABLE_O}
-INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I} -I${ORACLE_I} -I${TABLE_I}
+OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O} ${ORACLE_O} ${TABLE_O} ${VDT_O}
+INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I} -I${ORACLE_I} -I${TABLE_I} -I${VDT_I}
 
 
 BINS = $(foreach s,$(wildcard src/*_error.c),$(patsubst src/%_error.c,bin/%_error,$s))
@@ -48,6 +52,10 @@ ${METALIBM_O}:
 
 ${MPFR_O}:
 	$(MAKE) -C ../mpfr
+
+${VDT_O}:
+	$(MAKE) -C ../vdt
+
 
 ${ORACLE_O}: src/oracle_functions.c include/oracle_functions.h | obj
 	$(CC) ${CFLAGS} $< -c -o $@

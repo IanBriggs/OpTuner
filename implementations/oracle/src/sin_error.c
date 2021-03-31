@@ -4,6 +4,8 @@
 #include "glibc_functions.h"
 #include "metalibm_functions.h"
 #include "mpfr_functions.h"
+#include "vdt_functions.h"
+
 #include "oracle_functions.h"
 #include "table_generation.h"
 
@@ -11,7 +13,7 @@
 #include <stdlib.h>
 
 
-#define ENTRY_COUNT (18)
+#define ENTRY_COUNT (19)
 
 entry ENTRIES[ENTRY_COUNT] = {
                               {ml2_sin_1, "ml2_sin_1"},
@@ -32,6 +34,8 @@ entry ENTRIES[ENTRY_COUNT] = {
                               {ml_sin_5, "ml_sin_5"},
 
                               {sin_crlibm, "sin_crlibm"},
+
+                              {sin_vdt, "sin_vdt"},
 
                               {sin_glibc, "sin_glibc"},
 
