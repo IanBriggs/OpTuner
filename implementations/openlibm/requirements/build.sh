@@ -24,11 +24,9 @@ function finish {
 trap finish EXIT
 
 
-
-
 # OpenLibm
 echo "Installing OpenLibm"
-if [ -f "${SCRIPT_LOCATION}/openlibm/done_openlibm" ]; then
+if [ -f "${SCRIPT_LOCATION}/openlibm/lib/libopenlibm.a" ]; then
     echo "  OpenLibm already installed"
 else
     cd "${SCRIPT_LOCATION}"
@@ -42,20 +40,12 @@ else
     echo "  Building"
     cd "${SCRIPT_LOCATION}/openlibm_src"
     make &>> "${LOG}"
+
+    echo "  Installing"
     make prefix="${SCRIPT_LOCATION}/openlibm" install &>> "${LOG}"
 
     echo "  Done"
-    cd "${SCRIPT_LOCATION}/openlibm"
-    touch done_openlibm
 fi
-
-
-# Debug enviroment source file
-cd "${SCRIPT_LOCATION}"
-rm -f debug_enironment.sh
-echo "export LIBRARY_PATH=${SCRIPT_LOCATION}/openlibm/lib:\${LIBRARY_PATH}" >> debug_enironment.sh
-echo "export C_INCLUDE_PATH=${SCRIPT_LOCATION}/openlibm/include:\${C_INCLUDE_PATH}" >> debug_enironment.sh
-echo "export CPLUS_INCLUDE_PATH=${SCRIPT_LOCATION}/openlibm/include:\${CPLUS_INCLUDE_PATH}" >> debug_enironment.sh
 
 
 # Done

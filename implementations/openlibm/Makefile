@@ -2,11 +2,12 @@
 
 CC ?= gcc
 
-CFLAGS ?= -Wall -Wextra -Wconversion -O3 -march=native -mtune=native -DNDEBUG
-CFLAGS += -Wno-sign-conversion -Wno-conversion
+CFLAGS ?= -Wall -Wextra -Wconversion
+CFLAGS += -O3 -march=native -mtune=native -DNDEBUG
+CFLAGS += -Iinclude
+
 CFLAGS += -Irequirements/openlibm/include
 CFLAGS += -Irequirements/openlibm/include/openlibm
-CFLAGS += -Iinclude
 
 
 .PHONY: all
@@ -26,6 +27,7 @@ requirements/openlibm/lib/libopenlibm.a: requirements/build.sh
 
 
 
+
 obj:
 	mkdir obj
 
@@ -33,11 +35,17 @@ obj:
 .PHONY: clean
 clean:
 	$(RM) -r obj
+
+
+.PHONY: slim
+slim:
 	$(RM) -r requirements/openlibm_src
 
+
 .PHONY: distclean
-distclean: clean
+distclean: clean slim
+	$(RM) requirements/log.txt
+	$(RM) requirements/debug_enironment.sh
 	$(RM) -r requirements/openlibm
-	$(RM) -r requirements/log.txt
-	$(RM) -r requirements/debug_enironment.sh
+
 
