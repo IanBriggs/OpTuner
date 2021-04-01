@@ -42,7 +42,7 @@ slim:
 
 
 .PHONY: distclean
-distclean: clean
+distclean: clean slim
 	$(RM) requirements/log.txt
 	$(RM) requirements/debug_enironment.sh
 	$(RM) -r requirements/crlibm

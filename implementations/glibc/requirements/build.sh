@@ -49,7 +49,7 @@ else
     ../glibc/configure CFLAGS="-O3 -march=native -mtune=native -fno-builtin -DNDEBUG" --prefix="${SCRIPT_LOCATION}/glibc_install" &>> "${LOG}"
 
     echo "  Building"
-    make -j$(nproc) &>> "${LOG}"
+    make &>> "${LOG}"
 
     echo "  Installing"
     make install &>> "${LOG}"
