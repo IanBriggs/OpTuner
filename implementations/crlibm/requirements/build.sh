@@ -3,7 +3,7 @@
 
 set -e
 
-SCRIPT_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_LOCATION="$(readlink -f "$(dirname "${0}")")"
 
 LOG="${SCRIPT_LOCATION}/log.txt"
 rm -f "${LOG}"
@@ -24,11 +24,9 @@ function finish {
 trap finish EXIT
 
 
-
-
 # CRLibM
 echo "Installing CRLibM"
-if [ -f "${SCRIPT_LOCATION}/crlibm/done_crlibm" ]; then
+if [ -f "${SCRIPT_LOCATION}/crlibm/lib/libcrlibm.a" ]; then
     echo "  CRLibM already installed"
 else
     cd "${SCRIPT_LOCATION}"
@@ -48,20 +46,12 @@ else
 
     echo "  Building"
     make &>> "${LOG}"
+
+    echo "  Installing"
     make install &>> "${LOG}"
 
     echo "  Done"
-    cd "${SCRIPT_LOCATION}/crlibm"
-    touch done_crlibm
 fi
-
-
-# Debug enviroment source file
-cd "${SCRIPT_LOCATION}"
-rm -f debug_enironment.sh
-echo "export LIBRARY_PATH=${SCRIPT_LOCATION}/lib:\${LIBRARY_PATH}" >> debug_enironment.sh
-echo "export C_INCLUDE_PATH=${SCRIPT_LOCATION}/include:\${C_INCLUDE_PATH}" >> debug_enironment.sh
-echo "export CPLUS_INCLUDE_PATH=${SCRIPT_LOCATION}/include:\${CPLUS_INCLUDE_PATH}" >> debug_enironment.sh
 
 
 # Done

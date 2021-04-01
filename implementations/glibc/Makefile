@@ -18,7 +18,7 @@ obj/glibc_functions.a: obj/glibc_functions.o requirements/butchered_libm/libm.a
 
 
 obj/glibc_functions.o: src/glibc_functions.c include/glibc_functions.h requirements/butchered_libm/libm.a | obj
-	$(CC) -static ${CFLAGS} $< ${GLIBC_MATH} -c -o obj/glibc_functions.o
+	$(CC) -static ${CFLAGS} $< ${GLIBC_MATH} -c -o $@
 
 
 requirements/butchered_libm/libm.a: requirements/build.sh

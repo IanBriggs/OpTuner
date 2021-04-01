@@ -1,20 +1,6 @@
 {
-    "operation": "sin",
-    "cname": "sin_crlibm",
-    "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
-    "epsilon": 1.1102230246251565e-16,
-    "delta": 1.1102230246251565e-16
-}
-{
     "operation": "cos",
     "cname": "cos_crlibm",
-    "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
-    "epsilon": 1.1102230246251565e-16,
-    "delta": 1.1102230246251565e-16
-}
-{
-    "operation": "tan",
-    "cname": "tan_crlibm",
     "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
     "epsilon": 1.1102230246251565e-16,
     "delta": 1.1102230246251565e-16
@@ -34,23 +20,16 @@
     "delta": 1.1102230246251565e-16
 }
 {
-    "operation": "asin",
-    "cname": "asin_crlibm",
-    "domain": [-1.0, 1.0],
+    "operation": "sin",
+    "cname": "sin_crlibm",
+    "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
     "epsilon": 1.1102230246251565e-16,
     "delta": 1.1102230246251565e-16
 }
 {
-    "operation": "acos",
-    "cname": "acos_crlibm",
-    "domain": [-1.0, 1.0],
-    "epsilon": 1.1102230246251565e-16,
-    "delta": 1.1102230246251565e-16
-}
-{
-    "operation": "atan",
-    "cname": "atan_crlibm",
-    "domain": [-1.5707963267948966, 1.5707963267948966],
+    "operation": "tan",
+    "cname": "tan_crlibm",
+    "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
     "epsilon": 1.1102230246251565e-16,
     "delta": 1.1102230246251565e-16
 }

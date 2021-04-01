@@ -50,12 +50,17 @@ else
 
     echo "  Building"
     make -j$(nproc) &>> "${LOG}"
-    make install &>> "${LOG}"
 
+    echo "  Installing"
+    make install &>> "${LOG}"
     cd "${SCRIPT_LOCATION}"
     mkdir butchered_libm
     cp glibc_install/lib/libm* butchered_libm
+
+    echo "  Done"
 fi
 
+
+# Done
 SUCCESS=1
 
