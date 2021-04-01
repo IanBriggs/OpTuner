@@ -7,49 +7,54 @@
 
 
 
-double sin_glibc(double x)
-{
-  return sin(x);
-}
-
-
-double cos_glibc(double x)
-{
+double cos_glibc(double x) {
   return cos(x);
 }
 
 
-double tan_glibc(double x)
-{
-  return tan(x);
-}
-
-
-double exp_glibc(double x)
-{
+double exp_glibc(double x) {
   return exp(x);
 }
 
 
-double log_glibc(double x)
-{
+double log_glibc(double x) {
   return log(x);
 }
 
 
-double asin_glibc(double x)
-{
-  return asin(x);
+double sin_glibc(double x) {
+  return sin(x);
 }
 
 
-double acos_glibc(double x)
-{
-  return acos(x);
+double tan_glibc(double x) {
+  return tan(x);
 }
 
 
-double atan_glibc(double x)
-{
-  return atan(x);
+
+
+double cosf_glibc(double x) {
+  return (double) cosf((float) x);
 }
+
+
+double expf_glibc(double x) {
+  return (double) expf((float) x);
+}
+
+
+double logf_glibc(double x) {
+  return (double) logf((float) x);
+}
+
+
+double sinf_glibc(double x) {
+  return (double) sinf((float) x);
+}
+
+
+double tanf_glibc(double x) {
+  return (double) tanf((float) x);
+}
+

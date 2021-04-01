@@ -1,19 +1,29 @@
-CC=gcc
-CFLAGS=-Wall -Wextra -Wconversion -O3 -march=native -mtune=native -fno-builtin -DNDEBUG
 
-GLIBC_MATH = -L$(abspath ./glibc_install/butchered_libm) -lm -Wl,-rpath=$(abspath ./glibc_install/butchered_libm) -lm
+
+CC ?= gcc
+
+CFLAGS ?= -Wall -Wextra -Wconversion
+CFLAGS += -O3 -march=native -mtune=native -DNDEBUG
+CFLAGS += -Iinclude
+
+GLIBC_MATH = -L$(abspath ./requirements/butchered_libm) -lm -Wl,-rpath=$(abspath ./requirements/butchered_libm) -lm
 
 
 .PHONY: all
-all: obj/glibc_functions.o
+all: obj/glibc_functions.a
 
 
-obj/glibc_functions.o: glibc_install/butchered_libm/libm.a src/glibc_functions.c include/glibc_functions.h | obj
-	$(CC) -static ${CFLAGS} -Iinclude src/glibc_functions.c ${GLIBC_MATH} -c -o obj/glibc_functions.o
+obj/glibc_functions.a: obj/glibc_functions.o requirements/butchered_libm/libm.a
+	ld -r -o $@ $^
 
 
-glibc_install/butchered_libm/libm.a: compile-glibc.sh
-	./compile-glibc.sh
+obj/glibc_functions.o: src/glibc_functions.c include/glibc_functions.h requirements/butchered_libm/libm.a | obj
+	$(CC) -static ${CFLAGS} $< ${GLIBC_MATH} -c -o obj/glibc_functions.o
+
+
+requirements/butchered_libm/libm.a: requirements/build.sh
+	./$<
+
 
 
 
@@ -23,13 +33,19 @@ obj:
 
 .PHONY: clean
 clean:
-	$(RM) -r glibc
-	$(RM) -r glibc_build
 	$(RM) -r obj
+
+
+.PHONY: slim
+slim:
+	$(RM) -r requirements/glibc
+	$(RM) -r requirements/glibc_build
 
 
 .PHONY: distclean
-distclean: clean
-	$(RM) -r glibc_install
-	$(RM) -r obj
+distclean: clean slim
+	$(RM) requirements/log.txt
+	$(RM) requirements/debug_enironment.sh
+	$(RM) -r requirements/butchered_libm
+
 
