@@ -2,10 +2,12 @@
 
 CXX ?= g++
 
-CFLAGS ?= -Wall -Wextra -Wconversion -O3 -march=native -mtune=native -DNDEBUG
-CFLAGS += -Wno-float-conversion -Wno-conversion
-CFLAGS += -Irequirements/vdt/include
-CFLAGS += -Iinclude
+CXXFLAGS ?= -Wall -Wextra -Wconversion
+CXXFLAGS += -O3 -march=native -mtune=native -DNDEBUG
+CXXFLAGS += -Iinclude
+
+CXXFLAGS += -Wno-float-conversion -Wno-conversion
+CXXFLAGS += -Irequirements/vdt/include
 
 
 .PHONY: all
@@ -17,11 +19,12 @@ obj/vdt_functions.a: obj/vdt_functions.o requirements/vdt/lib/libvdt.a
 
 
 obj/vdt_functions.o: src/vdt_functions.cpp include/vdt_functions.h requirements/vdt/lib/libvdt.a | obj
-	$(CXX) -static ${CFLAGS} $<  -c -o $@
+	$(CXX) -static ${CXXFLAGS} $< -c -o $@
 
 
 requirements/vdt/lib/libvdt.a: requirements/build.sh
 	./$<
+
 
 
 
@@ -32,11 +35,17 @@ obj:
 .PHONY: clean
 clean:
 	$(RM) -r obj
+
+
+.PHONY: slim
+slim:
 	$(RM) -r requirements/vdt_src
 
+
 .PHONY: distclean
-distclean: clean
+distclean: clean slim
+	$(RM) requirements/log.txt
+	$(RM) requirements/debug_enironment.sh
 	$(RM) -r requirements/vdt
-	$(RM) -r requirements/log.txt
-	$(RM) -r requirements/debug_enironment.sh
+
 
