@@ -39,6 +39,9 @@ else
 
     echo "  Building"
     cd "${SCRIPT_LOCATION}/rlibm_src"
+    sed -i "s|#include <cstdint>|//#include <cstdint>|g" "${SCRIPT_LOCATION}/rlibm_src/include/float_math.h"
+    sed -i "s|#pragma once|#pragma once\n#ifdef __cplusplus\nextern \"C\" {\n#endif|g" "${SCRIPT_LOCATION}/rlibm_src/include/float_math.h"
+    echo -e "#ifdef __cplusplus\n}\n#endif" >> "${SCRIPT_LOCATION}/rlibm_src/include/float_math.h"
     make floatmlib &>> "${LOG}"
 
     echo "  Installing"
@@ -47,7 +50,7 @@ else
     cp -r lib "${SCRIPT_LOCATION}/rlibm/"
     mkdir "${SCRIPT_LOCATION}/rlibm/include"
     cp include/float_math.h "${SCRIPT_LOCATION}/rlibm/include"
-    sed -i "s|#include <cstdint>|//#include <cstdint>|g" "${SCRIPT_LOCATION}/rlibm/include/float_math.h"
+
 
     echo "  Done"
 fi

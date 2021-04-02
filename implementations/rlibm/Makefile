@@ -1,14 +1,13 @@
 
 
-CC ?= gcc
+CXX ?= g++
 
-CFLAGS ?= -Wall -Wextra -Wconversion
-CFLAGS += -O3 -march=native -mtune=native -DNDEBUG
-CFLAGS += -Iinclude
+CXXFLAGS ?= -Wall -Wextra -Wconversion
+CXXFLAGS += -O3 -march=native -mtune=native -DNDEBUG
+CXXFLAGS += -Iinclude
 
-CFLAGS += -Wno-sign-conversion -Wno-conversion
-CFLAGS += -Irequirements/rlibm/include
-CFLAGS += -Irequirements/rlibm/include/rlibm
+CXXFLAGS += -Irequirements/rlibm/include
+
 
 
 .PHONY: all
@@ -19,8 +18,8 @@ obj/rlibm_functions.a: obj/rlibm_functions.o requirements/rlibm/lib/floatMathLib
 	ld -r -o $@ $^
 
 
-obj/rlibm_functions.o: src/rlibm_functions.c include/rlibm_functions.h requirements/rlibm/lib/floatMathLib.a | obj
-	$(CC) -static ${CFLAGS} $<  -c -o $@
+obj/rlibm_functions.o: src/rlibm_functions.cpp include/rlibm_functions.h requirements/rlibm/lib/floatMathLib.a | obj
+	$(CXX) -static ${CXXFLAGS} $<  -c -o $@
 
 
 requirements/rlibm/lib/floatMathLib.a: requirements/build.sh

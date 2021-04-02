@@ -19,14 +19,17 @@ MPFR_I = ../mpfr/include
 OPENLIBM_O = ../openlibm/obj/openlibm_functions.a
 OPENLIBM_I = ../openlibm/include
 
+RLIBM_O = ../rlibm/obj/rlibm_functions.a
+RLIBM_I = ../rlibm/include
+
 VDT_O = ../vdt/obj/vdt_functions.a
 VDT_I = ../vdt/include
 
 
 
 
-OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O} ${OPENLIBM_O} ${VDT_O}
-INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I} -I${OPENLIBM_I} -I${VDT_I}
+OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O} ${OPENLIBM_O} ${RLIBM_O} ${VDT_O}
+INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I} -I${OPENLIBM_I} -I${RLIBM_I} -I${VDT_I}
 
 
 CFILES = $(filter-out src/time_all.c,$(wildcard src/*.c))
@@ -67,6 +70,9 @@ ${MPFR_O}:
 
 ${OPENLIBM_O}:
 	$(MAKE) -C ../openlibm
+
+${RLIBM_O}:
+	$(MAKE) -C ../rlibm
 
 ${VDT_O}:
 	$(MAKE) -C ../vdt

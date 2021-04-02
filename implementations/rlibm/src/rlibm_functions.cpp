@@ -2,7 +2,9 @@
 
 #include "rlibm_functions.h"
 
+extern "C" {
 #include "float_math.h"
+}
 
 
 

@@ -7,11 +7,12 @@
 #include "mpfr_functions.h"
 #include "metalibm_functions.h"
 #include "openlibm_functions.h"
+#include "rlibm_functions.h"
 #include "vdt_functions.h"
 
 
 
-#define ENTRY_COUNT (166)
+#define ENTRY_COUNT (168)
 
 
 
@@ -54,6 +55,7 @@ entry ENTRIES[ENTRY_COUNT] = \
    { exp_glibc, 1, "exp_glibc", exp_low, exp_high, -1 },
    { exp_mpfr, 1, "exp_mpfr", exp_low, exp_high, -1 },
    { exp_openlibm, 1, "exp_openlibm", exp_low, exp_high, -1 },
+   { expf_rlibm, 1, "expf_rlibm", exp_low, exp_high, -1 },
    { exp_vdt, 1, "exp_vdt", exp_low, exp_high, -1 },
 
    { ml2_raw_exp_1, 1, "ml2_raw_exp_1", raw_exp_low, raw_exp_high, -1 },
@@ -105,6 +107,7 @@ entry ENTRIES[ENTRY_COUNT] = \
    { log_glibc, 1, "log_glibc", log_low, log_high, -1 },
    { log_mpfr, 1, "log_mpfr", log_low, log_high, -1 },
    { log_openlibm, 1, "log_openlibm", log_low, log_high, -1 },
+   { logf_rlibm, 1, "logf_rlibm", log_low, log_high, -1 },
    { log_vdt, 1, "log_vdt", log_low, log_high, -1 },
 
    { ml2_raw_log_1, 1, "ml2_raw_log_1", raw_log_low, raw_log_high, -1 },
