@@ -37,6 +37,15 @@ else
     echo "  Cloning"
     git clone git@github.com:JuliaMath/openlibm.git openlibm_src &>> "${LOG}"
 
+    echo "  Renaming"
+    cd "${SCRIPT_LOCATION}/openlibm_src"
+    sed "s|__ieee754_rem_pio2f|__ieee754_rem_pio2f_openlibm|g" -i src/s_sinf.c
+    sed "s|__ieee754_rem_pio2f|__ieee754_rem_pio2f_openlibm|g" -i src/math_private.h
+    sed "s|__ieee754_rem_pio2f|__ieee754_rem_pio2f_openlibm|g" -i src/s_sincosf.c
+    sed "s|__ieee754_rem_pio2f|__ieee754_rem_pio2f_openlibm|g" -i src/s_tanf.c
+    sed "s|__ieee754_rem_pio2f|__ieee754_rem_pio2f_openlibm|g" -i src/s_cosf.c
+    sed "s|__ieee754_rem_pio2f|__ieee754_rem_pio2f_openlibm|g" -i src/e_rem_pio2f.c
+
     echo "  Building"
     cd "${SCRIPT_LOCATION}/openlibm_src"
     make &>> "${LOG}"

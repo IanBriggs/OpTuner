@@ -6,6 +6,7 @@ CFLAGS ?= -Wall -Wextra -Wconversion
 CFLAGS += -O3 -march=native -mtune=native -DNDEBUG
 CFLAGS += -Iinclude
 
+CFLAGS += -Wno-sign-conversion -Wno-conversion
 CFLAGS += -Irequirements/openlibm/include
 CFLAGS += -Irequirements/openlibm/include/openlibm
 

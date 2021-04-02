@@ -26,19 +26,19 @@ trap finish EXIT
 
 # GLibC
 echo "Installing GLibC libm"
-if [ -d "${SCRIPT_LOCATION}/butchered_libm/libm.a" ]; then
+if [ -d "${SCRIPT_LOCATION}/glibc/lib/libm.a" ]; then
     echo "GLibC libm already installed"
 else
     cd "${SCRIPT_LOCATION}"
 
     echo "  Cleaning build location"
-    rm -rf glibc glibc_build glibc_install
+    rm -rf glibc_src glibc_build glibc
 
     echo "  Cloning"
-    git clone git://sourceware.org/git/glibc.git &>> "${LOG}"
+    git clone git://sourceware.org/git/glibc.git glibc_src&>> "${LOG}"
 
     echo "  Selecting version to match system"
-    cd "${SCRIPT_LOCATION}/glibc"
+    cd "${SCRIPT_LOCATION}/glibc_src"
     VERSION=$(ldd --version | head -n 1 | grep "[0-9]\\.[0-9]*$" -o)
     git checkout "release/${VERSION}/master" &>> "${LOG}"
 
@@ -46,16 +46,13 @@ else
     cd "${SCRIPT_LOCATION}"
     mkdir -p glibc_build
     cd "${SCRIPT_LOCATION}/glibc_build"
-    ../glibc/configure CFLAGS="-O3 -march=native -mtune=native -fno-builtin -DNDEBUG" --prefix="${SCRIPT_LOCATION}/glibc_install" &>> "${LOG}"
+    ../glibc_src/configure CFLAGS="-O3 -march=native -mtune=native -fno-builtin -DNDEBUG" --prefix="${SCRIPT_LOCATION}/glibc" &>> "${LOG}"
 
     echo "  Building"
     make &>> "${LOG}"
 
     echo "  Installing"
     make install &>> "${LOG}"
-    cd "${SCRIPT_LOCATION}"
-    mkdir butchered_libm
-    cp glibc_install/lib/libm* butchered_libm
 
     echo "  Done"
 fi

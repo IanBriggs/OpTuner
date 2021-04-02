@@ -11,25 +11,33 @@
 
 
 
-#define ENTRY_COUNT (154)
+#define ENTRY_COUNT (166)
 
 
 
-double exp_low[1] = {-5.0};
-double exp_high[1] = {100.0};
+double expf_low[1] = {88.0};
+double expf_high[1] = {88.0};
+double exp_low[1] = {709.0};
+double exp_high[1] = {709.0};
 double raw_exp_low[1] = {0.0};
 double raw_exp_high[1] = {0.6931471805599453};
 
+double logf_low[1] = {0.0};
+double logf_high[1] = {100.0};
 double log_low[1] = {0.0};
 double log_high[1] = {100.0};
 double raw_log_low[1] = {0.5};
 double raw_log_high[1] = {1.0};
 
+double sinf_low[1] = {-100.0};
+double sinf_high[1] = {100.0};
 double sin_low[1] = {-100.0};
 double sin_high[1] = {100.0};
 double raw_sin_low[1] = {0.0};
 double raw_sin_high[1] = {1.5707963267948966};
 
+double tanf_low[1] = {-100.0};
+double tanf_high[1] = {100.0};
 double tan_low[1] = {-100.0};
 double tan_high[1] = {100.0};
 double raw_tan_low[1] = {0.0};
@@ -37,14 +45,15 @@ double raw_tan_high[1] = {0.7853981633974483};
 
 entry ENTRIES[ENTRY_COUNT] = \
   {
+
+   { expf_glibc, 1, "expf_glibc", expf_low, expf_high, -1 },
+   { expf_openlibm, 1, "expf_openlibm", expf_low, expf_high, -1 },
+   { expf_vdt, 1, "expf_vdt", expf_low, expf_high, -1 },
+
    { exp_crlibm, 1, "exp_crlibm", exp_low, exp_high, -1 },
-
    { exp_glibc, 1, "exp_glibc", exp_low, exp_high, -1 },
-
    { exp_mpfr, 1, "exp_mpfr", exp_low, exp_high, -1 },
-
    { exp_openlibm, 1, "exp_openlibm", exp_low, exp_high, -1 },
-
    { exp_vdt, 1, "exp_vdt", exp_low, exp_high, -1 },
 
    { ml2_raw_exp_1, 1, "ml2_raw_exp_1", raw_exp_low, raw_exp_high, -1 },
@@ -86,14 +95,16 @@ entry ENTRIES[ENTRY_COUNT] = \
    { ml_exp_12, 1, "ml_exp_12", exp_low, exp_high, -1 },
 
 
+
+
+   { logf_glibc, 1, "logf_glibc", logf_low, logf_high, -1 },
+   { logf_openlibm, 1, "logf_openlibm", logf_low, logf_high, -1 },
+   { logf_vdt, 1, "logf_vdt", logf_low, logf_high, -1 },
+
    { log_crlibm, 1, "log_crlibm", log_low, log_high, -1 },
-
    { log_glibc, 1, "log_glibc", log_low, log_high, -1 },
-
    { log_mpfr, 1, "log_mpfr", log_low, log_high, -1 },
-
    { log_openlibm, 1, "log_openlibm", log_low, log_high, -1 },
-
    { log_vdt, 1, "log_vdt", log_low, log_high, -1 },
 
    { ml2_raw_log_1, 1, "ml2_raw_log_1", raw_log_low, raw_log_high, -1 },
@@ -148,14 +159,16 @@ entry ENTRIES[ENTRY_COUNT] = \
    { ml_log_16, 1, "ml_log_16", log_low, log_high, -1 },
 
 
+
+
+   { sinf_glibc, 1, "sinf_glibc", sinf_low, sinf_high, -1 },
+   { sinf_openlibm, 1, "sinf_openlibm", sinf_low, sinf_high, -1 },
+   { sinf_vdt, 1, "sinf_vdt", sinf_low, sinf_high, -1 },
+
    { sin_crlibm, 1, "sin_crlibm", sin_low, sin_high, -1 },
-
    { sin_glibc, 1, "sin_glibc", sin_low, sin_high, -1 },
-
    { sin_mpfr, 1, "sin_mpfr", sin_low, sin_high, -1 },
-
    { sin_openlibm, 1, "sin_openlibm", sin_low, sin_high, -1 },
-
    { sin_vdt, 1, "sin_vdt", sin_low, sin_high, -1 },
 
    { ml2_raw_sin_1, 1, "ml2_raw_sin_1", raw_sin_low, raw_sin_high, -1 },
@@ -187,14 +200,16 @@ entry ENTRIES[ENTRY_COUNT] = \
    { ml_sin_5, 1, "ml_sin_5", sin_low, sin_high, -1 },
 
 
+
+
+   { tanf_glibc, 1, "tanf_glibc", tanf_low, tanf_high, -1 },
+   { tanf_openlibm, 1, "tanf_openlibm", tanf_low, tanf_high, -1 },
+   { tanf_vdt, 1, "tanf_vdt", tanf_low, tanf_high, -1 },
+
    { tan_crlibm, 1, "tan_crlibm", tan_low, tan_high, -1 },
-
    { tan_glibc, 1, "tan_glibc", tan_low, tan_high, -1 },
-
    { tan_mpfr, 1, "tan_mpfr", tan_low, tan_high, -1 },
-
    { tan_openlibm, 1, "tan_openlibm", tan_low, tan_high, -1 },
-
    { tan_vdt, 1, "tan_vdt", tan_low, tan_high, -1 },
 
    { ml2_raw_tan_1, 1, "ml2_raw_tan_1", raw_tan_low, raw_tan_high, -1 },

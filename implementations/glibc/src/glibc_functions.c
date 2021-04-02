@@ -7,11 +7,6 @@
 
 
 
-double cos_glibc(double x) {
-  return cos(x);
-}
-
-
 double exp_glibc(double x) {
   return exp(x);
 }
@@ -32,11 +27,6 @@ double tan_glibc(double x) {
 }
 
 
-
-
-double cosf_glibc(double x) {
-  return (double) cosf((float) x);
-}
 
 
 double expf_glibc(double x) {
