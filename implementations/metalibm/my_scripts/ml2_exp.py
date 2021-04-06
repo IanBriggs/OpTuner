@@ -44,6 +44,7 @@ class ML2_Exponential(ScalarUnaryFunction):
         super().__init__(args)
         self.poly_degree = args.poly_degree
         self.skip_reduction = args.skip_reduction
+        self.slivers = args.slivers
 
     @staticmethod
     def get_default_args(**kw):
@@ -324,14 +325,12 @@ class ML2_Exponential(ScalarUnaryFunction):
 
         if self.skip_reduction:
             starting_domain = sollya.Interval(0, n_log2)
-            slivers = 7
         else:
             reduction_k = 40
             starting_domain = sollya.Interval(-reduction_k*n_log2, reduction_k*n_log2)
-            slivers = 7
 
         # analyse each piece
-        in_domains = split_domain(starting_domain, slivers)
+        in_domains = split_domain(starting_domain, self.slivers)
         errors = list()
         for I in in_domains:
             if self.skip_reduction:
@@ -390,6 +389,7 @@ class ML2_Exponential(ScalarUnaryFunction):
 
 if __name__ == "__main__":
     arg_template = ML_NewArgTemplate(default_arg=ML2_Exponential.get_default_args())
+    arg_template.parser.add_argument("--slivers", type=int, default=4)
     arg_template.parser.add_argument("--poly-degree", type=int, default=1)
     arg_template.parser.add_argument("--skip-reduction", default=False,
                                      action="store_const", const=True)

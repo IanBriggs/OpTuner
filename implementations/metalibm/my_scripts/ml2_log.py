@@ -33,7 +33,7 @@ import fptaylor
 from utils import Logger, Timer
 
 import json
-Logger.set_log_level(Logger.NONE)
+Logger.set_log_level(Logger.LOW)
 
 
 
@@ -44,6 +44,7 @@ class ML2_Logarithm(ScalarUnaryFunction):
         super().__init__(args)
         self.poly_degree = args.poly_degree
         self.skip_reduction = args.skip_reduction
+        self.slivers = args.slivers
 
     @staticmethod
     def get_default_args(**kw):
@@ -111,11 +112,15 @@ class ML2_Logarithm(ScalarUnaryFunction):
 
         config = fptaylor.CHECK_CONFIG.copy()
         del config["--abs-error"]
-        config["--opt"] = "bb-eval"
+        config["--opt"] = "gelpia"
         config["--rel-error-threshold"] = "0.0"
         config["--intermediate-opt"] = "false"
         config["--uncertainty"] = "false"
         config["--opt-timeout"] = 100000 # log is returning inf
+        config["--opt-f-rel-tol"] = "1e0"
+        config["--opt-f-abs-tol"] = "0.0"
+        config["--opt-x-rel-tol"] = "0.0"
+        config["--opt-x-abs-tol"] = "0.0"
 
         def generate_fptaylor(x):
             x_low = sollya.inf(x)
@@ -238,7 +243,6 @@ class ML2_Logarithm(ScalarUnaryFunction):
                 rel_err = rnd_rel_err + algo_rel_err
 
             abs_err = rnd_abs_err + algo_abs_err
-
             return rel_err, abs_err
 
         def split_domain(starting_domain, slivers):
@@ -293,14 +297,12 @@ class ML2_Logarithm(ScalarUnaryFunction):
 
         if self.skip_reduction:
             starting_domain = sollya.Interval(0.5, 1.0)
-            slivers = 8
         else:
             reduction_e = 12
             starting_domain = sollya.Interval(2**(-reduction_e), 2**reduction_e)
-            slivers = 8
 
         # analyse each piece
-        in_domains = split_domain(starting_domain, slivers)
+        in_domains = split_domain(starting_domain, self.slivers)
         errors = list()
         for I in in_domains:
             if self.skip_reduction:
@@ -356,6 +358,7 @@ class ML2_Logarithm(ScalarUnaryFunction):
 
 if __name__ == "__main__":
     arg_template = ML_NewArgTemplate(default_arg=ML2_Logarithm.get_default_args())
+    arg_template.parser.add_argument("--slivers", type=int, default=4)
     arg_template.parser.add_argument("--poly-degree", type=int, default=1)
     arg_template.parser.add_argument("--skip-reduction", default=False,
                                      action="store_const", const=True)
