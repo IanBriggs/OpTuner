@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 ###############################################################################
@@ -41,7 +40,8 @@ S2 = SollyaObject(2)
 from metalibm_core.core.ml_operations import (
     Test, RaiseReturn, Comparison, Statement, NearestInteger,
     ConditionBlock, Return, ClearException, ExponentInsertion,
-    Constant, Variable, Addition, Subtraction
+    Constant, Variable, Addition, Subtraction,
+    LogicalNot, LogicalOr,
 )
 from metalibm_core.core.ml_formats import (
     ML_Binary32, ML_Int32,
@@ -67,6 +67,7 @@ from metalibm_core.core.ml_complex_formats import ML_Mpfr_t
 from metalibm_core.core.special_values import (
     FP_QNaN, FP_PlusInfty, FP_PlusZero
 )
+from metalibm_core.core.simple_scalar_function import ScalarUnaryFunction
 
 from metalibm_core.utility.ml_template import ML_NewArgTemplate
 from metalibm_core.utility.log_report  import Log
@@ -74,15 +75,14 @@ from metalibm_core.utility.debug_utils import (
     debug_multi
 )
 from metalibm_core.utility.num_utils   import ulp
-from metalibm_core.utility.gappa_utils import is_gappa_installed
+import metalibm_core.utility.gappa_utils as gappa_utils
 
 
-class ML_Exponential(ML_FunctionBasis):
+class ML_Exponential(ScalarUnaryFunction):
     function_name = "ml_exp"
     def __init__(self, args=DefaultArgTemplate):
         # initializing base class
-        ML_FunctionBasis.__init__(self, args)
-        self.poly_degree = args.poly_degree
+        super().__init__(args)
 
     @staticmethod
     def get_default_args(**kw):
@@ -92,16 +92,13 @@ class ML_Exponential(ML_FunctionBasis):
             "output_file": "ml_exp.c",
             "function_name": "ml_exp",
             "precision": ML_Binary32,
-            #"accuracy": ML_Faithful,
-            "target": GenericProcessor()
+            "accuracy": ML_Faithful,
+            "target": GenericProcessor.get_target_instance()
         }
         default_args_exp.update(kw)
         return DefaultArgTemplate(**default_args_exp)
 
-    def generate_scheme(self):
-        # declaring target and instantiating optimization engine
-        vx = self.implementation.add_input_variable("x", self.precision)
-
+    def generate_scalar_scheme(self, vx):
         Log.set_dump_stdout(True)
 
         Log.report(Log.Info, "\033[33;1m generating implementation scheme \033[0m")
@@ -205,7 +202,7 @@ class ML_Exponential(ML_FunctionBasis):
         exact_hi_part.set_attributes(exact = True, tag = "exact_hi", debug = debug_multi, prevent_optimization = True)
         exact_lo_part = - k * log2_lo
         exact_lo_part.set_attributes(tag = "exact_lo", debug = debug_multi, prevent_optimization = True)
-        r =  exact_hi_part + exact_lo_part 
+        r =  exact_hi_part + exact_lo_part
         r.set_tag("r")
         r.set_attributes(debug = debug_multi)
 
@@ -229,10 +226,10 @@ class ML_Exponential(ML_FunctionBasis):
         }
 
         #try:
-        if is_gappa_installed():
+        if gappa_utils.is_gappa_installed():
             eval_error = self.gappa_engine.get_eval_error_v2(
                 self.opt_engine, opt_r, cg_eval_error_copy_map,
-                gappa_filename="red_arg.g")
+                gappa_filename=gappa_utils.generate_gappa_filename("red_arg.g"))
         else:
             eval_error = 0.0
             Log.report(Log.Warning, "gappa is not installed in this environnement")
@@ -241,25 +238,24 @@ class ML_Exponential(ML_FunctionBasis):
 
         local_ulp = sup(ulp(sollya.exp(approx_interval), self.precision))
         # FIXME refactor error_goal from accuracy
-        # Log.report(Log.Info, "accuracy: %s" % self.accuracy)
-        # if isinstance(self.accuracy, ML_Faithful):
-        #     error_goal = local_ulp
-        # elif isinstance(self.accuracy, ML_CorrectlyRounded):
-        #     error_goal = S2**-1 * local_ulp
-        # elif isinstance(self.accuracy, ML_DegradedAccuracyAbsolute):
-        #     error_goal = self.accuracy.goal
-        # elif isinstance(self.accuracy, ML_DegradedAccuracyRelative):
-        #     error_goal = self.accuracy.goal
-        # else:
-        #     Log.report(Log.Error, "unknown accuracy: %s" % self.accuracy)
+        Log.report(Log.Info, "accuracy: %s" % self.accuracy)
+        if isinstance(self.accuracy, ML_Faithful):
+            error_goal = local_ulp
+        elif isinstance(self.accuracy, ML_CorrectlyRounded):
+            error_goal = S2**-1 * local_ulp
+        elif isinstance(self.accuracy, ML_DegradedAccuracyAbsolute):
+            error_goal = self.accuracy.goal
+        elif isinstance(self.accuracy, ML_DegradedAccuracyRelative):
+            error_goal = self.accuracy.goal
+        else:
+            Log.report(Log.Error, "unknown accuracy: %s" % self.accuracy)
 
-            
 
         # error_goal = local_ulp #S2**-(self.precision.get_field_size()+1)
-        # error_goal_approx = S2**-1 * error_goal
+        error_goal_approx = S2**-1 * error_goal
 
         Log.report(Log.Info, "\033[33;1m building mathematical polynomial \033[0m\n")
-        poly_degree = self.poly_degree #max(sup(guessdegree(expm1(sollya.x)/sollya.x, approx_interval, error_goal_approx)) - 1, 2)
+        poly_degree = max(sup(guessdegree(expm1(sollya.x)/sollya.x, approx_interval, error_goal_approx)) - 1, 2)
         init_poly_degree = poly_degree
 
         error_function = lambda p, f, ai, mod, t: dirtyinfnorm(f - p, ai)
@@ -267,7 +263,9 @@ class ML_Exponential(ML_FunctionBasis):
         polynomial_scheme_builder = PolynomialSchemeEvaluator.generate_estrin_scheme
         #polynomial_scheme_builder = PolynomialSchemeEvaluator.generate_horner_scheme
 
-        while 1:
+        MAX_NUM_ITERATION = 20
+
+        for _ in range(MAX_NUM_ITERATION):
             Log.report(Log.Info, "attempting poly degree: %d" % poly_degree)
             precision_list = [1] + [self.precision] * (poly_degree)
             poly_object, poly_approx_error = Polynomial.build_from_approximation_with_error(expm1(sollya.x), poly_degree, precision_list, approx_interval, sollya.absolute, error_function = error_function)
@@ -317,9 +315,10 @@ class ML_Exponential(ML_FunctionBasis):
             }
 
 
-            if is_gappa_installed():
+            if gappa_utils.is_gappa_installed():
                 sub_poly_eval_error = -1.0
-                sub_poly_eval_error = self.gappa_engine.get_eval_error_v2(self.opt_engine, opt_sub_poly, sub_poly_error_copy_map, gappa_filename = "%s_gappa_sub_poly.g" % self.function_name)
+                gappa_sub_poly_filename = gappa_utils.generate_gappa_filename("{}_gappa_sub_poly.g".format(self.function_name))
+                sub_poly_eval_error = self.gappa_engine.get_eval_error_v2(self.opt_engine, opt_sub_poly, sub_poly_error_copy_map, gappa_filename =gappa_sub_poly_filename)
 
                 dichotomy_map = [
                     {
@@ -332,7 +331,8 @@ class ML_Exponential(ML_FunctionBasis):
                         exact_hi_part.get_handle().get_node(): approx_interval_split[2],
                     },
                 ]
-                poly_eval_error_dico = self.gappa_engine.get_eval_error_v3(self.opt_engine, opt_poly, poly_error_copy_map, gappa_filename = "gappa_poly.g", dichotomy = dichotomy_map)
+                gappa_poly_filename = gappa_utils.generate_gappa_filename("gappa_poly.g")
+                poly_eval_error_dico = self.gappa_engine.get_eval_error_v3(self.opt_engine, opt_poly, poly_error_copy_map, gappa_filename=gappa_poly_filename, dichotomy = dichotomy_map)
 
                 poly_eval_error = max([sup(abs(err)) for err in poly_eval_error_dico])
             else:
@@ -355,14 +355,13 @@ class ML_Exponential(ML_FunctionBasis):
                 if global_rel_poly_error == None or rel_poly_error > global_rel_poly_error:
                     global_rel_poly_error = rel_poly_error
                     global_poly_error = poly_error
-            # flag = error_goal > global_rel_poly_error
+            flag = error_goal > global_rel_poly_error
 
-            break
 
-            # if flag:
-            #     break
-            # else:
-            #     poly_degree += 1
+            if flag:
+                break
+            else:
+                poly_degree += 1
 
         late_overflow_test = Comparison(
             ik, self.precision.get_emax(),
@@ -383,7 +382,7 @@ class ML_Exponential(ML_FunctionBasis):
 
         late_underflow_test = Comparison(k, self.precision.get_emin_normal(), specifier = Comparison.LessOrEqual, likely=False, tag="late_underflow_test")
         underflow_exp_offset = 2 * self.precision.get_field_size()
-        corrected_exp = Addition( 
+        corrected_exp = Addition(
           ik,
           Constant(
             underflow_exp_offset,
@@ -401,7 +400,17 @@ class ML_Exponential(ML_FunctionBasis):
         #std_result = twok * ((1 + exact_hi_part * pre_poly) + exact_lo_part * pre_poly) 
         std_result = twok * poly
         std_result.set_attributes(tag = "std_result", debug = debug_multi)
-        result_scheme = ConditionBlock(late_overflow_test, late_overflow_return, ConditionBlock(late_underflow_test, late_underflow_return, Return(std_result, precision=self.precision)))
+        std_cond = LogicalNot(LogicalOr(late_overflow_test, late_underflow_test), likely=True)
+
+        result_scheme = ConditionBlock(
+            std_cond,
+            Return(std_result, precision=self.precision),
+            ConditionBlock(
+                late_overflow_test,
+                late_overflow_return,
+                late_underflow_return,
+            )
+        )
         std_return = ConditionBlock(early_overflow_test, early_overflow_return, ConditionBlock(early_underflow_test, early_underflow_return, result_scheme))
 
         # main scheme
@@ -409,7 +418,7 @@ class ML_Exponential(ML_FunctionBasis):
         scheme = ConditionBlock(
             test_nan_or_inf,
             Statement(
-                ClearException() if self.libm_compliant else Statement(), 
+                ClearException() if self.libm_compliant else Statement(),
                 specific_return
             ),
             std_return
@@ -417,32 +426,28 @@ class ML_Exponential(ML_FunctionBasis):
 
         return scheme
 
-    def generate_emulate(self, result_ternary, result, mpfr_x, mpfr_rnd):
-        """ generate the emulation code for ML_Log2 functions
-            mpfr_x is a mpfr_t variable which should have the right precision
-            mpfr_rnd is the rounding mode
-        """
-        emulate_func_name = "mpfr_exp"
-        emulate_func_op = FunctionOperator(emulate_func_name, arg_map = {0: FO_Arg(0), 1: FO_Arg(1), 2: FO_Arg(2)}, require_header = ["mpfr.h"]) 
-        emulate_func   = FunctionObject(emulate_func_name, [ML_Mpfr_t, ML_Mpfr_t, ML_Int32], ML_Int32, emulate_func_op)
-        mpfr_call = Statement(ReferenceAssign(result_ternary, emulate_func(result, mpfr_x, mpfr_rnd)))
-
-        return mpfr_call
-
     def numeric_emulate(self, input_value):
-        """ Numeric emaluation of exponential """
+        """ Numeric emulation of exponential """
         return sollya.exp(input_value)
 
-    standard_test_cases = [
-        (sollya.parse("0xbf50bc3a"),),
-        #(sollya.parse("-0.815372109413"),),
-    ]
+    @property
+    def standard_test_cases(self):
+        return [
+            (sollya.parse("0xbf50bc3a"),),
+            (sollya.parse("0x1.0p-126"),),
+            (sollya.parse("0x1.0p-127"),),
+            (sollya.parse("-0x1.fffffep126"),),
+            (sollya.parse("-infty"),),
+            (sollya.parse("infty"),),
+            (FP_QNaN(self.precision),),
+            # issue in generic newlib implementation
+            (sollya.parse("0x1.62e302p+6"),),
+        ]
 
 
 if __name__ == "__main__":
     # auto-test
     arg_template = ML_NewArgTemplate(default_arg=ML_Exponential.get_default_args())
-    arg_template.parser.add_argument("--poly-degree", type=int, default=2)
     # argument extraction
     args = arg_template.arg_extraction()
 

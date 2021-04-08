@@ -4,7 +4,6 @@
 *log.txt
 *obj
 *requirements/
-implementations/glibc/glibc/
-implementations/glibc/glibc_build/
-implementations/glibc/glibc_install/
 implementations/timing/json/
+implementations/metalibm/.mltmp/
+implementations/metalibm/src/ml_gen_done
