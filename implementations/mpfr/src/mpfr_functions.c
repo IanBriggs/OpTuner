@@ -10,6 +10,17 @@
 #define PREC (53)
 
 
+double cos_mpfr(double x)
+{
+  mpfr_t rx, frx;
+  mpfr_inits2(PREC, rx, frx, (mpfr_ptr) 0);
+  mpfr_set_d(rx, x, MPFR_RNDN);
+  mpfr_cos(frx, rx, MPFR_RNDN);
+  double fx = mpfr_get_d(frx, MPFR_RNDN);
+  mpfr_clears(rx, frx, (mpfr_ptr) 0);
+  return fx;
+}
+
 double exp_mpfr(double x)
 {
   mpfr_t rx, frx;
