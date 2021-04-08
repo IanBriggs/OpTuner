@@ -8,6 +8,11 @@
 
 
 
+double cos_vdt(double x) {
+  return vdt::fast_cos(x);
+}
+
+
 double exp_vdt(double x) {
   return vdt::fast_exp(x);
 }
@@ -28,6 +33,11 @@ double tan_vdt(double x) {
 }
 
 
+
+
+double cosf_vdt(double x) {
+  return (double) vdt::fast_cosf((float) x);
+}
 
 
 double expf_vdt(double x) {
