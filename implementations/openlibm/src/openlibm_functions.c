@@ -8,6 +8,10 @@
 
 
 
+double cos_openlibm(double x) {
+  return cos(x);
+}
+
 double exp_openlibm(double x) {
   return exp(x);
 }
@@ -29,6 +33,10 @@ double tan_openlibm(double x) {
 
 
 
+
+double cosf_openlibm(double x) {
+  return (double) cosf((float) x);
+}
 
 double expf_openlibm(double x) {
   return (double) expf((float) x);
