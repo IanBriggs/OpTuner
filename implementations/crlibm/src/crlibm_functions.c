@@ -7,6 +7,11 @@
 
 
 
+double cos_crlibm(double x) {
+  return cos_rn(x);
+}
+
+
 double exp_crlibm(double x) {
   return exp_rn(x);
 }
