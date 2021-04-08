@@ -8,7 +8,6 @@ extern "C" {
 
 double expf_rlibm(double x);
 double logf_rlibm(double x);
-double sinf_rlibm(double x);
 
 #ifdef __cplusplus
 }
