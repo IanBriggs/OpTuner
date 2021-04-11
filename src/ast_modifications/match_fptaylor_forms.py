@@ -34,7 +34,7 @@ def match_fptaylor_forms(self, result):
 
 @add_method(Atom)
 def match_fptaylor_forms(self, wrt, matching_dict):
-    keys = reversed(matching_dict.keys())
+    keys = reversed(list(matching_dict.keys()))
     for key in keys:
         if self == key[1]:
             val = matching_dict[key]
@@ -53,7 +53,7 @@ def match_fptaylor_forms(self, wrt, matching_dict):
 
 @add_method(Operation)
 def match_fptaylor_forms(self, wrt, matching_dict):
-    keys = reversed(matching_dict.keys())
+    keys = reversed(list(matching_dict.keys()))
     for key in keys:
         if self == key[1]:
             val = matching_dict[key]

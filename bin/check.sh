@@ -1,60 +1,113 @@
 #!/bin/bash
 
-set -e -x
+set -x
 
 export SCRIPT_LOCATION=$(readlink -f $(dirname $0))
 
-echo "Nightly not ready"
 
-# rm -rf ${SCRIPT_LOCATION}/../cost-measurement/kerns
-# rm -rf ${SCRIPT_LOCATION}/tmp
-# rm -rf ${SCRIPT_LOCATION}/log
+pushd () {
+    command pushd "$@" > /dev/null
+}
 
-# export check_date=$(date +%s)
+popd () {
+    command popd > /dev/null
+}
 
-# export OPTUNER="${SCRIPT_LOCATION}/optuner --nightly --cfile"
+rm -rf ${SCRIPT_LOCATION}/../implementations/timing/json
+rm -rf ${SCRIPT_LOCATION}/../implementations/timing/kern
+rm -rf ${SCRIPT_LOCATION}/../implementations/timing/kern_main
 
-# run ()
-# {
-#     \time -f %e ${OPTUNER} ${SCRIPT_LOCATION}/../benchmarks/$1 -v medium -e ${@:2} | tee -a ${check_date}/index.html
-#     echo -e "\n\n\n\n" >> ${check_date}/index.html
-# }
-# export -f run
+mkdir ${SCRIPT_LOCATION}/../implementations/timing/json
+mkdir ${SCRIPT_LOCATION}/../implementations/timing/kern
+mkdir ${SCRIPT_LOCATION}/../implementations/timing/kern_main
 
-# mkdir ${check_date}
-# cat <<EOF > ${check_date}/index.html
-# <!doctype html>
-# <title>Optuner Results for $(date +%Y-%m-%d)</title>
-# <body>
-# EOF
+export check_date=$(date +%s)
 
-# BINADES ()
-# {
-#     echo "128 16 2 0.25 0.03125 0.00390625 0.00048828125 6.103515625e-05 7.62939453125e-06 9.5367431640625e-07 1.1920928955078125e-07 1.4901161193847656e-08 1.862645149230957e-09 2.3283064365386963e-10 2.9103830456733704e-11 3.637978807091713e-12"
-# }
-# export -f BINADES
+run ()
+{
+    \time -f %e timeout 60m ${SCRIPT_LOCATION}/optuner ${SCRIPT_LOCATION}/../benchmarks/$1.fpcore --verbosity medium >& ${SCRIPT_LOCATION}/${check_date}/log_$1.txt
+    pushd ${SCRIPT_LOCATION}/../implementations/timing/
+    make
+    if [ -f ./bin/time_$1 ] ; then
+        ./bin/time_$1 > json/time_$1.json
+    fi
+    popd
+    cat <<EOF >> ${SCRIPT_LOCATION}/${check_date}/index.html
+<h1>$1</h1>
+<img src="time_$1.png">
+EOF
+    echo "$(tail ${SCRIPT_LOCATION}/${check_date}/log_$1.txt -n1) seconds runtime"
+}
+export -f run
 
-# if [ "$(hostname)" = "nimbus" ]; then
-#     bash ${SCRIPT_LOCATION}/runs.sh
-# else
-#     bash ${SCRIPT_LOCATION}/runs.sh
-# fi
 
-# pushd ${SCRIPT_LOCATION}/../cost-measurement/
-# python3 ${SCRIPT_LOCATION}/generate_aggregated_graph.py *.data
-# popd
-# echo "<h1>Aggregated Graph</h1>" >> ${check_date}/index.html
-# echo "<img src='aggregate.png'>" >> ${check_date}/index.html
+mkdir ${SCRIPT_LOCATION}/${check_date}
+cat <<EOF > ${SCRIPT_LOCATION}/${check_date}/index.html
+<!doctype html>
+<title>Optuner Results for $(date +%Y-%m-%d)</title>
+<body>
+<h1> Aggregate Graph </h1>
+<img src="aggregate.png">"
+EOF
 
-# cat <<EOF >> ${check_date}/index.html
-# </body>
-# EOF
+run Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A
+run Data_Number_Erf_dmerfcx_from_erf_2_0_0_0
+run Data_Random_Distribution_Normal_normalF_from_random_fu_0_2_6_2
+run Diagrams_ThreeD_Transform_aboutX_from_diagrams_lib_1_3_0_3_A
+run Diagrams_ThreeD_Transform_aboutX_from_diagrams_lib_1_3_0_3_B
+run Diagrams_ThreeD_Transform_aboutY_from_diagrams_lib_1_3_0_3
+run exp1x
+run hartman3
+run hartman6
+run i6
+run Linear_Quaternion_cexp_from_linear_1_19_1_3
+run logexp2
+run logexp
+run nmse_example_3_10
+run nmse_example_3_3
+run nmse_example_3_4
+run nmse_example_3_7 # broken
+run nmse_example_3_8
+run nmse_problem_3_3_2
+run nmse_problem_3_3_6
+run nmse_problem_3_3_7
+run nmse_problem_3_4_4
+run nmse_section_3_5
+run Numeric_SpecFunctions_invIncompleteBetaWorker_from_math_functions_0_1_5_2_B
+run Numeric_SpecFunctions_logBeta_from_math_functions_0_1_5_2_A
+run Numeric_SpecFunctions_logBeta_from_math_functions_0_1_5_2_B
+run Numeric_SpecFunctions_slogFactorial_from_math_functions_0_1_5_2_B
+run Numeric_SpecFunctions_stirlingError_from_math_functions_0_1_5_2
+run sphere
+run Statistics_Distribution_Beta_cdensity_from_math_functions_0_1_5_2
+run Statistics_Distribution_Binomial_directEntropy_from_math_functions_0_1_5_2
+run Statistics_Distribution_Poisson_clogProbability_from_math_functions_0_1_5_2
+run Statistics_Distribution_Poisson_Internal_probability_from_math_functions_0_1_5_2
 
-# mv ${SCRIPT_LOCATION}/../cost-measurement/*.png ${check_date}
-# mv ${SCRIPT_LOCATION}/../cost-measurement/*.data ${check_date}
+# long running
+run azimuth
+run Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
+
+# time out
+# run complex_sine_and_cosine
+# run Diagrams_TwoD_Path_Metafont_Internal_hobbyF_from_diagrams_contrib_1_3_0_5
+# run nmse_problem_3_4_2
+
+# no configurations
+# run exp1x_log
+# run nmse_section_3_11
+
+pushd ${SCRIPT_LOCATION}/../implementations/timing/
+./scripts/pink_graph.py json/*
+mv *.png ${SCRIPT_LOCATION}/${check_date}/
+
+
+cat <<EOF >> ${SCRIPT_LOCATION}/${check_date}/index.html
+</body>
+EOF
 
 # if [ "$(hostname)" = "warfa" ]; then
-#     scp -r ${check_date} uwplse.org:/var/www/optuner/
+#     scp -r ${SCRIPT_LOCATION}/${check_date} uwplse.org:/var/www/optuner/
 # fi
 
 # if command -v nightly-results &>/dev/null; then
