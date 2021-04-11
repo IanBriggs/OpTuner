@@ -433,9 +433,7 @@ def main(argv):
         h_name = "{}.h".format(fpc.name)
         c_name = "{}.c".format(fpc.name)
         time_c_name = "time_{}.c".format(fpc.name)
-        h_lines = ['#include "glibc_functions.h"',
-                   '#include "metalibm_functions.h"',
-                   '#include "mpfr_functions.h"',
+        h_lines = ['#include "all_functions.h"',
                    '\n',]
         c_lines = ['#include "{}"'.format(h_name),
                    '\n']
