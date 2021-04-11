@@ -65,6 +65,9 @@ ${CRLIBM_O}:
 ${GLIBC_O}:
 	$(MAKE) -C ../glibc
 
+${METALIBM_O}:
+	$(MAKE) -C ../metalibm
+
 ${MPFR_O}:
 	$(MAKE) -C ../mpfr
 
