@@ -106,11 +106,11 @@ cat <<EOF >> ${SCRIPT_LOCATION}/${check_date}/index.html
 </body>
 EOF
 
-# if [ "$(hostname)" = "warfa" ]; then
-#     scp -r ${SCRIPT_LOCATION}/${check_date} uwplse.org:/var/www/optuner/
-# fi
+if [ "$(hostname)" = "warfa" ]; then
+    scp -r ${SCRIPT_LOCATION}/${check_date} uwplse.org:/var/www/optuner/
+fi
 
-# if command -v nightly-results &>/dev/null; then
-#     nightly-results url https://optuner.uwplse.org/${check_date}/
-# fi
+if command -v nightly-results &>/dev/null; then
+    nightly-results url https://optuner.uwplse.org/${check_date}/
+fi
 
