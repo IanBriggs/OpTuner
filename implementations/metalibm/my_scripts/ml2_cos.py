@@ -66,11 +66,6 @@ class ML2_Cosinusoidal(ScalarUnaryFunction):
         if not self.skip_reduction:
             abs_x = Abs(x, tag="abs_x")
 
-            n_one = self.precision.round_sollya_object(1, sollya.RN)
-            one = Constant(n_one, precision=self.precision, tag="one")
-
-            sign_x = CopySign(one, x, tag="sign_x")
-
             n_invhpi = self.precision.round_sollya_object(2/sollya.pi, sollya.RN)
             invhpi = Constant(n_invhpi, tag="invhpi")
 
@@ -114,11 +109,11 @@ class ML2_Cosinusoidal(ScalarUnaryFunction):
         self.poly = poly
 
         if not self.skip_reduction:
-            post_bool = part >= 2
+            post_bool = LogicalOr(Equal(part, 1, tag="part_eq_1"), Equal(part, 2, tag="part_eq_2"))
 
             flipped_poly = Select(post_bool, -poly, poly)
 
-            retval = flipped_poly * sign_x
+            retval = flipped_poly
 
         else:
             retval = poly
@@ -206,11 +201,9 @@ class ML2_Cosinusoidal(ScalarUnaryFunction):
         def generate_reduction_fptaylor(x):
             # get sign and abs_x, must be the same at endpoints
             if sollya.sup(x) <= 0:
-                sign_x_expr = "-1.0"
                 abs_x_expr = "-x"
                 abs_x = -x
             elif sollya.inf(x) >= 0:
-                sign_x_expr = "1.0"
                 abs_x_expr = "x"
                 abs_x = x
             else:
@@ -236,7 +229,7 @@ class ML2_Cosinusoidal(ScalarUnaryFunction):
                 z_expr = "{} - r".format(n_hpi)
                 z = n_hpi - r
 
-            if part >= 2:
+            if part >= 1:
                 flipped_poly_expr = "-poly"
             else:
                 flipped_poly_expr = "poly"
@@ -253,7 +246,7 @@ class ML2_Cosinusoidal(ScalarUnaryFunction):
                  "  z rnd64= {};".format(z_expr),
                  "  poly rnd64= {};".format(poly_expr),
                  "  flipped_poly rnd64= {};".format(flipped_poly_expr),
-                 "  retval rnd64= flipped_poly*{};".format(sign_x_expr),
+                 "  retval rnd64= flipped_poly;",
                  "Expressions",
                  "  retval;"])
 
