@@ -2,7 +2,7 @@
 
 CC ?= gcc
 
-CFLAGS ?= -Wall -Wextra -Wconversion -O3 -march=native -mtune=native -fno-builtin -DNDEBUG
+CFLAGS ?= -Wall -Wextra -Wconversion -O3 -march=native -mtune=native -DNDEBUG
 CFLAGS += -Wno-float-conversion -Wno-sign-conversion -Wno-conversion
 CFLAGS += -Irequirements/metalibm/metalibm_core/support_lib
 CFLAGS += -Iinclude
@@ -43,7 +43,7 @@ obj/metalibm_functions.a:  ${OBJS} include/metalibm_functions.h
 	ar cr $@ ${OBJS}
 
 
-obj/%.o: src/%.c | obj
+obj/%.o: src/%.c requirements/metalibm/metalibm_core/support_lib/ml_support_lib.h | obj
 	$(CC) ${CFLAGS} $< -c -o $@
 
 
@@ -65,22 +65,22 @@ src/ml2_cos_%.c: my_scripts/ml2_cos.py | src
 	$(RM) $@.tmp
 
 src/ml2_exp_%.c: my_scripts/ml2_exp.py | src
-	$<  --output $@ --poly-degree $* --fname "ml2_exp_$*" --verbose Info | sed "s|^|//|g" > $@.tmp
+	$<  --output $@ --poly-degree $* --fname "ml2_exp_$*" --verbose Info ${ML2_FLAGS} | sed "s|^|//|g" > $@.tmp
 	cat $@.tmp >> $@
 	$(RM) $@.tmp
 
 src/ml2_log_%.c: my_scripts/ml2_log.py | src
-	$<  --output $@ --poly-degree $* --fname "ml2_log_$*" --verbose Info | sed "s|^|//|g" > $@.tmp
+	$<  --output $@ --poly-degree $* --fname "ml2_log_$*" --verbose Info ${ML2_FLAGS} | sed "s|^|//|g" > $@.tmp
 	cat $@.tmp >> $@
 	$(RM) $@.tmp
 
 src/ml2_sin_%.c: my_scripts/ml2_sin.py | src
-	$<  --output $@ --poly-degree $* --fname "ml2_sin_$*" --verbose Info | sed "s|^|//|g" > $@.tmp
+	$<  --output $@ --poly-degree $* --fname "ml2_sin_$*" --verbose Info ${ML2_FLAGS} | sed "s|^|//|g" > $@.tmp
 	cat $@.tmp >> $@
 	$(RM) $@.tmp
 
 src/ml2_tan_%.c: my_scripts/ml2_tan.py | src
-	$<  --output $@ --poly-degree $* --fname "ml2_tan_$*" --verbose Info | sed "s|^|//|g" > $@.tmp
+	$<  --output $@ --poly-degree $* --fname "ml2_tan_$*" --verbose Info ${ML2_FLAGS} | sed "s|^|//|g" > $@.tmp
 	cat $@.tmp >> $@
 	$(RM) $@.tmp
 
@@ -91,28 +91,32 @@ src/ml2_raw_cos_%.c: my_scripts/ml2_cos.py | src
 	$(RM) $@.tmp
 
 src/ml2_raw_exp_%.c: my_scripts/ml2_exp.py | src
-	$<  --output $@ --poly-degree $* --fname "ml2_raw_exp_$*" --verbose Info --skip-reduction | sed "s|^|//|g" > $@.tmp
+	$<  --output $@ --poly-degree $* --fname "ml2_raw_exp_$*" --verbose Info --skip-reduction ${ML2_FLAGS} | sed "s|^|//|g" > $@.tmp
 	cat $@.tmp >> $@
 	$(RM) $@.tmp
 
 src/ml2_raw_log_%.c: my_scripts/ml2_log.py | src
-	$<  --output $@ --poly-degree $* --fname "ml2_raw_log_$*" --verbose Info --skip-reduction | sed "s|^|//|g" > $@.tmp
+	$<  --output $@ --poly-degree $* --fname "ml2_raw_log_$*" --verbose Info --skip-reduction ${ML2_FLAGS} | sed "s|^|//|g" > $@.tmp
 	cat $@.tmp >> $@
 	$(RM) $@.tmp
 
 src/ml2_raw_sin_%.c: my_scripts/ml2_sin.py | src
-	$<  --output $@ --poly-degree $* --fname "ml2_raw_sin_$*" --verbose Info --skip-reduction | sed "s|^|//|g" > $@.tmp
+	$<  --output $@ --poly-degree $* --fname "ml2_raw_sin_$*" --verbose Info --skip-reduction ${ML2_FLAGS} | sed "s|^|//|g" > $@.tmp
 	cat $@.tmp >> $@
 	$(RM) $@.tmp
 
 src/ml2_raw_tan_%.c: my_scripts/ml2_tan.py | src
-	$<  --output $@ --poly-degree $* --fname "ml2_raw_tan_$*" --verbose Info --skip-reduction | sed "s|^|//|g" > $@.tmp
+	$<  --output $@ --poly-degree $* --fname "ml2_raw_tan_$*" --verbose Info --skip-reduction ${ML2_FLAGS} | sed "s|^|//|g" > $@.tmp
 	cat $@.tmp >> $@
 	$(RM) $@.tmp
 
 
 include/metalibm_functions.h: ${FUNCS} | include
 	cat ${FUNCS} | grep -o "double ml2\?_\(raw_\)\?[a-z]*_[0-9]*(double);" > $@
+
+requirements/metalibm/metalibm_core/support_lib/ml_support_lib.h: requirements/build.sh
+	./$<
+
 
 
 obj:
