@@ -36,7 +36,7 @@ run ()
 <h1>$1</h1>
 <img src="time_$1.png">
 EOF
-    echo "$(tail ${SCRIPT_LOCATION}/${check_date}/log_$1.txt -n1) seconds runtime"
+    echo "$(tail ${SCRIPT_LOCATION}/${check_date}/log_$1.txt -n1) seconds runtime" >> ${SCRIPT_LOCATION}/${check_date}/index.html
 }
 export -f run
 
