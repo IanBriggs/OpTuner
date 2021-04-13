@@ -6,9 +6,16 @@
 
 
 
-#define ENTRY_COUNT (168)
+#define ENTRY_COUNT (175)
 
 
+
+double cosf_low[1] = {-100.0};
+double cosf_high[1] = {100.0};
+double cos_low[1] = {-100.0};
+double cos_high[1] = {100.0};
+double raw_cos_low[1] = {0.0};
+double raw_cos_high[1] = {1.5707963267948966};
 
 double expf_low[1] = {-88.0};
 double expf_high[1] = {88.0};
@@ -40,6 +47,41 @@ double raw_tan_high[1] = {0.7853981633974483};
 
 entry ENTRIES[ENTRY_COUNT] = \
   {
+   { cosf_glibc, 1, "cosf_glibc", cosf_low, cosf_high, -1 },
+   { cosf_openlibm, 1, "cosf_openlibm", cosf_low, cosf_high, -1 },
+   { cosf_vdt, 1, "cosf_vdt", cosf_low, cosf_high, -1 },
+
+   { cos_crlibm, 1, "cos_crlibm", cos_low, cos_high, -1 },
+   { cos_glibc, 1, "cos_glibc", cos_low, cos_high, -1 },
+   { cos_mpfr, 1, "cos_mpfr", cos_low, cos_high, -1 },
+   { cos_openlibm, 1, "cos_openlibm", cos_low, cos_high, -1 },
+   { cos_vdt, 1, "cos_vdt", cos_low, cos_high, -1 },
+
+   { ml2_raw_cos_2, 1, "ml2_raw_cos_2", raw_cos_low, raw_cos_high, -1 },
+   { ml2_raw_cos_4, 1, "ml2_raw_cos_4", raw_cos_low, raw_cos_high, -1 },
+   { ml2_raw_cos_6, 1, "ml2_raw_cos_6", raw_cos_low, raw_cos_high, -1 },
+   { ml2_raw_cos_8, 1, "ml2_raw_cos_8", raw_cos_low, raw_cos_high, -1 },
+   { ml2_raw_cos_10, 1, "ml2_raw_cos_10", raw_cos_low, raw_cos_high, -1 },
+   { ml2_raw_cos_12, 1, "ml2_raw_cos_12", raw_cos_low, raw_cos_high, -1 },
+   { ml2_raw_cos_14, 1, "ml2_raw_cos_14", raw_cos_low, raw_cos_high, -1 },
+   { ml2_raw_cos_16, 1, "ml2_raw_cos_16", raw_cos_low, raw_cos_high, -1 },
+   { ml2_raw_cos_18, 1, "ml2_raw_cos_18", raw_cos_low, raw_cos_high, -1 },
+   { ml2_raw_cos_20, 1, "ml2_raw_cos_20", raw_cos_low, raw_cos_high, -1 },
+
+   { ml2_cos_2, 1, "ml2_cos_2", cos_low, cos_high, -1 },
+   { ml2_cos_4, 1, "ml2_cos_4", cos_low, cos_high, -1 },
+   { ml2_cos_6, 1, "ml2_cos_6", cos_low, cos_high, -1 },
+   { ml2_cos_8, 1, "ml2_cos_8", cos_low, cos_high, -1 },
+   { ml2_cos_10, 1, "ml2_cos_10", cos_low, cos_high, -1 },
+   { ml2_cos_12, 1, "ml2_cos_12", cos_low, cos_high, -1 },
+   { ml2_cos_14, 1, "ml2_cos_14", cos_low, cos_high, -1 },
+   { ml2_cos_16, 1, "ml2_cos_16", cos_low, cos_high, -1 },
+   { ml2_cos_18, 1, "ml2_cos_18", cos_low, cos_high, -1 },
+   { ml2_cos_20, 1, "ml2_cos_20", cos_low, cos_high, -1 },
+
+
+
+
 
    { expf_glibc, 1, "expf_glibc", expf_low, expf_high, -1 },
    { expf_openlibm, 1, "expf_openlibm", expf_low, expf_high, -1 },
@@ -138,23 +180,6 @@ entry ENTRIES[ENTRY_COUNT] = \
    { ml2_log_15, 1, "ml2_log_15", log_low, log_high, -1 },
    { ml2_log_16, 1, "ml2_log_16", log_low, log_high, -1 },
 
-   { ml_log_1, 1, "ml_log_1", log_low, log_high, -1 },
-   { ml_log_2, 1, "ml_log_2", log_low, log_high, -1 },
-   { ml_log_3, 1, "ml_log_3", log_low, log_high, -1 },
-   { ml_log_4, 1, "ml_log_4", log_low, log_high, -1 },
-   { ml_log_5, 1, "ml_log_5", log_low, log_high, -1 },
-   { ml_log_6, 1, "ml_log_6", log_low, log_high, -1 },
-   { ml_log_7, 1, "ml_log_7", log_low, log_high, -1 },
-   { ml_log_8, 1, "ml_log_8", log_low, log_high, -1 },
-   { ml_log_9, 1, "ml_log_9", log_low, log_high, -1 },
-   { ml_log_10, 1, "ml_log_10", log_low, log_high, -1 },
-   { ml_log_11, 1, "ml_log_11", log_low, log_high, -1 },
-   { ml_log_12, 1, "ml_log_12", log_low, log_high, -1 },
-   { ml_log_13, 1, "ml_log_13", log_low, log_high, -1 },
-   { ml_log_14, 1, "ml_log_14", log_low, log_high, -1 },
-   { ml_log_15, 1, "ml_log_15", log_low, log_high, -1 },
-   { ml_log_16, 1, "ml_log_16", log_low, log_high, -1 },
-
 
 
 
@@ -189,12 +214,6 @@ entry ENTRIES[ENTRY_COUNT] = \
    { ml2_sin_15, 1, "ml2_sin_15", sin_low, sin_high, -1 },
    { ml2_sin_17, 1, "ml2_sin_17", sin_low, sin_high, -1 },
    { ml2_sin_19, 1, "ml2_sin_19", sin_low, sin_high, -1 },
-
-   { ml_sin_1, 1, "ml_sin_1", sin_low, sin_high, -1 },
-   { ml_sin_2, 1, "ml_sin_2", sin_low, sin_high, -1 },
-   { ml_sin_3, 1, "ml_sin_3", sin_low, sin_high, -1 },
-   { ml_sin_4, 1, "ml_sin_4", sin_low, sin_high, -1 },
-   { ml_sin_5, 1, "ml_sin_5", sin_low, sin_high, -1 },
 
 
 
