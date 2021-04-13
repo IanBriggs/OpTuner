@@ -4,7 +4,6 @@ set -x
 
 export SCRIPT_LOCATION=$(readlink -f $(dirname $0))
 
-
 pushd () {
     command pushd "$@" > /dev/null
 }
@@ -66,7 +65,7 @@ run logexp
 run nmse_example_3_10
 run nmse_example_3_3
 run nmse_example_3_4
-run nmse_example_3_7 # broken
+run nmse_example_3_7
 run nmse_example_3_8
 run nmse_problem_3_3_2
 run nmse_problem_3_3_6
@@ -108,9 +107,9 @@ EOF
 
 if [ "$(hostname)" = "warfa" ]; then
     scp -r ${SCRIPT_LOCATION}/${check_date} uwplse.org:/var/www/optuner/
+    rm -r ${SCRIPT_LOCATION}/${check_date}
 fi
 
 if command -v nightly-results &>/dev/null; then
     nightly-results url https://optuner.uwplse.org/${check_date}/
 fi
-
