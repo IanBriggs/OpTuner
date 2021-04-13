@@ -2,13 +2,7 @@
 
 #include "time_func.h"
 
-#include "crlibm_functions.h"
-#include "glibc_functions.h"
-#include "mpfr_functions.h"
-#include "metalibm_functions.h"
-#include "openlibm_functions.h"
-#include "rlibm_functions.h"
-#include "vdt_functions.h"
+#include "all_functions.h"
 
 
 
@@ -16,9 +10,9 @@
 
 
 
-double expf_low[1] = {88.0};
+double expf_low[1] = {-88.0};
 double expf_high[1] = {88.0};
-double exp_low[1] = {709.0};
+double exp_low[1] = {-709.0};
 double exp_high[1] = {709.0};
 double raw_exp_low[1] = {0.0};
 double raw_exp_high[1] = {0.6931471805599453};
