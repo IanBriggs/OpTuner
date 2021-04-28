@@ -22,9 +22,9 @@ double ml2_cos_2(double x){
     double whole;
     double r;
     double flip;
-    int64_t ik;
-    int64_t part;
-    int64_t pre_part;
+    int32_t ik;
+    int32_t part;
+    int32_t pre_part;
     int do_flip;
     double tmp;
     double X2_;
@@ -43,15 +43,15 @@ double ml2_cos_2(double x){
     r = abs_x - whole;
     flip = 0x1.921fb54442d18p0 - r;
     ik = k;
-    part = ik % INT64_C(4);
-    pre_part = part % INT64_C(2);
-    do_flip = pre_part == INT64_C(0);
+    part = ik % INT32_C(4);
+    pre_part = part % INT32_C(2);
+    do_flip = pre_part == INT32_C(0);
     tmp = do_flip ? r : flip;
     X2_ = tmp * tmp;
     tmp1 = X2_ * -0x1.6d31b9a2c5bb5p-2;
     tmp2 = 0x1.c28a6aa3495b1p-1 + tmp1;
-    part_eq_1 = part == INT64_C(1);
-    part_eq_2 = part == INT64_C(2);
+    part_eq_1 = part == INT32_C(1);
+    part_eq_2 = part == INT32_C(2);
     tmp3 = part_eq_1 || part_eq_2;
     tmp4 =  - tmp2;
     tmp5 = tmp3 ? tmp4 : tmp2;
@@ -65,37 +65,37 @@ double ml2_cos_2(double x){
 //Info: CCodeGenerator initialized with language: <class 'metalibm_core.code_generation.code_constant.C_Code'>
 //Info: inserting sub-expr sharing pass
 //
-//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_std.PassSubExpressionSharing object at 0x7f874a5c47f0> at <class 'metalibm_core.core.passes.PassScheduler.Optimization'>
+//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_std.PassSubExpressionSharing object at 0x7f0da0d3a7c0> at <class 'metalibm_core.core.passes.PassScheduler.Optimization'>
 //Info: inserting instantiate abstract precision pass
 //
-//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_typing.PassInstantiateAbstractPrecision object at 0x7f874a5c4ac0> at <class 'metalibm_core.core.passes.PassScheduler.Typing'>
+//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_typing.PassInstantiateAbstractPrecision object at 0x7f0da0d3aa90> at <class 'metalibm_core.core.passes.PassScheduler.Typing'>
 //Info: inserting instantiate precision pass
 //
-//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_typing.PassInstantiatePrecision object at 0x7f874a5c4b80> at <class 'metalibm_core.core.passes.PassScheduler.Typing'>
+//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_typing.PassInstantiatePrecision object at 0x7f0da0d3ab50> at <class 'metalibm_core.core.passes.PassScheduler.Typing'>
 //Info: inserting target support check pass
 //
-//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_std.PassCheckProcessorSupport object at 0x7f874a5c4d60> at <class 'metalibm_core.core.passes.PassScheduler.JustBeforeCodeGen'>
+//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_std.PassCheckProcessorSupport object at 0x7f0da0d3ad30> at <class 'metalibm_core.core.passes.PassScheduler.JustBeforeCodeGen'>
 //Info: approx_interval: [-9.765625e-4;1.5717728892948965579989817342720925807952880859375]
 //Info: Applying <Start> stage passes
 //Info: Applying <Typing> stage passes
 //Info: executing pass: instantiate_abstract_prec
-//Info: executing pass instantiate_abstract_prec on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7f874a5d5b20>
+//Info: executing pass instantiate_abstract_prec on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7f0da0d4aaf0>
 //Info: executing pass instantiate_abstract_prec on fct ml2_cos_2
 //Info: executing pass: instantiate_prec
-//Info: executing pass instantiate_prec on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7f874a5d5b20>
+//Info: executing pass instantiate_prec on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7f0da0d4aaf0>
 //Info: executing pass instantiate_prec on fct ml2_cos_2
 //Info: Applying <Optimization> stage passes
 //Info: executing pass: sub_expr_sharing
-//Info: executing pass sub_expr_sharing on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7f874a5d5b20>
+//Info: executing pass sub_expr_sharing on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7f0da0d4aaf0>
 //Info: executing pass sub_expr_sharing on fct ml2_cos_2
 //Info: Applying <JustBeforeCodeGen> stage passes
 //Info: executing pass: check_processor_support
-//Info: executing pass check_processor_support on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7f874a5d5b20>
+//Info: executing pass check_processor_support on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7f0da0d4aaf0>
 //Info: executing pass check_processor_support on fct ml2_cos_2
 //Info: executing check-processor with target generic
 //Info: checking processor support: <class 'metalibm_core.code_generation.generic_processor.GenericProcessor'>
 //Info: executing pass: debug_tag_node
-//Info: executing pass debug_tag_node on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7f874a5d5b20>
+//Info: executing pass debug_tag_node on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7f0da0d4aaf0>
 //Info: executing pass debug_tag_node on fct ml2_cos_2
 //Info: Generating Source Code 
 //Info: Generating C_Code code in src/ml2_cos_2.c

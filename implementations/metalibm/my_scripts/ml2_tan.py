@@ -7,7 +7,7 @@ from metalibm_core.core.simple_scalar_function import ScalarUnaryFunction
 from metalibm_core.core.ml_function import DefaultArgTemplate
 from metalibm_core.utility.ml_template import ML_NewArgTemplate
 from metalibm_core.core.polynomials import PolynomialSchemeEvaluator, Polynomial
-from metalibm_core.core.ml_formats import ML_Binary64
+from metalibm_core.core.ml_formats import ML_Binary64, ML_Binary32
 
 from metalibm_core.core.ml_operations import *
 
@@ -84,9 +84,9 @@ class ML2_Tangential(ScalarUnaryFunction):
 
             r = Subtraction(abs_x, whole, tag="r")
 
-            ik = Conversion(k, precision=self.precision.get_integer_format(), tag="ik")
+            ik = Conversion(k, precision=ML_Binary32.get_integer_format(), tag="ik")
 
-            part = Modulo(ik, 4, precision=self.precision.get_integer_format(), tag="part")
+            part = Modulo(ik, 4, precision=ML_Binary32.get_integer_format(), tag="part")
 
             eq_1 = Equal(part, 1)
             eq_2 = Equal(part, 2)

@@ -6,7 +6,7 @@
 
 
 
-#define ENTRY_COUNT (175)
+#define ENTRY_COUNT (207)
 
 
 
@@ -16,6 +16,8 @@ double cos_low[1] = {-100.0};
 double cos_high[1] = {100.0};
 double raw_cos_low[1] = {0.0};
 double raw_cos_high[1] = {1.5707963267948966};
+double raw_wide_cos_low[1] = {-3.141592653589793};
+double raw_wide_cos_high[1] = {3.141592653589793};
 
 double expf_low[1] = {-88.0};
 double expf_high[1] = {88.0};
@@ -37,6 +39,8 @@ double sin_low[1] = {-100.0};
 double sin_high[1] = {100.0};
 double raw_sin_low[1] = {0.0};
 double raw_sin_high[1] = {1.5707963267948966};
+double raw_wide_sin_low[1] = {-3.141592653589793};
+double raw_wide_sin_high[1] = {3.141592653589793};
 
 double tanf_low[1] = {-100.0};
 double tanf_high[1] = {100.0};
@@ -68,6 +72,14 @@ entry ENTRIES[ENTRY_COUNT] = \
    { ml2_raw_cos_18, 1, "ml2_raw_cos_18", raw_cos_low, raw_cos_high, -1 },
    { ml2_raw_cos_20, 1, "ml2_raw_cos_20", raw_cos_low, raw_cos_high, -1 },
 
+   { ml2_raw_wide_cos_2, 1, "ml2_raw_wide_cos_2", raw_wide_cos_low, raw_wide_cos_high, -1 },
+   { ml2_raw_wide_cos_6, 1, "ml2_raw_wide_cos_6", raw_wide_cos_low, raw_wide_cos_high, -1 },
+   { ml2_raw_wide_cos_8, 1, "ml2_raw_wide_cos_8", raw_wide_cos_low, raw_wide_cos_high, -1 },
+   { ml2_raw_wide_cos_12, 1, "ml2_raw_wide_cos_12", raw_wide_cos_low, raw_wide_cos_high, -1 },
+   { ml2_raw_wide_cos_14, 1, "ml2_raw_wide_cos_14", raw_wide_cos_low, raw_wide_cos_high, -1 },
+   { ml2_raw_wide_cos_18, 1, "ml2_raw_wide_cos_18", raw_wide_cos_low, raw_wide_cos_high, -1 },
+   { ml2_raw_wide_cos_20, 1, "ml2_raw_wide_cos_20", raw_wide_cos_low, raw_wide_cos_high, -1 },
+
    { ml2_cos_2, 1, "ml2_cos_2", cos_low, cos_high, -1 },
    { ml2_cos_4, 1, "ml2_cos_4", cos_low, cos_high, -1 },
    { ml2_cos_6, 1, "ml2_cos_6", cos_low, cos_high, -1 },
@@ -78,6 +90,14 @@ entry ENTRIES[ENTRY_COUNT] = \
    { ml2_cos_16, 1, "ml2_cos_16", cos_low, cos_high, -1 },
    { ml2_cos_18, 1, "ml2_cos_18", cos_low, cos_high, -1 },
    { ml2_cos_20, 1, "ml2_cos_20", cos_low, cos_high, -1 },
+
+   { ml2_wide_cos_2, 1, "ml2_wide_cos_2", cos_low, cos_high, -1 },
+   { ml2_wide_cos_6, 1, "ml2_wide_cos_6", cos_low, cos_high, -1 },
+   { ml2_wide_cos_8, 1, "ml2_wide_cos_8", cos_low, cos_high, -1 },
+   { ml2_wide_cos_12, 1, "ml2_wide_cos_12", cos_low, cos_high, -1 },
+   { ml2_wide_cos_14, 1, "ml2_wide_cos_14", cos_low, cos_high, -1 },
+   { ml2_wide_cos_18, 1, "ml2_wide_cos_18", cos_low, cos_high, -1 },
+   { ml2_wide_cos_20, 1, "ml2_wide_cos_20", cos_low, cos_high, -1 },
 
 
 
@@ -204,6 +224,16 @@ entry ENTRIES[ENTRY_COUNT] = \
    { ml2_raw_sin_17, 1, "ml2_raw_sin_17", raw_sin_low, raw_sin_high, -1 },
    { ml2_raw_sin_19, 1, "ml2_raw_sin_19", raw_sin_low, raw_sin_high, -1 },
 
+   { ml2_raw_wide_sin_3, 1, "ml2_raw_wide_sin_3", raw_wide_sin_low, raw_wide_sin_high, -1 },
+   { ml2_raw_wide_sin_5, 1, "ml2_raw_wide_sin_5", raw_wide_sin_low, raw_wide_sin_high, -1 },
+   { ml2_raw_wide_sin_7, 1, "ml2_raw_wide_sin_7", raw_wide_sin_low, raw_wide_sin_high, -1 },
+   { ml2_raw_wide_sin_9, 1, "ml2_raw_wide_sin_9", raw_wide_sin_low, raw_wide_sin_high, -1 },
+   { ml2_raw_wide_sin_11, 1, "ml2_raw_wide_sin_11", raw_wide_sin_low, raw_wide_sin_high, -1 },
+   { ml2_raw_wide_sin_13, 1, "ml2_raw_wide_sin_13", raw_wide_sin_low, raw_wide_sin_high, -1 },
+   { ml2_raw_wide_sin_15, 1, "ml2_raw_wide_sin_15", raw_wide_sin_low, raw_wide_sin_high, -1 },
+   { ml2_raw_wide_sin_17, 1, "ml2_raw_wide_sin_17", raw_wide_sin_low, raw_wide_sin_high, -1 },
+   { ml2_raw_wide_sin_19, 1, "ml2_raw_wide_sin_19", raw_wide_sin_low, raw_wide_sin_high, -1 },
+
    { ml2_sin_1, 1, "ml2_sin_1", sin_low, sin_high, -1 },
    { ml2_sin_3, 1, "ml2_sin_3", sin_low, sin_high, -1 },
    { ml2_sin_5, 1, "ml2_sin_5", sin_low, sin_high, -1 },
@@ -214,6 +244,16 @@ entry ENTRIES[ENTRY_COUNT] = \
    { ml2_sin_15, 1, "ml2_sin_15", sin_low, sin_high, -1 },
    { ml2_sin_17, 1, "ml2_sin_17", sin_low, sin_high, -1 },
    { ml2_sin_19, 1, "ml2_sin_19", sin_low, sin_high, -1 },
+
+   { ml2_wide_sin_3, 1, "ml2_wide_sin_3", sin_low, sin_high, -1 },
+   { ml2_wide_sin_5, 1, "ml2_wide_sin_5", sin_low, sin_high, -1 },
+   { ml2_wide_sin_7, 1, "ml2_wide_sin_7", sin_low, sin_high, -1 },
+   { ml2_wide_sin_9, 1, "ml2_wide_sin_9", sin_low, sin_high, -1 },
+   { ml2_wide_sin_11, 1, "ml2_wide_sin_11", sin_low, sin_high, -1 },
+   { ml2_wide_sin_13, 1, "ml2_wide_sin_13", sin_low, sin_high, -1 },
+   { ml2_wide_sin_15, 1, "ml2_wide_sin_15", sin_low, sin_high, -1 },
+   { ml2_wide_sin_17, 1, "ml2_wide_sin_17", sin_low, sin_high, -1 },
+   { ml2_wide_sin_19, 1, "ml2_wide_sin_19", sin_low, sin_high, -1 },
 
 
 

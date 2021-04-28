@@ -46,40 +46,56 @@ double ml2_raw_sin_9(double x){
 //Info: CCodeGenerator initialized with language: <class 'metalibm_core.code_generation.code_constant.C_Code'>
 //Info: inserting sub-expr sharing pass
 //
-//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_std.PassSubExpressionSharing object at 0x7faf1fb5b7f0> at <class 'metalibm_core.core.passes.PassScheduler.Optimization'>
+//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_std.PassSubExpressionSharing object at 0x7fb0d959b760> at <class 'metalibm_core.core.passes.PassScheduler.Optimization'>
 //Info: inserting instantiate abstract precision pass
 //
-//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_typing.PassInstantiateAbstractPrecision object at 0x7faf1fb5bac0> at <class 'metalibm_core.core.passes.PassScheduler.Typing'>
+//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_typing.PassInstantiateAbstractPrecision object at 0x7fb0d959ba30> at <class 'metalibm_core.core.passes.PassScheduler.Typing'>
 //Info: inserting instantiate precision pass
 //
-//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_typing.PassInstantiatePrecision object at 0x7faf1fb5bb80> at <class 'metalibm_core.core.passes.PassScheduler.Typing'>
+//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_typing.PassInstantiatePrecision object at 0x7fb0d959baf0> at <class 'metalibm_core.core.passes.PassScheduler.Typing'>
 //Info: inserting target support check pass
 //
-//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_std.PassCheckProcessorSupport object at 0x7faf1fb5bd60> at <class 'metalibm_core.core.passes.PassScheduler.JustBeforeCodeGen'>
+//Info: PassScheduler: registering pass <metalibm_core.opt.p_function_std.PassCheckProcessorSupport object at 0x7fb0d959bcd0> at <class 'metalibm_core.core.passes.PassScheduler.JustBeforeCodeGen'>
 //Info: approx_interval: [-9.765625e-4;1.5717728892948965579989817342720925807952880859375]
 //Info: Applying <Start> stage passes
 //Info: Applying <Typing> stage passes
 //Info: executing pass: instantiate_abstract_prec
-//Info: executing pass instantiate_abstract_prec on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7faf1fb66df0>
+//Info: executing pass instantiate_abstract_prec on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7fb0d95a5d60>
 //Info: executing pass instantiate_abstract_prec on fct ml2_raw_sin_9
 //Info: executing pass: instantiate_prec
-//Info: executing pass instantiate_prec on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7faf1fb66df0>
+//Info: executing pass instantiate_prec on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7fb0d95a5d60>
 //Info: executing pass instantiate_prec on fct ml2_raw_sin_9
 //Info: Applying <Optimization> stage passes
 //Info: executing pass: sub_expr_sharing
-//Info: executing pass sub_expr_sharing on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7faf1fb66df0>
+//Info: executing pass sub_expr_sharing on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7fb0d95a5d60>
 //Info: executing pass sub_expr_sharing on fct ml2_raw_sin_9
 //Info: Applying <JustBeforeCodeGen> stage passes
 //Info: executing pass: check_processor_support
-//Info: executing pass check_processor_support on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7faf1fb66df0>
+//Info: executing pass check_processor_support on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7fb0d95a5d60>
 //Info: executing pass check_processor_support on fct ml2_raw_sin_9
 //Info: executing check-processor with target generic
 //Info: checking processor support: <class 'metalibm_core.code_generation.generic_processor.GenericProcessor'>
 //Info: executing pass: debug_tag_node
-//Info: executing pass debug_tag_node on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7faf1fb66df0>
+//Info: executing pass debug_tag_node on fct group <metalibm_core.code_generation.code_function.FunctionGroup object at 0x7fb0d95a5d60>
 //Info: executing pass debug_tag_node on fct ml2_raw_sin_9
 //Info: Generating Source Code 
 //Info: Generating C_Code code in src/ml2_raw_sin_9.c
+//-1.5707963267948963	-1.4726215563702154	5.335369514803837e-09	5.348372537658617e-09
+//-1.4726215563702154	-1.3744467859455343	4.458845418541985e-09	4.480419893571768e-09
+//-1.3744467859455343	-1.2762720155208533	5.141300747986875e-09	5.348372495188449e-09
+//-1.2762720155208533	-1.1780972450961722	5.053632764524567e-09	5.281032268771818e-09
+//-1.1780972450961722	-1.0799224746714913	2.24536080233473e-09	2.5459878377713497e-09
+//-1.0799224746714913	-0.9817477042468102	4.3052721309357586e-09	5.17790677741416e-09
+//-0.9817477042468102	-0.8835729338221292	4.367717773257521e-09	5.348372381517227e-09
+//-0.8835729338221292	-0.7853981633974482	3.604041947924967e-09	4.662345708626616e-09
+//-0.7853981633974482	-0.6872233929727671	1.2475449887570272e-09	1.8507400538045498e-09
+//-0.6872233929727671	-0.5890486225480861	2.527292069672184e-09	4.549005549359167e-09
+//-0.5890486225480861	-0.4908738521234051	2.6777961920208827e-09	5.3483724573182155e-09
+//-0.4908738521234051	-0.3926990816987241	2.5110822851440425e-09	5.326897940290948e-09
+//-0.3926990816987241	-0.29452431127404305	1.5422764691267049e-09	4.030162700778303e-09
+//-0.29452431127404305	-0.19634954084936204	3.7714130199266647e-10	1.933162540737858e-09
+//-0.19634954084936204	-0.09817477042468102	4.897346713196084e-10	4.4168196822475935e-09
+//-0.09817477042468102	0.0	4.329240148671733e-10	inf
 //0.0	0.09817477042468102	4.329240148671733e-10	inf
 //0.09817477042468102	0.19634954084936204	4.897346713196084e-10	4.4168196822475935e-09
 //0.19634954084936204	0.29452431127404305	3.7714130199266647e-10	1.933162540737858e-09
@@ -100,7 +116,7 @@ double ml2_raw_sin_9(double x){
 //spec:     "cname": "ml2_raw_sin_9",
 //spec:     "delta": 5.335369514803837e-09,
 //spec:     "domain": [
-//spec:         0.0,
+//spec:         -1.5707963267948966,
 //spec:         1.5707963267948966
 //spec:     ],
 //spec:     "epsilon": 1.8507400538045498e-09,

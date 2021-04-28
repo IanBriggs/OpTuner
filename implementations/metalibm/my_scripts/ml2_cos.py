@@ -7,7 +7,7 @@ from metalibm_core.core.simple_scalar_function import ScalarUnaryFunction
 from metalibm_core.core.ml_function import DefaultArgTemplate
 from metalibm_core.utility.ml_template import ML_NewArgTemplate
 from metalibm_core.core.polynomials import PolynomialSchemeEvaluator, Polynomial
-from metalibm_core.core.ml_formats import ML_Binary64
+from metalibm_core.core.ml_formats import ML_Binary64, ML_Binary32
 
 from metalibm_core.core.ml_operations import *
 
@@ -79,11 +79,11 @@ class ML2_Cosinusoidal(ScalarUnaryFunction):
 
             r = Subtraction(abs_x, whole, tag="r")
 
-            ik = Conversion(k, precision=self.precision.get_integer_format(), tag="ik")
+            ik = Conversion(k, precision=ML_Binary32.get_integer_format(), tag="ik")
 
-            part = Modulo(ik, 4, precision=self.precision.get_integer_format(), tag="part")
+            part = Modulo(ik, 4, precision=ML_Binary32.get_integer_format(), tag="part")
 
-            pre_part = Modulo(part, 2, precision=self.precision.get_integer_format(), tag="pre_part")
+            pre_part = Modulo(part, 2, precision=ML_Binary32.get_integer_format(), tag="pre_part")
 
             flip = Subtraction(hpi, r, tag="flip")
 
@@ -354,7 +354,7 @@ class ML2_Cosinusoidal(ScalarUnaryFunction):
             return in_domains
 
         if self.skip_reduction:
-            starting_domain = sollya.Interval(0, n_hpi)
+            starting_domain = sollya.Interval(-n_hpi, n_hpi)
         else:
             reduction_k = 40
             starting_domain = sollya.Interval(-reduction_k*n_hpi, reduction_k*n_hpi)
@@ -390,7 +390,7 @@ class ML2_Cosinusoidal(ScalarUnaryFunction):
             return d
 
         if self.skip_reduction:
-            d = generate_json(errors, sollya.Interval(0, n_hpi))
+            d = generate_json(errors, sollya.Interval(-n_hpi, n_hpi))
             json_str = json.dumps(d, sort_keys=True, indent=4)
             json_str = "spec: " + json_str.replace("\n", "\nspec: ")
             print(json_str)

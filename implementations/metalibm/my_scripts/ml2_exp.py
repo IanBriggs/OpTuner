@@ -7,7 +7,7 @@ from metalibm_core.core.simple_scalar_function import ScalarUnaryFunction
 from metalibm_core.core.ml_function import DefaultArgTemplate
 from metalibm_core.utility.ml_template import ML_NewArgTemplate
 from metalibm_core.core.polynomials import PolynomialSchemeEvaluator, Polynomial
-from metalibm_core.core.ml_formats import ML_Binary64
+from metalibm_core.core.ml_formats import ML_Binary64, ML_Binary32
 
 from metalibm_core.core.ml_operations import *
 
@@ -94,7 +94,7 @@ class ML2_Exponential(ScalarUnaryFunction):
         poly = schemer(poly_object, r)
 
         if not self.skip_reduction:
-            ik = Conversion(k, precision=self.precision.get_integer_format(), tag="ik")
+            ik = Conversion(k, precision=ML_Binary32.get_integer_format(), tag="ik")
 
             twok = ExponentInsertion(ik, precision=self.precision, tag="twok")
 
