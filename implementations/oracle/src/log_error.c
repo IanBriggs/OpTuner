@@ -14,7 +14,7 @@
 #include <stdlib.h>
 
 
-#define ENTRY_COUNT (37)
+#define ENTRY_COUNT (21)
 
 entry ENTRIES[ENTRY_COUNT] = {
                               {ml2_log_1, "ml2_log_1"},
@@ -33,23 +33,6 @@ entry ENTRIES[ENTRY_COUNT] = {
                               {ml2_log_14, "ml2_log_14"},
                               {ml2_log_15, "ml2_log_15"},
                               {ml2_log_16, "ml2_log_16"},
-
-                              {ml_log_1, "ml_log_1"},
-                              {ml_log_2, "ml_log_2"},
-                              {ml_log_3, "ml_log_3"},
-                              {ml_log_4, "ml_log_4"},
-                              {ml_log_5, "ml_log_5"},
-                              {ml_log_6, "ml_log_6"},
-                              {ml_log_7, "ml_log_7"},
-                              {ml_log_8, "ml_log_8"},
-                              {ml_log_9, "ml_log_9"},
-                              {ml_log_10, "ml_log_10"},
-                              {ml_log_11, "ml_log_11"},
-                              {ml_log_12, "ml_log_12"},
-                              {ml_log_13, "ml_log_13"},
-                              {ml_log_14, "ml_log_14"},
-                              {ml_log_15, "ml_log_15"},
-                              {ml_log_16, "ml_log_16"},
 
                               {log_crlibm, "log_crlibm"},
 

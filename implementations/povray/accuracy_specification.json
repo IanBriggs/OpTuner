@@ -1,0 +1,14 @@
+{
+    "operation": "sin",
+    "cname": "sin_povray",
+    "domain": [-3.141592653589793, 3.141592653589793],
+    "epsilon": 0.0,
+    "delta": 0.02473
+}
+{
+    "operation": "cos",
+    "cname": "cos_povray",
+    "domain": [-3.141592653589793, 3.141592653589793],
+    "epsilon": 0.0,
+    "delta": 0.02473
+}

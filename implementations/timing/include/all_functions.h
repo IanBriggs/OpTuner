@@ -9,6 +9,7 @@
 #include "mpfr_functions.h"
 #include "metalibm_functions.h"
 #include "openlibm_functions.h"
+#include "povray_functions.h"
 #include "rlibm_functions.h"
 #include "vdt_functions.h"
 

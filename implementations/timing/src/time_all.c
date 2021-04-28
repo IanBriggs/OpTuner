@@ -6,7 +6,7 @@
 
 
 
-#define ENTRY_COUNT (207)
+#define ENTRY_COUNT (209)
 
 
 
@@ -60,6 +60,8 @@ entry ENTRIES[ENTRY_COUNT] = \
    { cos_mpfr, 1, "cos_mpfr", cos_low, cos_high, -1 },
    { cos_openlibm, 1, "cos_openlibm", cos_low, cos_high, -1 },
    { cos_vdt, 1, "cos_vdt", cos_low, cos_high, -1 },
+
+   { cos_povray, 1, "cos_povray", raw_wide_cos_low, raw_wide_cos_high, -1 },
 
    { ml2_raw_cos_2, 1, "ml2_raw_cos_2", raw_cos_low, raw_cos_high, -1 },
    { ml2_raw_cos_4, 1, "ml2_raw_cos_4", raw_cos_low, raw_cos_high, -1 },
@@ -212,6 +214,8 @@ entry ENTRIES[ENTRY_COUNT] = \
    { sin_mpfr, 1, "sin_mpfr", sin_low, sin_high, -1 },
    { sin_openlibm, 1, "sin_openlibm", sin_low, sin_high, -1 },
    { sin_vdt, 1, "sin_vdt", sin_low, sin_high, -1 },
+
+   { sin_povray, 1, "sin_povray", raw_wide_sin_low, raw_wide_sin_high, -1 },
 
    { ml2_raw_sin_1, 1, "ml2_raw_sin_1", raw_sin_low, raw_sin_high, -1 },
    { ml2_raw_sin_3, 1, "ml2_raw_sin_3", raw_sin_low, raw_sin_high, -1 },

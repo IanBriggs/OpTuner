@@ -90,6 +90,10 @@ def plot_error(in_dir, input_typ, x, fx, fpx, err, abs_err=True):
     fig.savefig(fname)
     plt.close()
 
+    abserr = [abs(e) for e in err[1:]]
+    maxabserr = max(abserr)
+    print("    Max absolute value of error: {}".format(maxabserr))
+
 
 def read_dat(filename):
     print("Reading: {}".format(filename), flush=True)

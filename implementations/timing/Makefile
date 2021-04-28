@@ -19,6 +19,9 @@ MPFR_I = ../mpfr/include
 OPENLIBM_O = ../openlibm/obj/openlibm_functions.a
 OPENLIBM_I = ../openlibm/include
 
+POVRAY_O = ../povray/obj/povray_functions.o
+POVRAY_I = ../povray/include/
+
 RLIBM_O = ../rlibm/obj/rlibm_functions.a
 RLIBM_I = ../rlibm/include
 
@@ -28,8 +31,8 @@ VDT_I = ../vdt/include
 
 
 
-OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O} ${OPENLIBM_O} ${RLIBM_O} ${VDT_O}
-INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I} -I${OPENLIBM_I} -I${RLIBM_I} -I${VDT_I}
+OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O} ${OPENLIBM_O} ${RLIBM_O} ${POVRAY_O} ${VDT_O}
+INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I} -I${OPENLIBM_I} -I${RLIBM_I} -I${POVRAY_I} -I${VDT_I}
 
 
 CFILES = $(filter-out src/time_all.c,$(wildcard src/*.c))

@@ -14,7 +14,7 @@
 #include <stdlib.h>
 
 
-#define ENTRY_COUNT (20)
+#define ENTRY_COUNT (15)
 
 entry ENTRIES[ENTRY_COUNT] = {
                               {ml2_sin_1, "ml2_sin_1"},
@@ -27,12 +27,6 @@ entry ENTRIES[ENTRY_COUNT] = {
                               {ml2_sin_15, "ml2_sin_15"},
                               {ml2_sin_17, "ml2_sin_17"},
                               {ml2_sin_19, "ml2_sin_19"},
-
-                              {ml_sin_1, "ml_sin_1"},
-                              {ml_sin_2, "ml_sin_2"},
-                              {ml_sin_3, "ml_sin_3"},
-                              {ml_sin_4, "ml_sin_4"},
-                              {ml_sin_5, "ml_sin_5"},
 
                               {sin_crlibm, "sin_crlibm"},
 

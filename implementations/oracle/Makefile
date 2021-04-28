@@ -19,6 +19,9 @@ MPFR_I = ../mpfr/include
 OPENLIBM_O = ../openlibm/obj/openlibm_functions.a
 OPENLIBM_I = ../openlibm/include/
 
+POVRAY_O = ../povray/obj/povray_functions.o
+POVRAY_I = ../povray/include/
+
 VDT_O = ../vdt/obj/vdt_functions.a
 VDT_I = ../vdt/include/
 
@@ -29,8 +32,8 @@ ORACLE_I = include
 TABLE_O = obj/table_generation.o
 TABLE_I = include
 
-OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O} ${ORACLE_O} ${TABLE_O} ${OPENLIBM_O} ${VDT_O}
-INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I} -I${ORACLE_I} -I${TABLE_I} -I${OPENLIBM_I} -I${VDT_I}
+OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O} ${ORACLE_O} ${TABLE_O} ${OPENLIBM_O} ${POVRAY_O} ${VDT_O}
+INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I} -I${ORACLE_I} -I${TABLE_I} -I${OPENLIBM_I} -I${POVRAY_I} -I${VDT_I}
 
 
 BINS = $(foreach s,$(wildcard src/*_error.c),$(patsubst src/%_error.c,bin/%_error,$s))
@@ -58,6 +61,9 @@ ${MPFR_O}:
 
 ${OPENLIBM_O}:
 	$(MAKE) -C ../openlibm
+
+${POVRAY_O}:
+	$(MAKE) -C ../povray
 
 ${VDT_O}:
 	$(MAKE) -C ../vdt
