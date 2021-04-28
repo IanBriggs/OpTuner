@@ -24,7 +24,7 @@ export check_date=$(date +%s)
 
 run ()
 {
-    \time -f %e timeout 60m ${SCRIPT_LOCATION}/optuner ${SCRIPT_LOCATION}/../benchmarks/$1.fpcore --verbosity medium >& ${SCRIPT_LOCATION}/${check_date}/log_$1.txt
+    \time -f %e timeout 120m ${SCRIPT_LOCATION}/optuner ${SCRIPT_LOCATION}/../benchmarks/$1.fpcore --verbosity medium >& ${SCRIPT_LOCATION}/${check_date}/log_$1.txt
     pushd ${SCRIPT_LOCATION}/../implementations/timing/
     make
     if [ -f ./bin/time_$1 ] ; then
@@ -48,6 +48,8 @@ cat <<EOF > ${SCRIPT_LOCATION}/${check_date}/index.html
 <h1> Aggregate Graph </h1>
 <img src="aggregate.png">"
 EOF
+
+run povray_photons
 
 run Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A
 run Data_Number_Erf_dmerfcx_from_erf_2_0_0_0
