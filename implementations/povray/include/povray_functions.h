@@ -2,8 +2,8 @@
 #define POVRAY_FUNCTIONS_H
 
 
-double povray_cos(double x);
-double povray_sin(double x);
+double cos_povray(double x);
+double sin_povray(double x);
 
 
 #endif

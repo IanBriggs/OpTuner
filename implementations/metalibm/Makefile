@@ -146,7 +146,7 @@ accuracy_specification.json: ${FUNCS}
 	grep spec src/*.c | sed 's|^[^:]*://spec: ||g' > $@
 
 include/metalibm_functions.h: ${FUNCS} | include
-	cat ${FUNCS} | grep -o "double ml2\?_\(raw_\)\?[a-z]*_[0-9]*(double);" > $@
+	cat ${FUNCS} | grep -o "double ml2\?_\(raw_\)\?\(wide_\)\?[a-z]*_[0-9]*(double);" > $@
 
 requirements/metalibm/metalibm_core/support_lib/ml_support_lib.h: requirements/build.sh
 	./$<

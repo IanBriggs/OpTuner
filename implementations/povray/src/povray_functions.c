@@ -102,7 +102,7 @@ static const double SIN_POV_ARRAY[255] = \
    0.04945371992273924,     0.02473442727999469,  1.2246467991473532e-16,
   };
 
-double povray_sin(double x)
+double sin_povray(double x)
 {
   signed char theta = (signed char)(x*127.0/M_PI);
   int index = theta + 127;
@@ -198,7 +198,7 @@ static const double COS_POV_ARRAY[255] = \
    -0.9987764162142613, -0.9996940572530831, -1.0,
   };
 
-double povray_cos(double x)
+double cos_povray(double x)
 {
   signed char theta = (signed char)(x*127.0/M_PI);
   int index = theta + 127;
