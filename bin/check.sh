@@ -123,4 +123,5 @@ fi
 
 if command -v nightly-results &>/dev/null; then
     nightly-results url https://optuner.uwplse.org/${check_date}/
+    nightly-results img https://optuner.uwplse.org/${check_date}/aggregate.png
 fi
