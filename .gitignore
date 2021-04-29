@@ -1,8 +1,8 @@
 *__pycache__
-*bin
+*.bin
 *debug_enironment.sh
 *log.txt
-*obj
+*.obj
 *requirements/
 implementations/timing/json/
 implementations/metalibm/.mltmp/

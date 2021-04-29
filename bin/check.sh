@@ -22,9 +22,26 @@ mkdir ${SCRIPT_LOCATION}/../implementations/timing/kern_main
 
 export check_date=$(date +%s)
 
+
+mkdir ${SCRIPT_LOCATION}/${check_date}
+cp ${SCRIPT_LOCATION}/style.css ${SCRIPT_LOCATION}/${check_date}/style.css
+cat <<EOF > ${SCRIPT_LOCATION}/${check_date}/index.html
+<!doctype html>
+<meta charset="utf-8" />
+<title>Optuner Results for $(date +%Y-%m-%d)</title>
+<link rel="stylesheet" href="style.css" />
+
+<h1>Aggregate Graph</h1>
+<img src="aggregate.png" />
+
+<ul id="detail">
+  <h1>Detailed Graphs</h1>
+EOF
+
 run ()
 {
     \time -f %e timeout 120m ${SCRIPT_LOCATION}/optuner ${SCRIPT_LOCATION}/../benchmarks/$1.fpcore --verbosity medium >& ${SCRIPT_LOCATION}/${check_date}/log_$1.txt
+    TIME=$(tail ${SCRIPT_LOCATION}/${check_date}/log_$1.txt -n1)
     pushd ${SCRIPT_LOCATION}/../implementations/timing/
     make
     if [ -f ./bin/time_$1 ] ; then
@@ -32,22 +49,14 @@ run ()
     fi
     popd
     cat <<EOF >> ${SCRIPT_LOCATION}/${check_date}/index.html
-<h1>$1</h1>
-<img src="time_$1.png">
+  <li>
+    <h1>$1</h1>
+    <img src="time_$1.png" />
+    <time>$TIME seconds runtime</time>
+  </li>
 EOF
-    echo "$(tail ${SCRIPT_LOCATION}/${check_date}/log_$1.txt -n1) seconds runtime" >> ${SCRIPT_LOCATION}/${check_date}/index.html
 }
 export -f run
-
-
-mkdir ${SCRIPT_LOCATION}/${check_date}
-cat <<EOF > ${SCRIPT_LOCATION}/${check_date}/index.html
-<!doctype html>
-<title>Optuner Results for $(date +%Y-%m-%d)</title>
-<body>
-<h1> Aggregate Graph </h1>
-<img src="aggregate.png">"
-EOF
 
 run povray_photons
 
@@ -104,7 +113,7 @@ mv *.png ${SCRIPT_LOCATION}/${check_date}/
 
 
 cat <<EOF >> ${SCRIPT_LOCATION}/${check_date}/index.html
-</body>
+</ul>
 EOF
 
 if [ "$(hostname)" = "warfa" ]; then
