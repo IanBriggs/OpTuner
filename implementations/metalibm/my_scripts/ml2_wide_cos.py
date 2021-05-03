@@ -88,7 +88,7 @@ class ML2_Cosinusoidal(ScalarUnaryFunction):
         else:
             z = x
 
-        approx_interval = sollya.Interval(-2**-10, n_pi + 2**-10)
+        approx_interval = sollya.Interval(-2**-7, n_pi + 2**-7)
         approx_func = sollya.cos(sollya.x)
         builder = Polynomial.build_from_approximation
         for p in range(10, 20):
@@ -354,7 +354,7 @@ class ML2_Cosinusoidal(ScalarUnaryFunction):
             return in_domains
 
         if self.skip_reduction:
-            starting_domain = sollya.Interval(-n_pi, n_pi)
+            starting_domain = sollya.Interval(-n_pi-2**-7, n_pi+2**-7)
         else:
             reduction_k = 20
             starting_domain = sollya.Interval(-reduction_k*n_pi, reduction_k*n_pi)
@@ -390,7 +390,7 @@ class ML2_Cosinusoidal(ScalarUnaryFunction):
             return d
 
         if self.skip_reduction:
-            d = generate_json(errors, sollya.Interval(-n_pi, n_pi))
+            d = generate_json(errors, sollya.Interval(-n_pi-2**-7, n_pi+2**-7))
             json_str = json.dumps(d, sort_keys=True, indent=4)
             json_str = "spec: " + json_str.replace("\n", "\nspec: ")
             print(json_str)

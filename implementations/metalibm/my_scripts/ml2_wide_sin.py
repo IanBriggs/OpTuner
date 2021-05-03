@@ -93,25 +93,15 @@ class ML2_Sinusodial(ScalarUnaryFunction):
         else:
             z = x
 
-        approx_interval = sollya.Interval(-2**-10, n_pi + 2**-10)
+        approx_interval = sollya.Interval(-2**-7, n_pi + 2**-7)
         approx_func = sollya.sin(sollya.x)
         builder = Polynomial.build_from_approximation
-        for p in range(10, 20):
-            try:
-                sollya.settings.prec = 2**p
-                poly_object = builder(approx_func,
-                                      range(1, self.poly_degree+1, 2),
-                                      [self.precision]*(self.poly_degree+1),
-                                      approx_interval,
-                                      sollya.relative)
-            except SollyaError:
-                continue
-
-            if str(poly_object.get_sollya_object()) == "0":
-                continue
-
-            break
-
+        poly_object = builder(approx_func,
+                              range(1, self.poly_degree+1, 2),
+                              [self.precision]*(self.poly_degree+1),
+                              approx_interval,
+                              sollya.relative)
+        
         self.poly_object = poly_object
         schemer = PolynomialSchemeEvaluator.generate_horner_scheme
         poly = schemer(poly_object, z)
@@ -360,7 +350,7 @@ class ML2_Sinusodial(ScalarUnaryFunction):
             return in_domains
 
         if self.skip_reduction:
-            starting_domain = sollya.Interval(-n_pi, n_pi)
+            starting_domain = sollya.Interval(-n_pi-2**-7, n_pi+2**-7)
         else:
             reduction_k = 20
             starting_domain = sollya.Interval(-reduction_k*n_pi, reduction_k*n_pi)
@@ -396,7 +386,7 @@ class ML2_Sinusodial(ScalarUnaryFunction):
             return d
 
         if self.skip_reduction:
-            d = generate_json(errors, sollya.Interval(-n_pi, n_pi))
+            d = generate_json(errors, sollya.Interval(-n_pi-2**-7, n_pi+2**-7))
             json_str = json.dumps(d, sort_keys=True, indent=4)
             json_str = "spec: " + json_str.replace("\n", "\nspec: ")
             print(json_str)
