@@ -40,7 +40,7 @@ EOF
 
 run ()
 {
-    \time -f %e timeout 120m ${SCRIPT_LOCATION}/optuner ${SCRIPT_LOCATION}/../benchmarks/$1.fpcore --verbosity medium >& ${SCRIPT_LOCATION}/${check_date}/log_$1.txt
+    \time -f %e timeout 10m ${SCRIPT_LOCATION}/optuner ${SCRIPT_LOCATION}/../benchmarks/$1.fpcore --verbosity medium >& ${SCRIPT_LOCATION}/${check_date}/log_$1.txt
     TIME=$(tail ${SCRIPT_LOCATION}/${check_date}/log_$1.txt -n1)
     pushd ${SCRIPT_LOCATION}/../implementations/timing/
     make
@@ -110,6 +110,7 @@ run Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
 pushd ${SCRIPT_LOCATION}/../implementations/timing/
 ./scripts/pink_graph.py json/*
 mv *.png ${SCRIPT_LOCATION}/${check_date}/
+mv json/*.json ${SCRIPT_LOCATION}/${check_date}/
 
 
 cat <<EOF >> ${SCRIPT_LOCATION}/${check_date}/index.html
