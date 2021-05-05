@@ -38,8 +38,8 @@ def graph(errorss, speedupss, outname, dump_file=None):
     #ax.scatter(x_errors, y_speedups, alpha=0.60, s=60, color="#ff007f")
     ax.set_xscale('log')
     ax.set_xlabel("Accuracy vs GLibC")
-    xmin, xmax = ax.set_xlim()
-    ax.set_xlim(xmax, xmin)
+    # xmin, xmax = ax.set_xlim()
+    # ax.set_xlim(xmax, xmin)
     ax.set_ylabel("Speedup vs GLibC")
     #ax.tick_params(labelsize=1)
     #ax.set_title("Aggregate", fontsize=20)
@@ -70,12 +70,17 @@ def read_all(filenames):
             if len(data["runs"]) == 0:
                 print("  no data")
                 continue
+            glibc_e = None
+            glibc_a = None
             for run in data["runs"]:
                 errors.append(run["error"])
                 total_time = sum(r["time"] for r in run["runs"])
                 total_count = sum(r["count"] for r in run["runs"])
                 averages.append(total_time / total_count)
-            errors, speedups = normalize(errors, averages)
+                if run["name"].endsswith("_glibc"):
+                    glibc_e = run["error"]
+                    glibc_a = total_time / total_count
+            errors, speedups = normalize(errors, averages, glibc_e, glibc_a)
             errorss.append(errors)
             speedupss.append(speedups)
             graph([errors], [speedups], path.basename(fname).replace(".json",""))
@@ -83,12 +88,12 @@ def read_all(filenames):
     return errorss, speedupss
 
 
-def normalize(errors, averages):
-    errors.sort()
-    averages.sort()
-    last_e = errors[-1]
-    last_a = averages[-1]
-    return [e/last_e for e in errors], [last_a/a for a in averages]
+def normalize(errors, averages, pinned_e, pinned_a):
+    tups = [(e,a) for e,a in zip(errors, averages)]
+    tups.sort(key=lambda t:t[0])
+    errors = [t[0] for t in tups]
+    averages = [t[1] for t in tups]
+    return [e/pinned_e for e in errors], [pinned_a/a for a in averages]
 
 if __name__ == "__main__":
     errorss, speedupss = read_all(sys.argv[1:])
