@@ -1,9 +1,14 @@
-*__pycache__
+*.a
 *.bin
+*.o
+*.obj
+*__pycache__
 *debug_enironment.sh
 *log.txt
-*.obj
 *requirements/
-implementations/timing/json/
+implementations/*/bin/
 implementations/metalibm/.mltmp/
 implementations/metalibm/src/ml_gen_done
+implementations/timing/json/
+implementations/timing/kern/
+implementations/timing/kern_main/

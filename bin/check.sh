@@ -58,7 +58,7 @@ EOF
 }
 export -f run
 
-run povray_photons
+#run povray_photons
 
 run Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A
 run Data_Number_Erf_dmerfcx_from_erf_2_0_0_0
@@ -95,10 +95,10 @@ run Statistics_Distribution_Poisson_clogProbability_from_math_functions_0_1_5_2
 run Statistics_Distribution_Poisson_Internal_probability_from_math_functions_0_1_5_2
 
 # long running
-run azimuth
 run Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
 
 # time out
+# run azimuth
 # run complex_sine_and_cosine
 # run Diagrams_TwoD_Path_Metafont_Internal_hobbyF_from_diagrams_contrib_1_3_0_5
 # run nmse_problem_3_4_2
