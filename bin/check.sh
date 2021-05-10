@@ -12,10 +12,12 @@ popd () {
     command popd > /dev/null
 }
 
+rm -rf ${SCRIPT_LOCATION}/../implementations/timing/bin
 rm -rf ${SCRIPT_LOCATION}/../implementations/timing/json
 rm -rf ${SCRIPT_LOCATION}/../implementations/timing/kern
 rm -rf ${SCRIPT_LOCATION}/../implementations/timing/kern_main
 
+mkdir ${SCRIPT_LOCATION}/../implementations/timing/bin
 mkdir ${SCRIPT_LOCATION}/../implementations/timing/json
 mkdir ${SCRIPT_LOCATION}/../implementations/timing/kern
 mkdir ${SCRIPT_LOCATION}/../implementations/timing/kern_main

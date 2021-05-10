@@ -77,7 +77,7 @@ def read_all(filenames):
                 total_time = sum(r["time"] for r in run["runs"])
                 total_count = sum(r["count"] for r in run["runs"])
                 averages.append(total_time / total_count)
-                if run["name"].endsswith("_glibc"):
+                if run["function"].endswith("_glibc"):
                     glibc_e = run["error"]
                     glibc_a = total_time / total_count
             errors, speedups = normalize(errors, averages, glibc_e, glibc_a)
