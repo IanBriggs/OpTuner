@@ -30,6 +30,10 @@ def generate_z3_impl_bools(e, lines):
     if not hasattr(e, "possible_ids"):
         return
     lines.append("; implementations for {} = {}".format(e.name, e))
+    if e.duplicate:
+        lines.append("; same as {}".format(e.original.name))
+        lines.append("")
+        return
     bool_names = list()
     for id in e.possible_ids:
         bool_name = "{}_is_{}".format(e.name, id)
@@ -57,6 +61,11 @@ def generate_z3_epsilons(e, lines, id_mapped_implementations):
         return
     epsilon_name = "epsilon_for_{}".format(e.name)
     lines.append("; epsilon for {} = {}".format(e.name, e))
+    if e.duplicate:
+        lines.append("; same as {}".format(e.original.name))
+        e.epsilon = "epsilon_for_{}".format(e.original.name)
+        lines.append("")
+        return
     parts = list()
     for id in e.possible_ids:
         bool_name = "{}_is_{}".format(e.name, id)
@@ -83,6 +92,11 @@ def generate_z3_deltas(e, lines, id_mapped_implementations):
         return
     delta_name = "delta_for_{}".format(e.name)
     lines.append("; delta for {} = {}".format(e.name, e))
+    if e.duplicate:
+        lines.append("; same as {}".format(e.original.name))
+        e.delta = "delta_for_{}".format(e.original.name)
+        lines.append("")
+        return
     parts = list()
     for id in e.possible_ids:
         bool_name = "{}_is_{}".format(e.name, id)
@@ -112,7 +126,10 @@ def generate_z3_domain_bounding(fpc, e, lines, id_mapped_implementations):
         lower_gap = real_domain[0] - impl.domain[0]
         upper_gap = impl.domain[1] - real_domain[1]
         min_gap = min(lower_gap, upper_gap)
-        boolean = "{}_is_{}".format(e.name, id)
+        if e.duplicate:
+            boolean = "{}_is_{}".format(e.original.name, id)
+        else:
+            boolean = "{}_is_{}".format(e.name, id)
         assertion = "(assert (=> {} (<= {} {})))".format(boolean, e.domain_error, number_to_z3(min_gap))
         lines.append(assertion)
     lines.append("")
@@ -172,6 +189,10 @@ def generate_z3_costs(e, lines, costs, id_mapped_implementations):
         return
     cost_name = "cost_for_{}".format(e.name)
     lines.append("; cost for {} = {}".format(e.name, e))
+    if e.duplicate:
+        lines.append("; zero since it is already computed as {}".format(e.original.name))
+        lines.append("")
+        return
     parts = list()
     for id in e.possible_ids:
         bool_name = "{}_is_{}".format(e.name, id)

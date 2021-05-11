@@ -170,6 +170,7 @@ def main(argv):
         fpc.reject_unsupported()
         fpc.extract_input_domains()
         fpc.set_name()
+        fpc.mark_duplicates()
         extract_fpcore_name(fpc)
         logger.blog("Converted", fpc.pretty_internals())
 
