@@ -6,7 +6,7 @@
 
 
 
-#define ENTRY_COUNT (209)
+#define ENTRY_COUNT (204)
 
 
 
@@ -57,7 +57,7 @@ entry ENTRIES[ENTRY_COUNT] = \
 
    { cos_crlibm, 1, "cos_crlibm", cos_low, cos_high, -1 },
    { cos_glibc, 1, "cos_glibc", cos_low, cos_high, -1 },
-   { cos_mpfr, 1, "cos_mpfr", cos_low, cos_high, -1 },
+   // { cos_mpfr, 1, "cos_mpfr", cos_low, cos_high, -1 },
    { cos_openlibm, 1, "cos_openlibm", cos_low, cos_high, -1 },
    { cos_vdt, 1, "cos_vdt", cos_low, cos_high, -1 },
 
@@ -111,7 +111,7 @@ entry ENTRIES[ENTRY_COUNT] = \
 
    { exp_crlibm, 1, "exp_crlibm", exp_low, exp_high, -1 },
    { exp_glibc, 1, "exp_glibc", exp_low, exp_high, -1 },
-   { exp_mpfr, 1, "exp_mpfr", exp_low, exp_high, -1 },
+   // { exp_mpfr, 1, "exp_mpfr", exp_low, exp_high, -1 },
    { exp_openlibm, 1, "exp_openlibm", exp_low, exp_high, -1 },
    { expf_rlibm, 1, "expf_rlibm", exp_low, exp_high, -1 },
    { exp_vdt, 1, "exp_vdt", exp_low, exp_high, -1 },
@@ -163,7 +163,7 @@ entry ENTRIES[ENTRY_COUNT] = \
 
    { log_crlibm, 1, "log_crlibm", log_low, log_high, -1 },
    { log_glibc, 1, "log_glibc", log_low, log_high, -1 },
-   { log_mpfr, 1, "log_mpfr", log_low, log_high, -1 },
+   // { log_mpfr, 1, "log_mpfr", log_low, log_high, -1 },
    { log_openlibm, 1, "log_openlibm", log_low, log_high, -1 },
    { logf_rlibm, 1, "logf_rlibm", log_low, log_high, -1 },
    { log_vdt, 1, "log_vdt", log_low, log_high, -1 },
@@ -211,7 +211,7 @@ entry ENTRIES[ENTRY_COUNT] = \
 
    { sin_crlibm, 1, "sin_crlibm", sin_low, sin_high, -1 },
    { sin_glibc, 1, "sin_glibc", sin_low, sin_high, -1 },
-   { sin_mpfr, 1, "sin_mpfr", sin_low, sin_high, -1 },
+   // { sin_mpfr, 1, "sin_mpfr", sin_low, sin_high, -1 },
    { sin_openlibm, 1, "sin_openlibm", sin_low, sin_high, -1 },
    { sin_vdt, 1, "sin_vdt", sin_low, sin_high, -1 },
 
@@ -268,7 +268,7 @@ entry ENTRIES[ENTRY_COUNT] = \
 
    { tan_crlibm, 1, "tan_crlibm", tan_low, tan_high, -1 },
    { tan_glibc, 1, "tan_glibc", tan_low, tan_high, -1 },
-   { tan_mpfr, 1, "tan_mpfr", tan_low, tan_high, -1 },
+   // { tan_mpfr, 1, "tan_mpfr", tan_low, tan_high, -1 },
    { tan_openlibm, 1, "tan_openlibm", tan_low, tan_high, -1 },
    { tan_vdt, 1, "tan_vdt", tan_low, tan_high, -1 },
 

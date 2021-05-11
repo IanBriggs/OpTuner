@@ -49,7 +49,7 @@ ml: ${ML_OBJS}
 
 
 obj/metalibm_functions.a:  ${OBJS} include/metalibm_functions.h accuracy_specification.json
-	ar cr $@ ${OBJS}
+	ld -r -o $@ ${OBJS}
 
 
 obj/%.o: src/%.c requirements/metalibm/metalibm_core/support_lib/ml_support_lib.h | obj

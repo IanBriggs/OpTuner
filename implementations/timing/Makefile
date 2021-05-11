@@ -13,8 +13,8 @@ GLIBC_I = ../glibc/include/
 METALIBM_O = ../metalibm/obj/metalibm_functions.a
 METALIBM_I = ../metalibm/include
 
-MPFR_O = ../mpfr/obj/mpfr_functions.o
-MPFR_I = ../mpfr/include
+# MPFR_O = ../mpfr/obj/mpfr_functions.o
+# MPFR_I = ../mpfr/include
 
 OPENLIBM_O = ../openlibm/obj/openlibm_functions.a
 OPENLIBM_I = ../openlibm/include
@@ -30,9 +30,8 @@ VDT_I = ../vdt/include
 
 
 
-
-OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${MPFR_O} ${OPENLIBM_O} ${RLIBM_O} ${POVRAY_O} ${VDT_O}
-INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${MPFR_I} -I${OPENLIBM_I} -I${RLIBM_I} -I${POVRAY_I} -I${VDT_I}
+OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${OPENLIBM_O} ${RLIBM_O} ${POVRAY_O} ${VDT_O}
+INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${OPENLIBM_I} -I${RLIBM_I} -I${POVRAY_I} -I${VDT_I}
 
 
 CFILES = $(filter-out src/time_all.c,$(wildcard src/*.c))
@@ -46,14 +45,14 @@ KERNOBJFILES = $(foreach s,${KERNCFILES},$(patsubst kern/%.c,obj/%.o,$s))
 KERNMAINS = $(foreach s,$(wildcard kern_main/*.c),$(patsubst kern_main/%.c,bin/%,$s))
 
 .PHONY: all
-all: bin/time_all ${KERNMAINS}
+all: bin/time_all ${KERNMAINS} out/expanded_all_functions.h
 
 
-bin/time_all: src/time_all.c ${OBJFILES} ${OBJ} | bin
-	$(CC) ${CFLAGS} ${INC} -Iinclude $< ${OBJFILES} ${OBJ} ${LDFLAGS} -o $@
+bin/time_all: src/time_all.c ${OBJFILES} out/all_functions.a | bin
+	$(CC) ${CFLAGS} ${INC} -Iinclude $< ${OBJFILES} out/all_functions.a ${LDFLAGS} -o $@
 
-bin/%: kern_main/%.c ${KERNOBJFILES} ${OBJFILES} ${OBJ} | bin
-	$(CC) ${CFLAGS} ${INC} -Iinclude -Ikern $< ${KERNOBJFILES} ${OBJFILES} ${OBJ} ${LDFLAGS} -o $@
+bin/%: kern_main/%.c ${KERNOBJFILES} ${OBJFILES} out/all_functions.a | bin
+	$(CC) ${CFLAGS} ${INC} -Iinclude -Ikern $< ${KERNOBJFILES} ${OBJFILES} out/all_functions.a ${LDFLAGS} -o $@
 
 obj/%.o: src/%.c ${IFILES} | obj
 	$(CC) ${CFLAGS} -Iinclude $< -c -o $@
@@ -61,6 +60,21 @@ obj/%.o: src/%.c ${IFILES} | obj
 obj/%.o: kern/%.c ${IFILES} ${KERNIFILES} | obj
 	$(CC) ${CFLAGS} ${INC} -Iinclude -Ikern $< -c -o $@
 
+
+out/all_functions.a: ${OBJ} | out
+	ld -r -o $@ $^
+
+out/expanded_all_functions.h: include/all_functions.h ${OBJ} | out
+	@echo "#ifdef __cplusplus" > $@
+	@echo "extern \"C\" {" >> $@
+	@echo "#endif" >> $@
+	@echo "#ifndef EXPANDED_ALL_FUNCTIONS_H" >> $@
+	@echo "#define EXPANDED_ALL_FUNCTIONS_H" >> $@
+	-$(CC) -E -nostdinc ${INC} $< 2> /dev/null | sed '/^#/d' | sed '/^$$/d' >> $@
+	@echo "#ifdef __cplusplus" >> $@
+	@echo "}" >> $@
+	@echo "#endif" >> $@
+	@echo "#endif" >> $@
 
 ${CRLIBM_O}:
 	$(MAKE) -C ../crlibm
@@ -90,11 +104,15 @@ bin:
 obj:
 	mkdir obj
 
+out:
+	mkdir out
+
 
 .PHONY: clean
 clean:
 	$(RM) -r bin
 	$(RM) -r obj
+	$(RM) -r out
 
 
 .PHONY: distclean
