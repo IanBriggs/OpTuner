@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -x
+set -e
 
 export SCRIPT_LOCATION=$(readlink -f $(dirname $0))
 
@@ -112,8 +113,9 @@ run Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
 pushd ${SCRIPT_LOCATION}/../implementations/timing/
 ./scripts/pink_graph.py json/*
 mv *.png ${SCRIPT_LOCATION}/${check_date}/
-mv json/*.json ${SCRIPT_LOCATION}/${check_date}/
-
+mkdir ${SCRIPT_LOCATION}/${check_date}/json
+mv json/*.json ${SCRIPT_LOCATION}/${check_date}/json
+cp ${SCRIPT_LOCATION}/../implementations/*.json ${SCRIPT_LOCATION}/${check_date}/json
 
 cat <<EOF >> ${SCRIPT_LOCATION}/${check_date}/index.html
 </ul>
