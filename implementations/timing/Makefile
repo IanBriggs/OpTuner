@@ -91,6 +91,9 @@ ${MPFR_O}:
 ${OPENLIBM_O}:
 	$(MAKE) -C ../openlibm
 
+${POVRAY_O}:
+	$(MAKE) -C ../povray
+
 ${RLIBM_O}:
 	$(MAKE) -C ../rlibm
 

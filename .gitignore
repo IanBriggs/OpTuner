@@ -12,3 +12,4 @@ implementations/metalibm/src/ml_gen_done
 implementations/timing/json/
 implementations/timing/kern/
 implementations/timing/kern_main/
+implementations/timing/out/
