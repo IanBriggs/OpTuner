@@ -31,7 +31,7 @@ def to_c(self, assignment, lines, main_args):
     if self.duplicate:
         return self.original.name
     lines.append("  double {} = {};".format(self.name, self.source))
-    return name
+    return self.name
 
 
 @add_method(Operation)
