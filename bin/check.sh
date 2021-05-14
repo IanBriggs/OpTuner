@@ -43,10 +43,10 @@ EOF
 
 run ()
 {
-    \time -f %e timeout 10m ${SCRIPT_LOCATION}/optuner ${SCRIPT_LOCATION}/../benchmarks/$1.fpcore --verbosity medium >& ${SCRIPT_LOCATION}/${check_date}/log_$1.txt
+    \time -f %e timeout 30m ${SCRIPT_LOCATION}/optuner ${SCRIPT_LOCATION}/../benchmarks/$1.fpcore --verbosity medium >& ${SCRIPT_LOCATION}/${check_date}/log_$1.txt
     TIME=$(tail ${SCRIPT_LOCATION}/${check_date}/log_$1.txt -n1)
     pushd ${SCRIPT_LOCATION}/../implementations/timing/
-    make
+    make > /dev/null
     if [ -f ./bin/time_$1 ] ; then
         ./bin/time_$1 > json/time_$1.json
     fi
