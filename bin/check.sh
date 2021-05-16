@@ -34,6 +34,8 @@ cat <<EOF > ${SCRIPT_LOCATION}/${check_date}/index.html
 <title>Optuner Results for $(date +%Y-%m-%d)</title>
 <link rel="stylesheet" href="style.css" />
 
+EXPERIMENTAL RUN WITHOUT ML2 FUNCTIONS
+
 <h1>Aggregate Graph</h1>
 <img src="aggregate.png" />
 
