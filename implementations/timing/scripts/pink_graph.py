@@ -95,6 +95,26 @@ def normalize(errors, averages, pinned_e, pinned_a):
     averages = [t[1] for t in tups]
     return [e/pinned_e for e in errors], [pinned_a/a for a in averages]
 
+def zoom(errors, speedups, max_zoomed_err):
+    tups = [(e,s) for e,s in zip(errors, speedups) if e <= max_zoomed_err]
+    tups.sort(key=lambda t:t[0])
+    errors = [t[0] for t in tups]
+    speedups = [t[1] for t in tups]
+    return errors, speedups
+
 if __name__ == "__main__":
     errorss, speedupss = read_all(sys.argv[1:])
     graph(errorss, speedupss, "aggregate")
+
+    min_err = min(min(errors) for errors in errorss)
+    diff_err = 1.0 - min_err
+    max_zoomed_err = 1 + diff_err
+
+    zoomed_errorss = list()
+    zoomed_speedupss = list()
+    for e,s in zip(errorss, speedupss):
+        zerrors, zspeedups = zoom(e, s, max_zoomed_err)
+        zoomed_errorss.append(zerrors)
+        zoomed_speedupss.append(zoomed_speedups)
+    graph(zoomed_errorss, zoomed_speedupss, "zoomed_aggregate")
+

@@ -37,6 +37,9 @@ cat <<EOF > ${SCRIPT_LOCATION}/${check_date}/index.html
 <h1>Aggregate Graph</h1>
 <img src="aggregate.png" />
 
+<h1>Zoomed Aggregate Graph</h1>
+<img src="zoomed_aggregate.png" />
+
 <ul id="detail">
   <h1>Detailed Graphs</h1>
 EOF
@@ -129,4 +132,5 @@ fi
 if command -v nightly-results &>/dev/null; then
     nightly-results url https://optuner.uwplse.org/${check_date}/
     nightly-results img https://optuner.uwplse.org/${check_date}/aggregate.png
+    nightly-results img https://optuner.uwplse.org/${check_date}/zoomed_aggregate.png
 fi
