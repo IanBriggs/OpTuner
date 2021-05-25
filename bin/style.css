@@ -1,4 +1,7 @@
 #detail { display: flex; flex-wrap: wrap; margin: 0; padding: 0; }
-#detail li { list-style: inside none; width: 25%; }
+#detail li { list-style: inside none; width: 20%; }
 #detail h1 { font-size: 100%; overflow: hidden; text-overflow: ellipsis; width: 100%; }
 #detail img { width: 100%; }
+
+#functions { display: flex; margin: 0; padding: 0; flex-wrap: wrap; }
+#functions img { width: 20%; }
