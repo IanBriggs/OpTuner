@@ -34,6 +34,15 @@ cat <<EOF > ${SCRIPT_LOCATION}/${check_date}/index.html
 <title>Optuner Results for $(date +%Y-%m-%d)</title>
 <link rel="stylesheet" href="style.css" />
 
+<h1>Function Graphs</h1>
+<ul id="functions">
+  <img src="Table_2_log.png" />
+  <img src="Table_2_exp.png" />
+  <img src="Table_2_sin.png" />
+  <img src="Table_2_cos.png" />
+  <img src="Table_2_tan.png" />
+</ul>
+
 <h1>Aggregate Graph</h1>
 <img src="aggregate.png" />
 
@@ -115,6 +124,7 @@ run Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
 
 pushd ${SCRIPT_LOCATION}/../implementations/timing/
 ./scripts/pink_graph.py json/*
+./scripts/function_graphs.py ../all_specifications.json ../all_costs.json
 mv *.png ${SCRIPT_LOCATION}/${check_date}/
 mkdir ${SCRIPT_LOCATION}/${check_date}/json
 mv json/*.json ${SCRIPT_LOCATION}/${check_date}/json
