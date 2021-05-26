@@ -2,18 +2,14 @@
 #define SIN_COS_SELECTOR_H
 
 
-#ifdef USE_CHAR_THETA
-#define SIN_THETA(x) photonOptions.sinTheta[x]
-#define COS_THETA(x) photonOptions.cosTheta[x]
-#define SIN_PHI(x) photonOptions.sinTheta[x]
-#define COS_PHI(x) photonOptions.cosTheta[x]
-
-
-#else // #ifdef USE_CHAR_THETA
 #include "expanded_all_functions.h"
 
 
-#if defined(SIN_THETA_IS_SIN_CRLIBM)
+#if defined(USE_CHAR_THETA)
+#define SIN_THETA(x) photonOptions.sinTheta[x]
+#elif defined(SIN_THETA_IS_SIN_CONST)
+#define SIN_THETA(x) (x)
+#elif defined(SIN_THETA_IS_SIN_CRLIBM)
 #define SIN_THETA(x) sin_crlibm(x)
 #elif defined(SIN_THETA_IS_SIN_GLIBC)
 #define SIN_THETA(x) sin_glibc(x)
@@ -106,13 +102,16 @@
 #elif defined(SIN_THETA_IS_SINF_VDT)
 #define SIN_THETA(x) sinf_vdt(x)
 #else
-#define SIN_THETA(x) sin_crlibm(x)
+#error "Select a function for sin(theta)"
 #endif
 
 
 
-
-#if defined(COS_THETA_IS_COS_CRLIBM)
+#if defined(USE_CHAR_THETA)
+#define COS_THETA(x) photonOptions.cosTheta[x]
+#elif defined(COS_THETA_IS_COS_CONST)
+#define COS_THETA(x) (-x)
+#elif defined(COS_THETA_IS_COS_CRLIBM)
 #define COS_THETA(x) cos_crlibm(x)
 #elif defined(COS_THETA_IS_COS_GLIBC)
 #define COS_THETA(x) cos_glibc(x)
@@ -197,13 +196,16 @@
 #elif defined(COS_THETA_IS_COSF_VDT)
 #define COS_THETA(x) cosf_vdt(x)
 #else
-#define COS_THETA(x) cos_crlibm(x)
+#error "Select a function for cos(theta)"
 #endif
 
 
 
-
-#if defined(SIN_PHI_IS_SIN_CRLIBM)
+#if defined(USE_CHAR_THETA)
+#define SIN_PHI(x) photonOptions.sinTheta[x]
+#elif defined(SIN_PHI_IS_SIN_CONST)
+#define SIN_PHI(x) (1.0)
+#elif defined(SIN_PHI_IS_SIN_CRLIBM)
 #define SIN_PHI(x) sin_crlibm(x)
 #elif defined(SIN_PHI_IS_SIN_GLIBC)
 #define SIN_PHI(x) sin_glibc(x)
@@ -296,13 +298,17 @@
 #elif defined(SIN_PHI_IS_SINF_VDT)
 #define SIN_PHI(x) sinf_vdt(x)
 #else
-#define SIN_PHI(x) sin_crlibm(x)
+#error "Select a function for sin(phi)"
 #endif
 
 
 
 
-#if defined(COS_PHI_IS_COS_CRLIBM)
+#if defined(USE_CHAR_THETA)
+#define COS_PHI(x) photonOptions.cosTheta[x]
+#elif defined(COS_PHI_IS_COS_CONST)
+#define COS_PHI(x) (1.0)
+#elif defined(COS_PHI_IS_COS_CRLIBM)
 #define COS_PHI(x) cos_crlibm(x)
 #elif defined(COS_PHI_IS_COS_GLIBC)
 #define COS_PHI(x) cos_glibc(x)
@@ -387,11 +393,10 @@
 #elif defined(COS_PHI_IS_COSF_VDT)
 #define COS_PHI(x) cosf_vdt(x)
 #else
-#define COS_PHI(x) cos_crlibm(x)
+#error "Select a function for cos(phi)"
 #endif
 
 
-#endif // #ifdef USE_CHAR_THETA (else branch)
 
 
 #endif // #ifndef SIN_COS_SELECTOR_H

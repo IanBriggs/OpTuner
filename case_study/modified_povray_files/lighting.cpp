@@ -2539,7 +2539,7 @@ static void PhotonDiffuse (FINISH *Finish, VECTOR IPoint, RAY *Eye, VECTOR  Laye
     for(j=0; j<tempn; j++)
     {
       /*DBL theta,phi;*/
-#ifdef USE_CHAR_THETA
+#if defined(USE_CHAR_THETA)
       int theta,phi;
 #else
       double theta,phi;
@@ -2555,9 +2555,12 @@ static void PhotonDiffuse (FINISH *Finish, VECTOR IPoint, RAY *Eye, VECTOR  Laye
          sin() and cos() functions.  These arrays were initialized in
          InitBacktraceEverything.
       */
-#ifdef USE_CHAR_THETA
+#if defined(USE_CHAR_THETA)
       theta = photonOptions.photonGatherList[j]->theta+127;
       phi = photonOptions.photonGatherList[j]->phi+127;
+#elif defined(USE_SHORT_THETA)
+      theta = photonOptions.photonGatherList[j]->theta * (M_PI/32768);
+      phi = photonOptions.photonGatherList[j]->phi * (M_PI/32768);;
 #else
       theta = photonOptions.photonGatherList[j]->theta;
       phi = photonOptions.photonGatherList[j]->phi;
@@ -5900,7 +5903,7 @@ static void GlobalPhotonDiffuse (FINISH *Finish, VECTOR IPoint, RAY *Eye, VECTOR
     for(j=0; j<tempn; j++)
     {
       /*DBL theta,phi;*/
-#ifdef USE_CHAR_THETA
+#if defined(USE_CHAR_THETA)
       int theta,phi;
 #else
       double theta,phi;
@@ -5916,9 +5919,12 @@ static void GlobalPhotonDiffuse (FINISH *Finish, VECTOR IPoint, RAY *Eye, VECTOR
          sin() and cos() functions.  These arrays were initialized in
          InitBacktraceEverything.
       */
-#ifdef USE_CHAR_THETA
+#if defined(USE_CHAR_THETA)
       theta = photonOptions.photonGatherList[j]->theta+127;
       phi = photonOptions.photonGatherList[j]->phi+127;
+#elif defined(USE_SHORT_THETA)
+      theta = photonOptions.photonGatherList[j]->theta * (M_PI/32768);
+      phi = photonOptions.photonGatherList[j]->phi * (M_PI/32768);
 #else
       theta = photonOptions.photonGatherList[j]->theta;
       phi = photonOptions.photonGatherList[j]->phi;

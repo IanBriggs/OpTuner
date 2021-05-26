@@ -1598,10 +1598,13 @@ void addSurfacePhoton(VECTOR Point, VECTOR Origin, COLOUR LightCol, VECTOR /*Raw
   theta = acos(d_len);
   if (d[Y]<0) theta = -theta;
 
-#ifdef USE_CHAR_THETA
+#if defined(USE_CHAR_THETA)
   /* cram these rotation angles into two signed bytes */
   Photon->theta=(signed char)(theta*127.0/M_PI);
   Photon->phi=(signed char)(phi*127.0/M_PI);
+#elif defined(USE_SHORT_THETA)
+  Photon->theta=(short)(theta*(32768.0/M_PI));
+  Photon->phi=(short)(phi*(32768.0/M_PI));
 #else
   Photon->theta=theta;
   Photon->phi=phi;

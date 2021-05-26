@@ -18,6 +18,10 @@ cat <<EOF > "${CONFIG}"
 %define UNMODIFIED
 %endif
 
+%ifndef %{USE_SHORTS}
+%define USE_SHORTS
+%endif
+
 %ifndef %{SIN_THETA}
 %define SIN_THETA
 %endif
@@ -34,7 +38,7 @@ cat <<EOF > "${CONFIG}"
 %define COS_PHI
 %endif
 
-EXTRA_CXXFLAGS = %{UNMODIFIED} %{SIN_THETA} %{COS_THETA} %{SIN_PHI} %{COS_PHI} -I${INC}
+EXTRA_CXXFLAGS = %{UNMODIFIED} %{USE_SHORTS} %{SIN_THETA} %{COS_THETA} %{SIN_PHI} %{COS_PHI} -I${INC}
 EXTRA_LDFLAGS = ${OBJ}
 strict_rundir_verify = 0
 allow_label_override = yes
