@@ -249,34 +249,34 @@ def main(argv):
         except Exception:
             pass
 
-        if fpc.name == "povray_photons":
-            povray_assignment = dict()
-            for k,v in assignment.items():
-                op = v.operation
-                povcname = "{}_povray".format(op)
-                found = False
-                for A in implementations[op]:
-                    if A.cname == povcname:
-                        povray_assignment[k] = A
-                        found = True
-                        break
-                if not found:
-                    logger.error("Unable to find povray function: {}", glibcname)
-                    sys.exit(2)
+        # if fpc.name == "povray_photons":
+        #     povray_assignment = dict()
+        #     for k,v in assignment.items():
+        #         op = v.operation
+        #         povcname = "{}_povray".format(op)
+        #         found = False
+        #         for A in implementations[op]:
+        #             if A.cname == povcname:
+        #                 povray_assignment[k] = A
+        #                 found = True
+        #                 break
+        #         if not found:
+        #             logger.error("Unable to find povray function: {}", povcname)
+        #             sys.exit(2)
 
-            try:
-                fpt_query = fpc.to_fptaylor(fpc.expression, povray_assignment)
-                fpt_res = fptaylor.Result(fpt_query, fptaylor.CHECK_CONFIG)
-                error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
-                model_error = float(fractions.Fraction(str(model["total_error"])))
-                cost = float(fractions.Fraction(str(model["total_cost"])))
-                print("{}\t{}\t{}".format(cost, model_error, error))
-                functions.append({"error": error,
-                                  "assignment": povray_assignment,
-                                  "cost": cost,
-                                  "cname": "{}_povray".format(fpc.name)})
-            except Exception:
-                pass
+        #     try:
+        #         fpt_query = fpc.to_fptaylor(fpc.expression, povray_assignment)
+        #         fpt_res = fptaylor.Result(fpt_query, fptaylor.CHECK_CONFIG)
+        #         error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
+        #         model_error = float(fractions.Fraction(str(model["total_error"])))
+        #         cost = float(fractions.Fraction(str(model["total_cost"])))
+        #         print("{}\t{}\t{}".format(cost, model_error, error))
+        #         functions.append({"error": error,
+        #                           "assignment": povray_assignment,
+        #                           "cost": cost,
+        #                           "cname": "{}_povray".format(fpc.name)})
+        #     except Exception:
+        #         pass
 
 
         h_name = "{}.h".format(fpc.name)
