@@ -19,7 +19,7 @@ def aggregate_graph(filenames):
     os.chdir(start)
     graph(pointss, "aggragate")
 
-def graph(errorss, speedupss, outname, dump_file=None):
+def graph(errorss, speedupss, outname, zoomed=False):
     assert(len(errorss) == len(speedupss))
     x_errors = sum(errorss, [])
     y_speedups = sum(speedupss, [])
@@ -45,6 +45,23 @@ def graph(errorss, speedupss, outname, dump_file=None):
     #ax.set_title("Aggregate", fontsize=20)
 
     ax.axhline(1, color="grey")
+
+    if zoomed:
+        xmin = min(x_errors)
+        xmax = 10.0
+        assert(xmin < xmax)
+        xextra = (xmax - xmin) / 20
+        zoomed_y = [y for x,y in zip(x_errors, y_speedups) if x <= xmax]
+        ymin = min(zoomed_y)
+        ymax = max(zoomed_y)
+        yextra = (ymax - ymin) / 20
+        xmin -= xextra * 2**-2
+        xmax += xextra
+        ymin -= yextra
+        ymax += yextra
+        print(xmin, xmax)
+        ax.set_xlim(xmin, xmax)
+        ax.set_ylim(ymin, ymax)
 
     # if len(errorss) > 2:
     #     x = [math.log(t) for t in x_errors]
@@ -105,16 +122,5 @@ def zoom(errors, speedups, max_zoomed_err):
 if __name__ == "__main__":
     errorss, speedupss = read_all(sys.argv[1:])
     graph(errorss, speedupss, "aggregate")
-
-    min_err = min(min(errors) for errors in errorss)
-    diff_err = 1.0 - min_err
-    max_zoomed_err = 1 + diff_err
-
-    zoomed_errorss = list()
-    zoomed_speedupss = list()
-    for e,s in zip(errorss, speedupss):
-        zerrors, zspeedups = zoom(e, s, max_zoomed_err)
-        zoomed_errorss.append(zerrors)
-        zoomed_speedupss.append(zoomed_speedups)
-    graph(zoomed_errorss, zoomed_speedupss, "zoomed_aggregate")
+    graph(errorss, speedupss, "zoomed_aggregate", zoomed=True)
 
