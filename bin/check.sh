@@ -55,7 +55,7 @@ EOF
 
 run ()
 {
-    \time -f %e timeout 30m ${SCRIPT_LOCATION}/optuner ${SCRIPT_LOCATION}/../benchmarks/$1.fpcore --verbosity medium >& ${SCRIPT_LOCATION}/${check_date}/log_$1.txt
+    \time -f %e timeout 120m ${SCRIPT_LOCATION}/optuner ${SCRIPT_LOCATION}/../benchmarks/$1.fpcore --verbosity medium >& ${SCRIPT_LOCATION}/${check_date}/log_$1.txt
     TIME=$(tail ${SCRIPT_LOCATION}/${check_date}/log_$1.txt -n1)
     pushd ${SCRIPT_LOCATION}/../implementations/timing/
     make > /dev/null
@@ -114,7 +114,7 @@ run Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
 
 # time out
 # run azimuth
-# run complex_sine_and_cosine
+run complex_sine_and_cosine
 # run Diagrams_TwoD_Path_Metafont_Internal_hobbyF_from_diagrams_contrib_1_3_0_5
 # run nmse_problem_3_4_2
 
