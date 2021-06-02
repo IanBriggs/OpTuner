@@ -34,7 +34,7 @@ def graph(errorss, speedupss, outname, zoomed=False):
     # plot
     fig, ax = plt.subplots()
     for i in range(len(errorss)):
-        ax.plot(errorss[i], speedupss[i], marker="o", mfc="#ff007f", color="black")
+        ax.plot(errorss[i], speedupss[i], marker="o", mfc="#ff007f", color="pink", alpha=0.7)
     #ax.scatter(x_errors, y_speedups, alpha=0.60, s=60, color="#ff007f")
     ax.set_xscale('log')
     ax.set_xlabel("Accuracy vs GLibC")
