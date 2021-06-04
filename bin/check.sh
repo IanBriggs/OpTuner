@@ -55,18 +55,18 @@ EOF
 
 run ()
 {
-    \time -f %e timeout 120m ${SCRIPT_LOCATION}/optuner ${SCRIPT_LOCATION}/../benchmarks/$1.fpcore --verbosity medium >& ${SCRIPT_LOCATION}/${check_date}/log_$1.txt
-    TIME=$(tail ${SCRIPT_LOCATION}/${check_date}/log_$1.txt -n1)
+    \time -f %e timeout $1m ${SCRIPT_LOCATION}/optuner ${SCRIPT_LOCATION}/../benchmarks/$2.fpcore --verbosity medium >& ${SCRIPT_LOCATION}/${check_date}/log_$2.txt
+    TIME=$(tail ${SCRIPT_LOCATION}/${check_date}/log_$2.txt -n1)
     pushd ${SCRIPT_LOCATION}/../implementations/timing/
     make > /dev/null
-    if [ -f ./bin/time_$1 ] ; then
-        ./bin/time_$1 > json/time_$1.json
+    if [ -f ./bin/time_$2 ] ; then
+        ./bin/time_$2 > json/time_$2.json
     fi
     popd
     cat <<EOF >> ${SCRIPT_LOCATION}/${check_date}/index.html
   <li>
-    <h1>$1</h1>
-    <img src="time_$1.png" />
+    <h1>$2</h1>
+    <img src="time_$2.png" />
     <time>$TIME seconds runtime</time>
   </li>
 EOF
@@ -75,46 +75,46 @@ export -f run
 
 #run povray_photons
 
-run Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A
-run Data_Number_Erf_dmerfcx_from_erf_2_0_0_0
-run Data_Random_Distribution_Normal_normalF_from_random_fu_0_2_6_2
-run Diagrams_ThreeD_Transform_aboutX_from_diagrams_lib_1_3_0_3_A
-run Diagrams_ThreeD_Transform_aboutX_from_diagrams_lib_1_3_0_3_B
-run Diagrams_ThreeD_Transform_aboutY_from_diagrams_lib_1_3_0_3
-run exp1x
-run hartman3
-run hartman6
-run i6
-run Linear_Quaternion_cexp_from_linear_1_19_1_3
-run logexp2
-run logexp
-run nmse_example_3_10
-run nmse_example_3_3
-run nmse_example_3_4
-run nmse_example_3_7
-run nmse_example_3_8
-run nmse_problem_3_3_2
-run nmse_problem_3_3_6
-run nmse_problem_3_3_7
-run nmse_problem_3_4_4
-run nmse_section_3_5
-run Numeric_SpecFunctions_invIncompleteBetaWorker_from_math_functions_0_1_5_2_B
-run Numeric_SpecFunctions_logBeta_from_math_functions_0_1_5_2_A
-run Numeric_SpecFunctions_logBeta_from_math_functions_0_1_5_2_B
-run Numeric_SpecFunctions_slogFactorial_from_math_functions_0_1_5_2_B
-run Numeric_SpecFunctions_stirlingError_from_math_functions_0_1_5_2
-run sphere
-run Statistics_Distribution_Beta_cdensity_from_math_functions_0_1_5_2
-run Statistics_Distribution_Binomial_directEntropy_from_math_functions_0_1_5_2
-run Statistics_Distribution_Poisson_clogProbability_from_math_functions_0_1_5_2
-run Statistics_Distribution_Poisson_Internal_probability_from_math_functions_0_1_5_2
+run 10 Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A
+run 10 Data_Number_Erf_dmerfcx_from_erf_2_0_0_0
+run 10 Data_Random_Distribution_Normal_normalF_from_random_fu_0_2_6_2
+run 10 Diagrams_ThreeD_Transform_aboutX_from_diagrams_lib_1_3_0_3_A
+run 10 Diagrams_ThreeD_Transform_aboutX_from_diagrams_lib_1_3_0_3_B
+run 10 Diagrams_ThreeD_Transform_aboutY_from_diagrams_lib_1_3_0_3
+run 10 exp1x
+run 10 hartman3
+run 10 hartman6
+run 10 i6
+run 10 Linear_Quaternion_cexp_from_linear_1_19_1_3
+run 10 logexp2
+run 10 logexp
+run 10 nmse_example_3_10
+run 10 nmse_example_3_3
+run 10 nmse_example_3_4
+run 10 nmse_example_3_7
+run 10 nmse_example_3_8
+run 10 nmse_problem_3_3_2
+run 10 nmse_problem_3_3_6
+run 10 nmse_problem_3_3_7
+run 10 nmse_problem_3_4_4
+run 10 nmse_section_3_5
+run 10 Numeric_SpecFunctions_invIncompleteBetaWorker_from_math_functions_0_1_5_2_B
+run 10 Numeric_SpecFunctions_logBeta_from_math_functions_0_1_5_2_A
+run 10 Numeric_SpecFunctions_logBeta_from_math_functions_0_1_5_2_B
+run 10 Numeric_SpecFunctions_slogFactorial_from_math_functions_0_1_5_2_B
+run 10 Numeric_SpecFunctions_stirlingError_from_math_functions_0_1_5_2
+run 10 sphere
+run 10 Statistics_Distribution_Beta_cdensity_from_math_functions_0_1_5_2
+run 10 Statistics_Distribution_Binomial_directEntropy_from_math_functions_0_1_5_2
+run 10 Statistics_Distribution_Poisson_clogProbability_from_math_functions_0_1_5_2
+run 10 Statistics_Distribution_Poisson_Internal_probability_from_math_functions_0_1_5_2
 
 # long running
-run Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
+run 120 Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
 
 # time out
 # run azimuth
-run complex_sine_and_cosine
+run 180 complex_sine_and_cosine
 # run Diagrams_TwoD_Path_Metafont_Internal_hobbyF_from_diagrams_contrib_1_3_0_5
 # run nmse_problem_3_4_2
 
