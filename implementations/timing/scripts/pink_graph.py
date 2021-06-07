@@ -12,24 +12,11 @@ import math
 
 from os import path
 
-def aggregate_graph(filenames):
-    start = os.getcwd()
-    os.chdir(COST_DIR)
-    pointss = read_all(filenames)
-    os.chdir(start)
-    graph(pointss, "aggragate")
 
 def graph(errorss, speedupss, outname, zoomed=False):
     assert(len(errorss) == len(speedupss))
     x_errors = sum(errorss, [])
     y_speedups = sum(speedupss, [])
-
-    # dump data
-    # if dump_file is None:
-    #     dump_file = path.join(COST_DIR, "{}.data".format(outname))
-    # with open(dump_file, 'w') as f:
-    #     f.write("x_errors = {}\n".format(x_errors))
-    #     f.write("y_speedups = {}\n".format(y_speedups))
 
     # plot
     fig, ax = plt.subplots()
@@ -63,12 +50,6 @@ def graph(errorss, speedupss, outname, zoomed=False):
         ax.set_xlim(xmin, xmax)
         ax.set_ylim(ymin, ymax)
 
-    # if len(errorss) > 2:
-    #     x = [math.log(t) for t in x_errors]
-    #     y = y_speedups
-    #     m, b = np.poly1d(np.polyfit(x, y, 1))
-    #     ax.plot(np.unique(x_errors), m*(np.unique(x)) + b, color="blue", linewidth=2)
-
     fig.savefig("{}.png".format(outname))
     plt.close()
 
@@ -78,6 +59,8 @@ def read_all(filenames):
     speedupss = list()
 
     data = list()
+    total_points = 0
+    total_skipped = 0
     for fname in filenames:
         print(fname)
         with open(fname) as f:
@@ -98,11 +81,28 @@ def read_all(filenames):
                     glibc_e = run["error"]
                     glibc_a = total_time / total_count
             errors, speedups = normalize(errors, averages, glibc_e, glibc_a)
+            tot = len(errors)
+            total_points += tot
+            print("  points: {}".format(tot))
+            old_es = list(zip(errors, speedups))
+            errors = list()
+            speedups = list()
+            current = old_es[0][1] - 1
+            skipped = 0
+            for e,s in old_es:
+                if s < current:
+                    skipped += 1
+                else:
+                    errors.append(e)
+                    speedups.append(s)
+                    current = s
+            total_skipped += skipped
+            print("  non pareto points: {}".format(skipped))
             errorss.append(errors)
             speedupss.append(speedups)
             graph([errors], [speedups], path.basename(fname).replace(".json",""))
 
-    return errorss, speedupss
+    return errorss, speedupss, total_points, total_skipped
 
 
 def normalize(errors, averages, pinned_e, pinned_a):
@@ -120,7 +120,9 @@ def zoom(errors, speedups, max_zoomed_err):
     return errors, speedups
 
 if __name__ == "__main__":
-    errorss, speedupss = read_all(sys.argv[1:])
+    errorss, speedupss, total_points, total_skipped = read_all(sys.argv[1:])
+    print("Total points: {}".format(total_points))
+    print("Total skipped: {}".format(total_skipped))
     graph(errorss, speedupss, "aggregate")
     graph(errorss, speedupss, "zoomed_aggregate", zoomed=True)
 

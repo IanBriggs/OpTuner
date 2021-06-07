@@ -5,7 +5,7 @@ import sys
 import json
 
 import matplotlib.pyplot as plt
-
+from brokenaxes import brokenaxes
 
 
 def read_all_json(filename):
@@ -59,23 +59,32 @@ def generate_epsilon_vs_cost(funcs, name):
             x_epsilons_lib.append(f["epsilon"])
             y_costs_lib.append(f["cost"])
 
-    fig, ax = plt.subplots()
-    ax.scatter(x_epsilons_raw, y_costs_raw, color="blue",   alpha=0.7, s=100)
-    ax.scatter(x_epsilons_ml2, y_costs_ml2, color="orange", alpha=0.7, s=100)
-    ax.scatter(x_epsilons_ml,  y_costs_ml,  color="purple", alpha=0.7, s=100)
-    ax.scatter(x_epsilons_lib, y_costs_lib, color="green",  alpha=0.7, s=100)
+    all_costs = sorted([f["cost"] for f in funcs])
+    crlibm = all_costs[-1]
+    next_max = all_costs[-2]
 
-    ax.set_xscale('log')
-    xmin, xmax = ax.set_xlim()
-    ax.set_xlim(xmax, xmin)
+    all_eps = sorted([f["epsilon"] for f in funcs])
+    max_eps = all_eps[-1]
 
-    ymin, ymax = ax.set_ylim()
-    ax.set_ylim(0, ymax)
+    fig = plt.figure()
+    bax = brokenaxes(xlims=None,
+                     ylims=((0, next_max+1), (crlibm-1, crlibm+1)),
+		     hspace=.05)
+
+    bax.scatter(x_epsilons_raw, y_costs_raw, color="blue",   alpha=0.7, s=100)
+    bax.scatter(x_epsilons_ml2, y_costs_ml2, color="orange", alpha=0.7, s=100)
+    bax.scatter(x_epsilons_ml,  y_costs_ml,  color="purple", alpha=0.7, s=100)
+    bax.scatter(x_epsilons_lib, y_costs_lib, color="green",  alpha=0.7, s=100)
+
+
+    bax.set_xscale('log')
+    xmin, xmax = bax.set_xlim()
+    bax.set_xlim(xmax[1], xmin[0])
 
     if False:
-        ax.axis("off")
-        ax.get_xaxis().set_ticks([])
-        ax.get_yaxis().set_ticks([])
+        bax.axis("off")
+        bax.get_xaxis().set_ticks([])
+        bax.get_yaxis().set_ticks([])
 
     fig.savefig("{}.png".format(name.replace(" ", "_")),
                 bbox_inches="tight",
