@@ -4,9 +4,9 @@
         :name "povray_photons"
         :pre (and (<= -3.141592653589793 theta 3.141592653589793)
                   (<= -3.141592653589793 phi 3.141592653589793)
-		  (<= -10 raw_normal_x 10)
-		  (<= -10 raw_normal_y 10)
-		  (<= -10 raw_normal_z 10))
+		  (<= -1 raw_normal_x 1)
+		  (<= -1 raw_normal_y 1)
+		  (<= -1 raw_normal_z 1))
         (let* ([direction_y (sin theta)]
                [direction_x_0 (cos theta)]
                [direction_z (* direction_x_0 (sin phi))]
