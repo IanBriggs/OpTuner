@@ -73,21 +73,31 @@ EOF
 }
 export -f run
 
-#run povray_photons
+# Case study
+run 80 povray_photons
 
+# Normal
 run 10 Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A
 run 10 Data_Number_Erf_dmerfcx_from_erf_2_0_0_0
 run 10 Data_Random_Distribution_Normal_normalF_from_random_fu_0_2_6_2
 run 10 Diagrams_ThreeD_Transform_aboutX_from_diagrams_lib_1_3_0_3_A
 run 10 Diagrams_ThreeD_Transform_aboutX_from_diagrams_lib_1_3_0_3_B
 run 10 Diagrams_ThreeD_Transform_aboutY_from_diagrams_lib_1_3_0_3
-run 10 exp1x
-run 10 hartman3
-run 10 hartman6
-run 10 i6
 run 10 Linear_Quaternion_cexp_from_linear_1_19_1_3
-run 10 logexp2
+run 10 Numeric_SpecFunctions_invIncompleteBetaWorker_from_math_functions_0_1_5_2_B
+run 10 Numeric_SpecFunctions_logBeta_from_math_functions_0_1_5_2_A
+run 10 Numeric_SpecFunctions_logBeta_from_math_functions_0_1_5_2_B
+run 10 Numeric_SpecFunctions_slogFactorial_from_math_functions_0_1_5_2_B
+run 10 Numeric_SpecFunctions_stirlingError_from_math_functions_0_1_5_2
+run 10 Statistics_Distribution_Beta_cdensity_from_math_functions_0_1_5_2
+run 10 Statistics_Distribution_Binomial_directEntropy_from_math_functions_0_1_5_2
+run 10 Statistics_Distribution_Poisson_Internal_probability_from_math_functions_0_1_5_2
+run 10 Statistics_Distribution_Poisson_clogProbability_from_math_functions_0_1_5_2
+run 10 exp1x
+run 10 exp1x_log
+run 10 i6
 run 10 logexp
+run 10 logexp2
 run 10 nmse_example_3_10
 run 10 nmse_example_3_3
 run 10 nmse_example_3_4
@@ -97,30 +107,31 @@ run 10 nmse_problem_3_3_2
 run 10 nmse_problem_3_3_6
 run 10 nmse_problem_3_3_7
 run 10 nmse_problem_3_4_4
+run 10 nmse_section_3_11
 run 10 nmse_section_3_5
-run 10 Numeric_SpecFunctions_invIncompleteBetaWorker_from_math_functions_0_1_5_2_B
-run 10 Numeric_SpecFunctions_logBeta_from_math_functions_0_1_5_2_A
-run 10 Numeric_SpecFunctions_logBeta_from_math_functions_0_1_5_2_B
-run 10 Numeric_SpecFunctions_slogFactorial_from_math_functions_0_1_5_2_B
-run 10 Numeric_SpecFunctions_stirlingError_from_math_functions_0_1_5_2
 run 10 sphere
-run 10 Statistics_Distribution_Beta_cdensity_from_math_functions_0_1_5_2
-run 10 Statistics_Distribution_Binomial_directEntropy_from_math_functions_0_1_5_2
-run 10 Statistics_Distribution_Poisson_clogProbability_from_math_functions_0_1_5_2
-run 10 Statistics_Distribution_Poisson_Internal_probability_from_math_functions_0_1_5_2
 
 # long running
-run 120 Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
+run 30 Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
+run 180 complex_sine_and_cosine
+run 70 Diagrams_TwoD_Path_Metafont_Internal_hobbyF_from_diagrams_contrib_1_3_0_5
 
 # time out
-# run azimuth
-run 180 complex_sine_and_cosine
-# run Diagrams_TwoD_Path_Metafont_Internal_hobbyF_from_diagrams_contrib_1_3_0_5
-# run nmse_problem_3_4_2
+# run 260 azimuth
+# run 260 nmse_problem_3_4_2
 
 # no configurations
-# run exp1x_log
-# run nmse_section_3_11
+# run 10 hartman3
+# run 10 hartman6
+
+
+
+
+
+
+
+
+
 
 pushd ${SCRIPT_LOCATION}/../implementations/timing/
 ./scripts/pink_graph.py json/*
