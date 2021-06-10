@@ -34,6 +34,7 @@ from utils import Timer, Logger
 
 logger = Logger(level=Logger.MEDIUM, color=Logger.green)
 timer = Timer()
+z3_timer = Timer()
 
 
 def parse_args(argv):
@@ -193,8 +194,11 @@ def main(argv):
         ctx = z3.Context("model_validate", "true")
         optimizer = z3.Optimize(ctx=ctx)
         optimizer.from_string(z3_query)
+        print("model_cost\tmodel_error\terror")
         while True:
+            z3_timer.start()
             state = optimizer.check()
+            z3_timer.stop()
             if str(state) != "sat":
                 break
             z3_model = optimizer.model()
@@ -240,8 +244,8 @@ def main(argv):
             fpt_query = fpc.to_fptaylor(fpc.expression, glibc_assignment)
             fpt_res = fptaylor.Result(fpt_query, fptaylor.CHECK_CONFIG)
             error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
-            model_error = float(fractions.Fraction(str(model["total_error"])))
-            cost = float(fractions.Fraction(str(model["total_cost"])))
+            model_error = -1.0
+            cost = -1.0
             print("{}\t{}\t{}".format(cost, model_error, error))
             functions.append({"error": error,
                               "assignment": glibc_assignment,
@@ -268,8 +272,8 @@ def main(argv):
             fpt_query = fpc.to_fptaylor(fpc.expression, crlibm_assignment)
             fpt_res = fptaylor.Result(fpt_query, fptaylor.CHECK_CONFIG)
             error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
-            model_error = float(fractions.Fraction(str(model["total_error"])))
-            cost = float(fractions.Fraction(str(model["total_cost"])))
+            model_error = -2.0
+            cost = -2.0
             print("{}\t{}\t{}".format(cost, model_error, error))
             functions.append({"error": error,
                               "assignment": crlibm_assignment,
@@ -279,16 +283,18 @@ def main(argv):
             pass
 
         if fpc.name == "povray_photons":
-            pov_sin = AccuracySpecification("sin",
-                                            "sin_povray",
-                                            [-3.166329603617993, 3.166329603617993],
-                                            0.0,
-                                            0.02473)
-            pov_cos = AccuracySpecification("cos",
-                                            "cos_povray",
-                                            [-3.166329603617993, 3.166329603617993],
-                                            0.0,
-                                            0.02473)
+            pov_sin = accuracy_specification.AccuracySpecification(
+                "sin",
+                "sin_povray",
+                [-3.166329603617993, 3.166329603617993],
+                0.0,
+                0.02473)
+            pov_cos = accuracy_specification.AccuracySpecification(
+                "cos",
+                "cos_povray",
+                [-3.166329603617993, 3.166329603617993],
+                0.0,
+                0.02473)
 
             povray_assignment = dict()
             for k,v in assignment.items():
@@ -302,8 +308,8 @@ def main(argv):
                 fpt_query = fpc.to_fptaylor(fpc.expression, povray_assignment)
                 fpt_res = fptaylor.Result(fpt_query, fptaylor.CHECK_CONFIG)
                 error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
-                model_error = float(fractions.Fraction(str(model["total_error"])))
-                cost = float(fractions.Fraction(str(model["total_cost"])))
+                model_error = -3.0
+                cost = -3.0
                 print("{}\t{}\t{}".format(cost, model_error, error))
                 functions.append({"error": error,
                                   "assignment": povray_assignment,
@@ -365,5 +371,17 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         retval = 1
     timer.stop()
-    logger("Total time: {}", timer.elapsed())
+
+    fpt_time = fptaylor.timer.elapsed()
+    gp_time = gelpia_interface.timer.elapsed()
+    z3_time = z3_timer.elapsed()
+    tot_time = timer.elapsed()
+    oth_time = tot_time - (fpt_time + gp_time + z3_time)
+    print("")
+    print("Source  \tTime")
+    print("FPTaylor\t{}".format(fpt_time))
+    print("Gelpia  \t{}".format(gp_time))
+    print("Z3      \t{}".format(z3_time))
+    print("Other   \t{}".format(oth_time))
+    print("Total   \t{}".format(tot_time))
     sys.exit(retval)

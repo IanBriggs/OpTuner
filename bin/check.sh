@@ -74,7 +74,7 @@ EOF
 export -f run
 
 # Case study
-run 80 povray_photons
+run 120 povray_photons
 
 # Normal
 run 10 Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A
@@ -112,9 +112,9 @@ run 10 nmse_section_3_5
 run 10 sphere
 
 # long running
-run 30 Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
-run 180 complex_sine_and_cosine
-run 70 Diagrams_TwoD_Path_Metafont_Internal_hobbyF_from_diagrams_contrib_1_3_0_5
+run 60 Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
+run 240 complex_sine_and_cosine
+run 120 Diagrams_TwoD_Path_Metafont_Internal_hobbyF_from_diagrams_contrib_1_3_0_5
 
 # time out
 # run 260 azimuth

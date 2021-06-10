@@ -1,3 +1,3 @@
 
 
-from .result import Result, GelpiaInfError
+from .result import Result, GelpiaInfError, timer
