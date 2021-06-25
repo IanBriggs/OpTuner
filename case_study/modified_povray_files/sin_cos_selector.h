@@ -5,10 +5,12 @@
 #include "expanded_all_functions.h"
 
 
-#if defined(USE_CHAR_THETA)
+#if defined(UNMODIFIED)
 #define SIN_THETA(x) photonOptions.sinTheta[x]
 #elif defined(SIN_THETA_IS_SIN_CONST)
 #define SIN_THETA(x) (x)
+#elif defined(SIN_THETA_IS_SIN_CONST2)
+#define SIN_THETA(x) (0.707106)
 #elif defined(SIN_THETA_IS_SIN_CRLIBM)
 #define SIN_THETA(x) sin_crlibm(x)
 #elif defined(SIN_THETA_IS_SIN_GLIBC)
@@ -107,10 +109,12 @@
 
 
 
-#if defined(USE_CHAR_THETA)
+#if defined(UNMODIFIED)
 #define COS_THETA(x) photonOptions.cosTheta[x]
 #elif defined(COS_THETA_IS_COS_CONST)
 #define COS_THETA(x) (-x)
+#elif defined(COS_THETA_IS_COS_CONST2)
+#define COS_THETA(x) (0.707106)
 #elif defined(COS_THETA_IS_COS_CRLIBM)
 #define COS_THETA(x) cos_crlibm(x)
 #elif defined(COS_THETA_IS_COS_GLIBC)
@@ -201,10 +205,12 @@
 
 
 
-#if defined(USE_CHAR_THETA)
+#if defined(UNMODIFIED)
 #define SIN_PHI(x) photonOptions.sinTheta[x]
 #elif defined(SIN_PHI_IS_SIN_CONST)
-#define SIN_PHI(x) (1.0)
+#define SIN_PHI(x) (x)
+#elif defined(SIN_PHI_IS_SIN_CONST2)
+#define SIN_PHI(x) (0.707106)
 #elif defined(SIN_PHI_IS_SIN_CRLIBM)
 #define SIN_PHI(x) sin_crlibm(x)
 #elif defined(SIN_PHI_IS_SIN_GLIBC)
@@ -304,10 +310,12 @@
 
 
 
-#if defined(USE_CHAR_THETA)
+#if defined(UNMODIFIED)
 #define COS_PHI(x) photonOptions.cosTheta[x]
 #elif defined(COS_PHI_IS_COS_CONST)
-#define COS_PHI(x) (1.0)
+#define COS_PHI(x) (-x)
+#elif defined(COS_PHI_IS_COS_CONST2)
+#define COS_PHI(x) (0.707106)
 #elif defined(COS_PHI_IS_COS_CRLIBM)
 #define COS_PHI(x) cos_crlibm(x)
 #elif defined(COS_PHI_IS_COS_GLIBC)

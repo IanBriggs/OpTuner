@@ -57,10 +57,8 @@ struct photon_struct {
   SNGL_VECT Loc;          /* location */
   SMALL_COLOUR Colour;    /* color & intensity (flux) */
   unsigned char info;     /* info byte for kd-tree */
-#if defined(USE_CHAR_THETA)
+#if defined(UNMODIFIED) || defined(USE_FCHAR)
   signed char theta, phi; /* incoming direction */
-#elif defined(USE_SHORT_THETA)
-  short theta, phi;
 #else
   double theta, phi;
 #endif

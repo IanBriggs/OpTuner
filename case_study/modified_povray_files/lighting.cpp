@@ -2539,7 +2539,7 @@ static void PhotonDiffuse (FINISH *Finish, VECTOR IPoint, RAY *Eye, VECTOR  Laye
     for(j=0; j<tempn; j++)
     {
       /*DBL theta,phi;*/
-#if defined(USE_CHAR_THETA)
+#if defined(UNMODIFIED)
       int theta,phi;
 #else
       double theta,phi;
@@ -2555,12 +2555,12 @@ static void PhotonDiffuse (FINISH *Finish, VECTOR IPoint, RAY *Eye, VECTOR  Laye
          sin() and cos() functions.  These arrays were initialized in
          InitBacktraceEverything.
       */
-#if defined(USE_CHAR_THETA)
+#if defined(UNMODIFIED)
       theta = photonOptions.photonGatherList[j]->theta+127;
       phi = photonOptions.photonGatherList[j]->phi+127;
-#elif defined(USE_SHORT_THETA)
-      theta = photonOptions.photonGatherList[j]->theta * (M_PI/32768);
-      phi = photonOptions.photonGatherList[j]->phi * (M_PI/32768);;
+#elif defined(USE_FCHAR)
+      theta = photonOptions.photonGatherList[j]->theta * (M_PI/127.0);
+      phi = photonOptions.photonGatherList[j]->phi * (M_PI/127.0);
 #else
       theta = photonOptions.photonGatherList[j]->theta;
       phi = photonOptions.photonGatherList[j]->phi;
@@ -5903,7 +5903,7 @@ static void GlobalPhotonDiffuse (FINISH *Finish, VECTOR IPoint, RAY *Eye, VECTOR
     for(j=0; j<tempn; j++)
     {
       /*DBL theta,phi;*/
-#if defined(USE_CHAR_THETA)
+#if defined(UNMODIFIED)
       int theta,phi;
 #else
       double theta,phi;
@@ -5919,12 +5919,12 @@ static void GlobalPhotonDiffuse (FINISH *Finish, VECTOR IPoint, RAY *Eye, VECTOR
          sin() and cos() functions.  These arrays were initialized in
          InitBacktraceEverything.
       */
-#if defined(USE_CHAR_THETA)
+#if defined(UNMODIFIED)
       theta = photonOptions.photonGatherList[j]->theta+127;
       phi = photonOptions.photonGatherList[j]->phi+127;
-#elif defined(USE_SHORT_THETA)
-      theta = photonOptions.photonGatherList[j]->theta * (M_PI/32768);
-      phi = photonOptions.photonGatherList[j]->phi * (M_PI/32768);
+#elif defined(USE_FCHAR)
+      theta = photonOptions.photonGatherList[j]->theta * (M_PI/127.0);
+      phi = photonOptions.photonGatherList[j]->phi * (M_PI/127.0);
 #else
       theta = photonOptions.photonGatherList[j]->theta;
       phi = photonOptions.photonGatherList[j]->phi;
