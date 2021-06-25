@@ -18,6 +18,12 @@ double logf_vdt(double x);
 double sinf_vdt(double x);
 double tanf_vdt(double x);
 
+double small_cos_vdt(double x);
+double small_sin_vdt(double x);
+
+double small_cosf_vdt(double x);
+double small_sinf_vdt(double x);
+
 #ifdef __cplusplus
 }
 #endif

@@ -60,3 +60,31 @@ double tanf_vdt(double x) {
 }
 
 
+
+
+double small_cos_vdt(double x) {
+  double c, s;
+  vdt::details::fast_sincos_m45_45(x, s, c);
+  return c;
+}
+
+double small_sin_vdt(double x) {
+  double c, s;
+  vdt::details::fast_sincos_m45_45(x, s, c);
+  return s;
+}
+
+
+
+
+double small_cosf_vdt(double x) {
+  float c, s;
+  vdt::details::fast_sincosf_m45_45((float)x, s, c);
+  return (double) c;
+}
+
+double small_sinf_vdt(double x) {
+  float c, s;
+  vdt::details::fast_sincosf_m45_45((float)x, s, c);
+  return (double) s;
+}
