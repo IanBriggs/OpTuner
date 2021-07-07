@@ -2,7 +2,7 @@
     "operation": "exp",
     "cname": "expf_rlibm",
     "domain": [-3.40282e+38, 88.7228380333886903],
-    "epsilon": 5.960465e-08
+    "epsilon": 5.960465e-08,
     "delta": 1.1754943508222875e-38
 }
 {
