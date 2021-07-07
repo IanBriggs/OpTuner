@@ -121,6 +121,18 @@ def extract_fpcore_name(fpc):
             fpc.name = name
             return
 
+def print_on_domain_violation(fpc, e, error, assignment):
+    if not hasattr(e, "possible_ids"):
+        return
+    arg = e.args[0]
+    real_domain = fpc.dynamic_range(arg)
+    impl = assignment[e.name]
+    lower_gap = real_domain[0] - impl.domain[0]
+    upper_gap = impl.domain[1] - real_domain[1]
+    min_gap = min(lower_gap, upper_gap)
+    if error > min_gap:
+        print("AAAHHH range violation")
+
 def main(argv):
     args = parse_args(argv)
 
@@ -220,6 +232,8 @@ def main(argv):
             except Exception:
                 pass
 
+            if error > model_error:
+                fpc.for_each(lambda e: print_on_domain_violation(fpc, e, error-model_error, assignment))
 
         functions.sort(key=lambda f: f["error"])
         for i, func in enumerate(functions):
