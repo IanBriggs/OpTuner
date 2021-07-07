@@ -1,5 +1,75 @@
 {
     "operation": "cos",
+    "cname": "cos_amdlibm",
+    "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.225073858507201e-308
+}
+{
+    "operation": "exp",
+    "cname": "exp_amdlibm",
+    "domain": [-1.7976931348623157e+308, 709.782712893384],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.225073858507201e-308
+}
+{
+    "operation": "log",
+    "cname": "log_amdlibm",
+    "domain": [0.0, 1.7976931348623157e+308],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.225073858507201e-308
+}
+{
+    "operation": "sin",
+    "cname": "sin_amdlibm",
+    "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.225073858507201e-308
+}
+{
+    "operation": "tan",
+    "cname": "tan_amdlibm",
+    "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
+    "epsilon": 2.220446049250313e-16,
+    "delta": 2.225073858507201e-308
+}
+{
+    "operation": "cos",
+    "cname": "cosf_amdlibm",
+    "domain": [-3.40282e+38, 3.40282e+38],
+    "epsilon": 4.80548e-07,
+    "delta": 1.7632415262334313e-38
+}
+{
+    "operation": "exp",
+    "cname": "expf_amdlibm",
+    "domain": [-3.40282e+38, 88.7228380333886903],
+    "epsilon": 8.940697e-08,
+    "delta": 1.7632415262334313e-38
+}
+{
+    "operation": "log",
+    "cname": "logf_amdlibm",
+    "domain": [0.0, 3.40282e+38],
+    "epsilon": 5.960465e-08,
+    "delta": 1.7632415262334313e-38
+}
+{
+    "operation": "sin",
+    "cname": "sinf_amdlibm",
+    "domain": [-3.40282e+38, 3.40282e+38],
+    "epsilon": 4.80548e-07,
+    "delta": 1.7632415262334313e-38
+}
+{
+    "operation": "tan",
+    "cname": "tanf_amdlibm",
+    "domain": [-3.40282e+38, 3.40282e+38],
+    "epsilon": 1.192093e-07,
+    "delta": 1.7632415262334313e-38
+}
+{
+    "operation": "cos",
     "cname": "cos_crlibm",
     "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
     "epsilon": 1.1102230246251565e-16,
@@ -72,35 +142,35 @@
     "operation": "cos",
     "cname": "cosf_glibc",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 1.7881393432617188e-07,
+    "epsilon": 4.80548e-07,
     "delta": 1.7632415262334313e-38
 }
 {
     "operation": "exp",
     "cname": "expf_glibc",
     "domain": [-3.40282e+38, 88.7228380333886903],
-    "epsilon": 1.7881393432617188e-07,
+    "epsilon": 8.940697e-08,
     "delta": 1.7632415262334313e-38
 }
 {
     "operation": "log",
     "cname": "logf_glibc",
     "domain": [0.0, 3.40282e+38],
-    "epsilon": 1.7881393432617188e-07,
+    "epsilon": 5.960465e-08,
     "delta": 1.7632415262334313e-38
 }
 {
     "operation": "sin",
     "cname": "sinf_glibc",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 1.7881393432617188e-07,
+    "epsilon": 4.80548e-07,
     "delta": 1.7632415262334313e-38
 }
 {
     "operation": "tan",
     "cname": "tanf_glibc",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 1.7881393432617188e-07,
+    "epsilon": 1.192093e-07,
     "delta": 1.7632415262334313e-38
 }
 {
@@ -11013,7 +11083,7 @@
     "epsilon": 2.0272255839325989e-14,
     "operation": "exp"
 }
-{
+
     "operation": "cos",
     "cname": "cos_openlibm",
     "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
@@ -11052,49 +11122,49 @@
     "operation": "cos",
     "cname": "cosf_openlibm",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 1.7881393432617188e-07,
+    "epsilon": 4.80548e-07,
     "delta": 1.7632415262334313e-38
 }
 {
     "operation": "exp",
     "cname": "expf_openlibm",
     "domain": [-3.40282e+38, 88.7228380333886903],
-    "epsilon": 1.7881393432617188e-07,
+    "epsilon": 8.940697e-08,
     "delta": 1.7632415262334313e-38
 }
 {
     "operation": "log",
     "cname": "logf_openlibm",
     "domain": [0.0, 3.40282e+38],
-    "epsilon": 1.7881393432617188e-07,
+    "epsilon": 5.960465e-08,
     "delta": 1.7632415262334313e-38
 }
 {
     "operation": "sin",
     "cname": "sinf_openlibm",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 1.7881393432617188e-07,
+    "epsilon": 4.80548e-07,
     "delta": 1.7632415262334313e-38
 }
 {
     "operation": "tan",
     "cname": "tanf_openlibm",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 1.7881393432617188e-07,
+    "epsilon": 1.192093e-07,
     "delta": 1.7632415262334313e-38
 }
 {
     "operation": "exp",
     "cname": "expf_rlibm",
     "domain": [-3.40282e+38, 88.7228380333886903],
-    "epsilon": 1.1920928955078125e-07,
+    "epsilon": 5.960465e-08
     "delta": 1.1754943508222875e-38
 }
 {
     "operation": "log",
     "cname": "logf_rlibm",
     "domain": [0.0, 3.40282e+38],
-    "epsilon": 1.1920928955078125e-07,
+    "epsilon": 5.960465e-08,
     "delta": 1.1754943508222875e-38
 }
 {
@@ -11136,34 +11206,62 @@
     "operation": "cos",
     "cname": "cosf_vdt",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 7.808208465576170E-06,
+    "epsilon": 3.874535e-06,
     "delta": 7.699487997885980E-37
 }
 {
     "operation": "exp",
     "cname": "expf_vdt",
     "domain": [-3.40282e+38, 88.7228380333886903],
-    "epsilon": 7.808208465576170E-06,
+    "epsilon": 3.904105e-06,
     "delta": 7.699487997885980E-37
 }
 {
     "operation": "log",
     "cname": "logf_vdt",
     "domain": [0.0, 3.40282e+38],
-    "epsilon": 6.556510925292970E-07,
+    "epsilon": 1.20926e-07,
     "delta": 6.465218929522580E-38
 }
 {
     "operation": "sin",
     "cname": "sinf_vdt",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 7.808208465576170E-06,
+    "epsilon": 3.874535e-06,
     "delta": 7.699487997885980E-37
 }
 {
     "operation": "tan",
     "cname": "tanf_vdt",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 7.808208465576170E-06,
+    "epsilon": 3.933907e-06,
+    "delta": 7.699487997885980E-37
+}
+{
+    "operation": "cos",
+    "cname": "small_cos_vdt",
+    "domain": [-0.7853981633974483, 0.7853981633974483],
+    "epsilon": 1.110223024625160E-15,
+    "delta": 1.112536929253600E-307
+}
+{
+    "operation": "sin",
+    "cname": "small_sin_vdt",
+    "domain": [-0.7853981633974483, 0.7853981633974483],
+    "epsilon": 1.110223024625160E-15,
+    "delta": 1.112536929253600E-307
+}
+{
+    "operation": "cos",
+    "cname": "small_cosf_vdt",
+    "domain": [0.7853981633974483, 0.7853981633974483],
+    "epsilon": 3.874535e-06,
+    "delta": 7.699487997885980E-37
+}
+{
+    "operation": "sin",
+    "cname": "small_sinf_vdt",
+    "domain": [0.7853981633974483, 0.7853981633974483],
+    "epsilon": 3.874535e-06,
     "delta": 7.699487997885980E-37
 }

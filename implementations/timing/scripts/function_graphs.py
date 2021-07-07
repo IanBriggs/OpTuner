@@ -38,17 +38,27 @@ def generate_epsilon_vs_cost(funcs, name):
 
     x_epsilons_raw = list()
     y_costs_raw = list()
+    x_epsilons_raw_wide = list()
+    y_costs_raw_wide = list()
     x_epsilons_ml2 = list()
     y_costs_ml2 = list()
+    x_epsilons_ml2_wide = list()
+    y_costs_ml2_wide = list()
     x_epsilons_ml = list()
     y_costs_ml = list()
     x_epsilons_lib = list()
     y_costs_lib = list()
 
     for f in funcs:
-        if "raw" in f["cname"]:
+        if "raw" in f["cname"] and "wide" in f["cname"]:
+            x_epsilons_raw_wide.append(f["epsilon"])
+            y_costs_raw_wide.append(f["cost"])
+        elif "raw" in f["cname"]:
             x_epsilons_raw.append(f["epsilon"])
             y_costs_raw.append(f["cost"])
+        elif "ml2" in f["cname"] and "wide" in f["cname"]:
+            x_epsilons_ml2_wide.append(f["epsilon"])
+            y_costs_ml2_wide.append(f["cost"])
         elif "ml2" in f["cname"]:
             x_epsilons_ml2.append(f["epsilon"])
             y_costs_ml2.append(f["cost"])
@@ -69,22 +79,27 @@ def generate_epsilon_vs_cost(funcs, name):
     fig = plt.figure()
     bax = brokenaxes(xlims=None,
                      ylims=((0, next_max+1), (crlibm-1, crlibm+1)),
-		     hspace=.05)
+		     hspace=.05,
+                     d=0)
 
-    bax.scatter(x_epsilons_raw, y_costs_raw, color="blue",   alpha=0.7, s=100)
-    bax.scatter(x_epsilons_ml2, y_costs_ml2, color="orange", alpha=0.7, s=100)
-    bax.scatter(x_epsilons_ml,  y_costs_ml,  color="purple", alpha=0.7, s=100)
-    bax.scatter(x_epsilons_lib, y_costs_lib, color="green",  alpha=0.7, s=100)
+    bax.axhline(crlibm-1, color="black", linestyle="--", linewidth=4)
+
+    bax.scatter(x_epsilons_raw,      y_costs_raw,      color="blue",   alpha=0.7, s=100)
+    bax.scatter(x_epsilons_raw_wide, y_costs_raw_wide, color="cyan",   alpha=0.7, s=100)
+    bax.scatter(x_epsilons_ml2,      y_costs_ml2,      color="orange", alpha=0.7, s=100)
+    bax.scatter(x_epsilons_ml2_wide, y_costs_ml2_wide, color="orange", alpha=0.7, s=100)
+    bax.scatter(x_epsilons_ml,       y_costs_ml,       color="purple", alpha=0.7, s=100)
+    bax.scatter(x_epsilons_lib,      y_costs_lib,      color="green",  alpha=0.7, s=100)
 
 
     bax.set_xscale('log')
     xmin, xmax = bax.set_xlim()
     bax.set_xlim(xmax[1], xmin[0])
 
-    if False:
+    if True:
         bax.axis("off")
-        bax.get_xaxis().set_ticks([])
-        bax.get_yaxis().set_ticks([])
+        [a.set_ticks([]) for a in bax.get_xaxis()]
+        [a.set_ticks([]) for a in bax.get_yaxis()]
 
     fig.savefig("{}.png".format(name.replace(" ", "_")),
                 bbox_inches="tight",

@@ -7,6 +7,7 @@ extern "C" {
 #endif
 
 
+#include "amdlibm_functions.h"
 #include "crlibm_functions.h"
 #include "glibc_functions.h"
 // #include "mpfr_functions.h"
