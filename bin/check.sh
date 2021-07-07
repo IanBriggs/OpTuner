@@ -132,6 +132,7 @@ grep violation ${SCRIPT_LOCATION}/${check_date}/log_*.txt
 
 
 
+
 pushd ${SCRIPT_LOCATION}/../implementations/timing/
 ./scripts/pink_graph.py json/*
 ./scripts/function_graphs.py ../all_specifications.json ../all_costs.json
