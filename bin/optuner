@@ -121,8 +121,15 @@ def extract_fpcore_name(fpc):
             fpc.name = name
             return
 
+
+class AAAHHH(Exception):
+    def __init__(self):
+        pass
+
 def print_on_domain_violation(fpc, e, error, assignment):
     if not hasattr(e, "possible_ids"):
+        return
+    if e.duplicate:
         return
     arg = e.args[0]
     real_domain = fpc.dynamic_range(arg)
@@ -130,8 +137,20 @@ def print_on_domain_violation(fpc, e, error, assignment):
     lower_gap = real_domain[0] - impl.domain[0]
     upper_gap = impl.domain[1] - real_domain[1]
     min_gap = min(lower_gap, upper_gap)
-    if error > min_gap:
+
+    if error < min_gap:
+        return
+
+    try:
+        fpt_query = fpc.to_fptaylor(e, assignment)
+        fpt_res = fptaylor.Result(fpt_query, fptaylor.CHECK_CONFIG)
+        new_error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
+    except Exception:
+        pass
+
+    if new_error > min_gap:
         print("AAAHHH range violation")
+        raise AAAHHH()
 
 def main(argv):
     args = parse_args(argv)
@@ -233,7 +252,10 @@ def main(argv):
                 pass
 
             if error > model_error:
-                fpc.for_each(lambda e: print_on_domain_violation(fpc, e, error-model_error, assignment))
+                try:
+                    fpc.for_each(lambda e: print_on_domain_violation(fpc, e, error, assignment))
+                except AAAHHH:
+                    pass
 
         functions.sort(key=lambda f: f["error"])
         for i, func in enumerate(functions):
