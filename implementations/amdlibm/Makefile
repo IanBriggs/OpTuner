@@ -2,7 +2,8 @@
 
 CC ?= gcc
 
-CFLAGS ?= -Wall -Wextra -Wconversion -O3 -march=native -mtune=native -DNDEBUG
+CFLAGS ?= -Wall -Wextra -Wconversion
+CFLAGS += -O3 -march=native -mtune=native -DNDEBUG
 CFLAGS += -Wno-sign-conversion -Wno-conversion
 CFLAGS += -Irequirements/amdlibm/include
 CFLAGS += -Iinclude

@@ -8,6 +8,10 @@
 
 
 
+double cos_amdlibm(double x) {
+  return amd_cos(x);
+}
+
 double exp_amdlibm(double x) {
   return amd_exp(x);
 }
@@ -28,6 +32,10 @@ double tan_amdlibm(double x) {
 }
 
 
+
+double cosf_amdlibm(double x) {
+  return (double) amd_cosf((float) x);
+}
 
 double expf_amdlibm(double x) {
   return (double) amd_expf((float) x);
