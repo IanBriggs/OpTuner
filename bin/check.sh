@@ -127,7 +127,6 @@ run 120 Diagrams_TwoD_Path_Metafont_Internal_hobbyF_from_diagrams_contrib_1_3_0_
 
 
 
-
 grep violation ${SCRIPT_LOCATION}/${check_date}/log_*.txt
 
 
