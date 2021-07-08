@@ -146,7 +146,7 @@ def print_on_domain_violation(fpc, e, error, assignment):
         fpt_res = fptaylor.Result(fpt_query, fptaylor.CHECK_CONFIG)
         new_error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
     except Exception:
-        pass
+        return
 
     if new_error > min_gap:
         print("AAAHHH range violation")
@@ -249,7 +249,7 @@ def main(argv):
                                   "assignment": assignment,
                                   "cost": cost})
             except Exception:
-                pass
+                continue
 
             if error > model_error:
                 try:
