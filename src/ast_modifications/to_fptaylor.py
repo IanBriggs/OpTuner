@@ -31,7 +31,7 @@ def to_fptaylor(self, assignment, lines):
 @add_method(Atom)
 def to_fptaylor(self, assignment, lines):
     rounding = "rnd64({})"
-    if self.name in assignment:
+    if assignment != -1 and self.name in assignment:
         assig = assignment[self.name]
         fpt_triple = eps_and_delta_to_fpt(assig.epsilon, assig.delta)
         rounding = "rnd[64,ne,{},{},{}]({{}})".format(*fpt_triple)
@@ -47,7 +47,9 @@ def to_fptaylor(self, assignment, lines):
     arg_names = [a.name for a in self.args]
 
     rounding = "rnd64({})"
-    if self.name in assignment:
+    if assignment == -1:
+        rounding = "rnd[64,ne,1.0,-53,-53]({})"
+    elif self.name in assignment:
         assig = assignment[self.name]
         fpt_triple = eps_and_delta_to_fpt(assig.epsilon, assig.delta)
         rounding = "rnd[64,ne,{},{},{}]({{}})".format(*fpt_triple)
@@ -60,7 +62,12 @@ def to_fptaylor(self, assignment, lines):
         body = "{} {} {}".format(arg_names[0], self.op, arg_names[1])
 
     else:
-        body = "{}({})".format(self.op, ", ".join(arg_names))
+        if self.op == "expm1":
+            body = "(exp({}) - 1)".format(arg_names[0])
+        elif self.op == "log1p":
+            body = "log(1 + {})".format(arg_names[0])
+        else:
+            body = "{}({})".format(self.op, ", ".join(arg_names))
 
     rounded = rounding.format(body)
     lines.append("  {} = {};".format(self.name, rounded))
