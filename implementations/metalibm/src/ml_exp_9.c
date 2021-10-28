@@ -14,6 +14,9 @@
 #include <math.h>
 
 
+ml_expm1_9(double x) {
+  return ml_exp_9(x) - 1;
+}
 
 double ml_exp_9(double);
 double ml_exp_9(double x){

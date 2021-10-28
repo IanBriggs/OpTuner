@@ -1,63 +1,24 @@
-
-# Given error bounds based on file:
-
-## Sin
- File         | Accuracy
---------------|----------------------
- i387/s_sin.S | no claims on accuracy
- src/k_sin.c  | no claims on accuracy
- src/k_sinf.c | no claims on accuracy
- src/s_sin.c  | "nearly rounded"
- src/s_sinf.c | no claims on accuracy
+Error bound based on [https://members.loria.fr/PZimmermann/papers/accuracy.pdf]()
 
 
-## SinCos
- File            | Accuracy
------------------|----------------------
- src/s_sincos.c  | no claims on accuracy
- src/s_sincosf.c | no claims on accuracy
+| Function | Epsilon |
+|----------|---------|
+| cosf     | 0.501   |
+| expf     | 0.911   |
+| exmp1f   | 0.813   |
+| logf     | 0.888   |
+| log1pf   | 0.839   |
+| sinf     | 0.501   |
+| tanf     | 0.800   |
+|----------|---------|
+| cos      | 0.834   |
+| exp      | 0.949   |
+| exmp1    | 0.907   |
+| log      | 0.944   |
+| log1p    | 0.895   |
+| sin      | 0.831   |
+| tan      | 1.02    |
 
-
-## Cos
- File         | Accuracy
---------------|----------------------
- i387/s_cos.S | no claims on accuracy
- src/k_cos.c  | no claims on accuracy
- src/k_cosf.c | no claims on accuracy
- src/s_cos.c  | "nearly rounded"
- src/s_cosf.c | no claims on accuracy
-
-
-## Tan
- File         | Accuracy
---------------|----------------------
- i387/s_tan.S | no claims on accuracy
- src/k_tan.c  | changable via argument, either 2 ulp or "accurately"
- src/k_tanf.c | no claims on accuracy
- src/s_tan.c  | "nearly rounded"
- src/s_tanf.c | no claims on accuracy
-
-
-## Exp
- File           | Accuracy
-----------------|----------------------
- bsdsrc/b_exp.c | underestimate of 0.869 ulp from 1,156,000 random samples (on a VAX)
- i387/e_exp.S   | "less than one ulp"
- src/e_exp.c    | "according to an error analysis, the error is always less than 1 ulp"
- src/e_expf.c   | no claims on accuracy
- src/k_exp.c    | no claims on accuracy
- src/k_expf.c   | no claims on accuracy
-
-## Log
- File           | Accuracy
-----------------|---------------------
- bsdsrc/b_log.c | less than 1 ulp, based on "Table-driven implementation of the logarithm function in IEEE floating-point arithmetic"
- i387/e_log.S   | no claims on accuracy
- i387/e_logf.S  | no claims on accuracy
- src/e_log.c    | "according to an error analysis, the error is always less than 1 ulp"
- src/e_logf.c   | no claims on accuracy
- src/k_log.h    | "according to an error analysis, the error is always less than 1 ulp"
- src/k_logf.h   | no claims on accuracy
 
 
 ## To turn this into epsilon and delta values

@@ -12,6 +12,9 @@
 #include <stdint.h>
 
 
+ml2_raw_expm1_4(double x) {
+  return ml2_raw_exp_4(x) - 1;
+}
 
 double ml2_raw_exp_4(double);
 double ml2_raw_exp_4(double x){

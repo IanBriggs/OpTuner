@@ -12,6 +12,9 @@
 #include <stdint.h>
 
 
+double ml2_raw_log1p_6(double x) {
+  return ml2_raw_log_6(x + 1);
+}
 
 double ml2_raw_log_6(double);
 double ml2_raw_log_6(double x){

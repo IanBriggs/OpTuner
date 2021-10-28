@@ -14,6 +14,9 @@
 #include <ml_support_lib.h>
 
 
+ml2_expm1_5(double x) {
+  return ml2_exp_5(x) - 1;
+}
 
 double ml2_exp_5(double);
 double ml2_exp_5(double x){

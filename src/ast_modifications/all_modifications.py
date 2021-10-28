@@ -10,6 +10,7 @@ import ast_modifications.name_val
 import ast_modifications.pretty_internals
 import ast_modifications.reject_unsupported
 import ast_modifications.remove_let
+import ast_modifications.replace_exp_log
 import ast_modifications.set_name
 import ast_modifications.strip_rounding
 import ast_modifications.to_c

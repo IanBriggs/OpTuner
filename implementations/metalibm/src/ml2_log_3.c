@@ -13,6 +13,9 @@
 #include <ml_support_lib.h>
 
 
+double ml2_log1p_3(double x) {
+  return ml2_log_3(x + 1);
+}
 
 double ml2_log_3(double);
 double ml2_log_3(double x){

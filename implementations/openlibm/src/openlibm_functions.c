@@ -17,8 +17,18 @@ double exp_openlibm(double x) {
 }
 
 
+double expm1_openlibm(double x) {
+  return expm1(x);
+}
+
+
 double log_openlibm(double x) {
   return log(x);
+}
+
+
+double log1p_openlibm(double x) {
+  return log1p(x);
 }
 
 
@@ -43,8 +53,18 @@ double expf_openlibm(double x) {
 }
 
 
+double expm1f_openlibm(double x) {
+  return (double) expm1f((float) x);
+}
+
+
 double logf_openlibm(double x) {
   return (double) logf((float) x);
+}
+
+
+double log1pf_openlibm(double x) {
+  return (double) log1pf((float) x);
 }
 
 

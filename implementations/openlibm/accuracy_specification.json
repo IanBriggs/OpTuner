@@ -2,69 +2,96 @@
     "operation": "cos",
     "cname": "cos_openlibm",
     "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
-    "epsilon": 2.220446049250313e-16,
-    "delta": 2.225073858507201e-308
+    "epsilon": 1.85E-16,
+    "delta": 3.71E-308
 }
 {
     "operation": "exp",
     "cname": "exp_openlibm",
     "domain": [-1.7976931348623157e+308, 709.782712893384],
-    "epsilon": 2.220446049250313e-16,
-    "delta": 2.225073858507201e-308
+    "epsilon": 2.11E-16,
+    "delta": 4.22E-308
+}
+{
+    "operation": "expm1",
+    "cname": "expm1_openlibm",
+    "domain": [-1.7976931348623157e+308, 709.782712893384],
+    "epsilon": 2.01E-16,
+    "delta": 4.04E-308
 }
 {
     "operation": "log",
     "cname": "log_openlibm",
     "domain": [0.0, 1.7976931348623157e+308],
-    "epsilon": 2.220446049250313e-16,
-    "delta": 2.225073858507201e-308
+    "epsilon": 2.10E-16,
+    "delta": 4.20E-308
+}
+{
+    "operation": "log1p",
+    "cname": "log1p_openlibm",
+    "domain": [-1.0, 1.7976931348623157e+308],
+    "epsilon": 1.99E-16,
+    "delta": 3.98E-308
 }
 {
     "operation": "sin",
     "cname": "sin_openlibm",
     "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
-    "epsilon": 2.220446049250313e-16,
-    "delta": 2.225073858507201e-308
+    "epsilon": 1.85E-16,
+    "delta": 3.70E-308
 }
 {
     "operation": "tan",
     "cname": "tan_openlibm",
     "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
-    "epsilon": 2.220446049250313e-16,
-    "delta": 2.225073858507201e-308
+    "epsilon": 2.26E-16,
+    "delta": 4.54E-308
 }
 {
     "operation": "cos",
     "cname": "cosf_openlibm",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 4.80548e-07,
-    "delta": 1.7632415262334313e-38
+    "epsilon": 1.19E-07,
+    "delta": 2.35E-38
 }
 {
     "operation": "exp",
     "cname": "expf_openlibm",
     "domain": [-3.40282e+38, 88.7228380333886903],
-    "epsilon": 8.940697e-08,
-    "delta": 1.7632415262334313e-38
+    "epsilon": 1.68E-07,
+    "delta": 3.32E-38
+}
+{
+    "operation": "expm1",
+    "cname": "expm1f_openlibm",
+    "domain": [-3.40282e+38, 88.7228380333886903],
+    "epsilon": 1.57E-07,
+    "delta": 3.09E-38
 }
 {
     "operation": "log",
     "cname": "logf_openlibm",
     "domain": [0.0, 3.40282e+38],
-    "epsilon": 5.960465e-08,
-    "delta": 1.7632415262334313e-38
+    "epsilon": 1.65E-07,
+    "delta": 3.26E-38
+}{
+    "operation": "log1p",
+    "cname": "log1pf_openlibm",
+    "domain": [0.0, 3.40282e+38],
+    "epsilon": 1.60E-07,
+    "delta": 3.15E-38
 }
 {
     "operation": "sin",
     "cname": "sinf_openlibm",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 4.80548e-07,
-    "delta": 1.7632415262334313e-38
+    "epsilon": 1.19E-07,
+    "delta": 2.35E-38
 }
 {
     "operation": "tan",
     "cname": "tanf_openlibm",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 1.192093e-07,
-    "delta": 1.7632415262334313e-38
+    "epsilon": 1.55E-07,
+    "delta": 3.06E-38
 }

@@ -3,21 +3,21 @@ Error bound based on [https://members.loria.fr/PZimmermann/papers/accuracy.pdf](
 
 | Function | Epsilon |
 |----------|---------|
-| cosf     | 0.561   |
-| expf     | 0.502   |
-| exmp1f   | 0.813   |
-| logf     | 0.818   |
-| log1pf   | 1.30    |
-| sinf     | 0.561   |
-| tanf     | 1.48    |
+| cosf     | 0.530   |
+| expf     | 1.00    |
+| exmp1f   | 0.537   |
+| logf     | 0.940   |
+| log1pf   | 0.504   |
+| sinf     | 0.530   |
+| tanf     | 0.509   |
 |----------|---------|
-| cos      | 0.516   |
-| exp      | 0.511   |
-| exmp1    | 0.914   |
-| log      | 0.520   |
-| log1p    | 0.903   |
-| sin      | 0.516   |
-| tan      | 0.619   |
+| cos      | 0.800   |
+| exp      | 0.756   |
+| exmp1    | 0.724   |
+| log      | 0.578   |
+| log1p    | 2.52e8  |
+| sin      | 0.800   |
+| tan      | 1.40    |
 
 
 

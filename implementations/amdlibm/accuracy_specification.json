@@ -2,69 +2,97 @@
     "operation": "cos",
     "cname": "cos_amdlibm",
     "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
-    "epsilon": 2.220446049250313e-16,
-    "delta": 2.225073858507201e-308
+    "epsilon": 1.78E-16,
+    "delta": 3.56E-308
 }
 {
     "operation": "exp",
     "cname": "exp_amdlibm",
     "domain": [-1.7976931348623157e+308, 709.782712893384],
-    "epsilon": 2.220446049250313e-16,
-    "delta": 2.225073858507201e-308
+    "epsilon": 1.68E-16,
+    "delta": 3.36E-308,
+}
+{
+    "operation": "expm1",
+    "cname": "expm1_amdlibm",
+    "domain": [-1.7976931348623157e+308, 709.782712893384],
+    "epsilon": 1.61E-16,
+    "delta": 3.22E-308
 }
 {
     "operation": "log",
     "cname": "log_amdlibm",
     "domain": [0.0, 1.7976931348623157e+308],
-    "epsilon": 2.220446049250313e-16,
-    "delta": 2.225073858507201e-308
+    "epsilon": 1.28E-16,
+    "delta": 2.57E-308
+}
+{
+    "operation": "log1p",
+    "cname": "log1p_amdlibm",
+    "domain": [-1.0, 1.7976931348623157e+308],
+    "epsilon": 5.60E-08,
+    "delta": 1.12E-299
 }
 {
     "operation": "sin",
     "cname": "sin_amdlibm",
     "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
-    "epsilon": 2.220446049250313e-16,
-    "delta": 2.225073858507201e-308
+    "epsilon": 1.78E-16,
+    "delta": 3.56E-308
 }
 {
     "operation": "tan",
     "cname": "tan_amdlibm",
     "domain": [-1.7976931348623157e+308, 1.7976931348623157e+308],
-    "epsilon": 2.220446049250313e-16,
-    "delta": 2.225073858507201e-308
+    "epsilon": 3.11E-16,
+    "delta": 6.23E-308
 }
 {
     "operation": "cos",
     "cname": "cosf_amdlibm",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 4.80548e-07,
-    "delta": 1.7632415262334313e-38
+    "epsilon": 1.23E-07,
+    "delta": 2.42E-38
 }
 {
     "operation": "exp",
     "cname": "expf_amdlibm",
     "domain": [-3.40282e+38, 88.7228380333886903],
-    "epsilon": 8.940697e-08,
-    "delta": 1.7632415262334313e-38
+    "epsilon": 1.79E-07,
+    "delta": 3.53E-38
+}
+{
+    "operation": "expm1",
+    "cname": "expm1f_amdlibm",
+    "domain": [-3.40282e+38, 88.7228380333886903],
+    "epsilon": 1.24E-07,
+    "delta": 2.44E-38
 }
 {
     "operation": "log",
     "cname": "logf_amdlibm",
     "domain": [0.0, 3.40282e+38],
-    "epsilon": 5.960465e-08,
-    "delta": 1.7632415262334313e-38
+    "epsilon": 1.72E-07,
+    "delta": 3.39E-38
+}
+{
+    "operation": "log1p",
+    "cname": "log1pf_amdlibm",
+    "domain": [-1.0, 3.40282e+38],
+    "epsilon": 1.20E-07,
+    "delta": 2.36E-38
 }
 {
     "operation": "sin",
     "cname": "sinf_amdlibm",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 4.80548e-07,
-    "delta": 1.7632415262334313e-38
+    "epsilon": 1.23E-07,
+    "delta": 2.42E-38
 }
 {
     "operation": "tan",
     "cname": "tanf_amdlibm",
     "domain": [-3.40282e+38, 3.40282e+38],
-    "epsilon": 1.192093e-07,
-    "delta": 1.7632415262334313e-38
+    "epsilon": 1.20E-07,
+    "delta": 2.37E-38
 }

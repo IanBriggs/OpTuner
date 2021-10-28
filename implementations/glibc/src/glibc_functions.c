@@ -17,8 +17,18 @@ double exp_glibc(double x) {
 }
 
 
+double expm1_glibc(double x) {
+  return expm1(x);
+}
+
+
 double log_glibc(double x) {
   return log(x);
+}
+
+
+double log1p_glibc(double x) {
+  return log1p(x);
 }
 
 
@@ -44,8 +54,18 @@ double expf_glibc(double x) {
 }
 
 
+double expm1f_glibc(double x) {
+  return (double) expm1f((float) x);
+}
+
+
 double logf_glibc(double x) {
   return (double) logf((float) x);
+}
+
+
+double log1pf_glibc(double x) {
+  return (double) log1pf((float) x);
 }
 
 

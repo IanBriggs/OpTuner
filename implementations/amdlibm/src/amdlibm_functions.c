@@ -17,8 +17,18 @@ double exp_amdlibm(double x) {
 }
 
 
+double expm1_amdlibm(double x) {
+  return amd_expm1(x);
+}
+
+
 double log_amdlibm(double x) {
   return amd_log(x);
+}
+
+
+double log1p_amdlibm(double x) {
+  return amd_log1p(x);
 }
 
 
@@ -42,8 +52,18 @@ double expf_amdlibm(double x) {
 }
 
 
+double expm1f_amdlibm(double x) {
+  return (double) amd_expm1f((float) x);
+}
+
+
 double logf_amdlibm(double x) {
   return (double) amd_logf((float) x);
+}
+
+
+double log1pf_amdlibm(double x) {
+  return (double) amd_log1pf((float) x);
 }
 
 
