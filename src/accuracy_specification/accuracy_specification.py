@@ -18,7 +18,15 @@ def read_file(filename):
         raw_specs = ([raw_specs[0]+"}"]
                      + ["{"+rf+"}" for rf in raw_specs[1:-1]]
                      + ["{"+raw_specs[-1]])
-    return [AccuracySpecification.from_json(r) for r in raw_specs]
+    ret = list()
+    for r in raw_specs:
+        try:
+            ret.append(AccuracySpecification.from_json(r))
+        except json.decoder.JSONDecodeError as e:
+            logger.error("Unable to parse: {}", r)
+            raise e
+
+    return ret
 
 
 class AccuracySpecification():

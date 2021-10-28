@@ -74,7 +74,8 @@
     "domain": [0.0, 3.40282e+38],
     "epsilon": 1.65E-07,
     "delta": 3.26E-38
-}{
+}
+{
     "operation": "log1p",
     "cname": "log1pf_openlibm",
     "domain": [0.0, 3.40282e+38],
