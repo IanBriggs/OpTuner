@@ -17,8 +17,18 @@ double exp_crlibm(double x) {
 }
 
 
+double expm1_crlibm(double x) {
+  return expm1_rn(x);
+}
+
+
 double log_crlibm(double x) {
   return log_rn(x);
+}
+
+
+double log1p_crlibm(double x) {
+  return log1p_rn(x);
 }
 
 

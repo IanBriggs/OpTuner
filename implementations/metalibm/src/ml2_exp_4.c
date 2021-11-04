@@ -13,12 +13,12 @@
 #include <math.h>
 #include <ml_support_lib.h>
 
-
-ml2_expm1_4(double x) {
+double ml2_exp_4(double);
+double ml2_expm1_4(double x) {
   return ml2_exp_4(x) - 1;
 }
 
-double ml2_exp_4(double);
+
 double ml2_exp_4(double x){
     double unround_k;
     double k;

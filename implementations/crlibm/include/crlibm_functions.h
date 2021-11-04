@@ -4,7 +4,9 @@
 
 double cos_crlibm(double x);
 double exp_crlibm(double x);
+double expm1_crlibm(double x);
 double log_crlibm(double x);
+double log1p_crlibm(double x);
 double sin_crlibm(double x);
 double tan_crlibm(double x);
 

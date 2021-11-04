@@ -11,12 +11,12 @@
 **/
 #include <stdint.h>
 
-
+double ml2_raw_log_7(double);
 double ml2_raw_log1p_7(double x) {
   return ml2_raw_log_7(x + 1);
 }
 
-double ml2_raw_log_7(double);
+
 double ml2_raw_log_7(double x){
     double pm_6;
     double pa_6;

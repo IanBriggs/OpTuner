@@ -12,12 +12,12 @@
 #include <stdint.h>
 #include <ml_support_lib.h>
 
-
+double ml2_log_6(double);
 double ml2_log1p_6(double x) {
   return ml2_log_6(x + 1);
 }
 
-double ml2_log_6(double);
+
 double ml2_log_6(double x){
     double x_man;
     double r;

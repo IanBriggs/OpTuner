@@ -30,6 +30,7 @@ def replace_exp_log(self):
     if (self.op == "-"
         and type(self.args[0]) == Operation
         and self.args[0].op == "exp"
+        and len(self.args[0].args) >= 2
         and type(self.args[0].args[1]) == Number
         and self.args[1].source in {"1", "1.", "1.0"}):
         return Operation("expm1", self.args[0].args[0])

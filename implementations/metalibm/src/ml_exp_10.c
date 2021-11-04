@@ -13,12 +13,12 @@
 #include <ml_support_lib.h>
 #include <math.h>
 
-
-ml_expm1_10(double x) {
+double ml_exp_10(double);
+double ml_expm1_10(double x) {
   return ml_exp_10(x) - 1;
 }
 
-double ml_exp_10(double);
+
 double ml_exp_10(double x){
     int nan_or_inf;
     

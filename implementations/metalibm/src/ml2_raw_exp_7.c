@@ -11,12 +11,12 @@
 **/
 #include <stdint.h>
 
-
-ml2_raw_expm1_7(double x) {
+double ml2_raw_exp_7(double);
+double ml2_raw_expm1_7(double x) {
   return ml2_raw_exp_7(x) - 1;
 }
 
-double ml2_raw_exp_7(double);
+
 double ml2_raw_exp_7(double x){
     double pm_6;
     double pa_6;
