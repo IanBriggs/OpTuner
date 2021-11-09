@@ -114,7 +114,7 @@ run 120 povray_photons
 # long running
 run 60 Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
 run 240 complex_sine_and_cosine
-run 120 Diagrams_TwoD_Path_Metafont_Internal_hobbyF_from_diagrams_contrib_1_3_0_5
+#run 240 Diagrams_TwoD_Path_Metafont_Internal_hobbyF_from_diagrams_contrib_1_3_0_5
 
 # time out
 # run 260 azimuth
