@@ -80,6 +80,7 @@ def parse_args(argv):
     return args
 
 
+
 def max_forms(fpc, e):
     e.maximums = dict()
     for wrt in e.forms:
