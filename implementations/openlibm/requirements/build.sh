@@ -35,7 +35,7 @@ else
     rm -rf openlibm openlibm_src
 
     echo "  Cloning"
-    git clone git@github.com:JuliaMath/openlibm.git openlibm_src &>> "${LOG}"
+    git clone https://github.com/JuliaMath/openlibm.git openlibm_src &>> "${LOG}"
 
     echo "  Renaming"
     cd "${SCRIPT_LOCATION}/openlibm_src"
