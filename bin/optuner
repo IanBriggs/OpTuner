@@ -236,7 +236,7 @@ def main(argv):
                 break
             z3_model = optimizer.model()
             model = {d.name(): z3_model[d] for d in z3_model}
-            choices = {k for k,v in model.items() if (k != "total_error" and k != "total_cost") and v == True}
+            choices = {k for k,v in model.items() if "_is_" in k and v == True}
             raw_assignment = {name.split("_is_")[0]: name.split("_is_")[1] for name in choices}
             assignment = {k: id_mapped_implementations[v] for k,v in raw_assignment.items()}
 
