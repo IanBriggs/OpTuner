@@ -10,19 +10,19 @@ set -e
 #   5: domain high
 #   6: delta
 function gen_ml() {
-    python3 ./scripts/ml_$1.py --accuracy "dar($2)" --precision double --output src/ml_$1_$3.c --fname "ml_$1_$3" --verbose Info | sed "s|^|//|g" > src/ml_$1_$3.c.tmp
-    cat src/ml_$1_$3.c.tmp >> src/ml_$1_$3.c
-    rm src/ml_$1_$3.c.tmp
-    echo "//spec: {" >> src/ml_$1_$3.c
-    echo "//spec:     \"cname\": \"ml_$1_$3\"," >> src/ml_$1_$3.c
-    echo "//spec:     \"delta\": $6," >> src/ml_$1_$3.c
-    echo "//spec:     \"domain\": [" >> src/ml_$1_$3.c
-    echo "//spec:         $4," >> src/ml_$1_$3.c
-    echo "//spec:         $5" >> src/ml_$1_$3.c
-    echo "//spec:     ]," >> src/ml_$1_$3.c
-    echo "//spec:     \"epsilon\": $2," >> src/ml_$1_$3.c
-    echo "//spec:     \"operation\": \"$1\"" >> src/ml_$1_$3.c
-    echo "//spec: }" >> src/ml_$1_$3.c
+    python3 ./scripts/ml_$1.py --accuracy "dar($2)" --precision double --output gen/ml_$1_$3.c --fname "ml_$1_$3" --verbose Info | sed "s|^|//|g" > gen/ml_$1_$3.c.tmp
+    cat gen/ml_$1_$3.c.tmp >> gen/ml_$1_$3.c
+    rm gen/ml_$1_$3.c.tmp
+    echo "//spec: {" >> gen/ml_$1_$3.c
+    echo "//spec:     \"cname\": \"ml_$1_$3\"," >> gen/ml_$1_$3.c
+    echo "//spec:     \"delta\": $6," >> gen/ml_$1_$3.c
+    echo "//spec:     \"domain\": [" >> gen/ml_$1_$3.c
+    echo "//spec:         $4," >> gen/ml_$1_$3.c
+    echo "//spec:         $5" >> gen/ml_$1_$3.c
+    echo "//spec:     ]," >> gen/ml_$1_$3.c
+    echo "//spec:     \"epsilon\": $2," >> gen/ml_$1_$3.c
+    echo "//spec:     \"operation\": \"$1\"" >> gen/ml_$1_$3.c
+    echo "//spec: }" >> gen/ml_$1_$3.c
 }
 
 gen_ml exp 2.5023696978571325e-3    2 -1.7976931348623157e+308 709.782712893384 2.507585086745239e-295

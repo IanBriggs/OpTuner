@@ -16,7 +16,7 @@ SUCCESS=0
 function finish {
     if [ "$SUCCESS" == 0 ]
     then
-	echo "OpenLibm failed to build."
+	echo "Metalibm failed to build."
 	echo "See ${LOG} for details."
         echo ""
         tail "${LOG}"
@@ -41,7 +41,7 @@ else
     rm -rf gappa gappa-1.3.5 gappa-1.3.5.tar.gz
 
     echo "  Downloading"
-    wget --no-verbose https://gforge.inria.fr/frs/download.php/file/38044/gappa-1.3.5.tar.gz &>> "${LOG}"
+    wget --no-verbose https://gappa.gitlabpages.inria.fr/releases/gappa-1.3.5.tar.gz &>> "${LOG}"
 
     echo "  Untaring"
     tar xf gappa-1.3.5.tar.gz &>> "${LOG}"
