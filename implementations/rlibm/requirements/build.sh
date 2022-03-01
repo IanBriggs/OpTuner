@@ -35,7 +35,7 @@ else
     rm -rf rlibm rlibm_src
 
     echo "  Cloning"
-    git clone git@github.com:rutgers-apl/rlibm.git rlibm_src &>> "${LOG}"
+    git clone https://github.com/rutgers-apl/rlibm.git rlibm_src &>> "${LOG}"
 
     echo "  Building"
     cd "${SCRIPT_LOCATION}/rlibm_src"
