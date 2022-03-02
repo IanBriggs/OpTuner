@@ -4,8 +4,8 @@ CFLAGS ?= -Wall -Wextra -Wconversion -O3 -march=native -mtune=native -fno-builti
 LDFLAGS = -lmpfr -lrt -lm
 
 
-AMDLIBM_O = ../amdlibm/obj/amdlibm_functions.a
-AMDLIBM_I = ../amdlibm/include
+#AMDLIBM_O = ../amdlibm/obj/amdlibm_functions.a
+#AMDLIBM_I = ../amdlibm/include
 
 CRLIBM_O = ../crlibm/obj/crlibm_functions.a
 CRLIBM_I = ../crlibm/include
@@ -33,8 +33,8 @@ VDT_I = ../vdt/include
 
 
 
-OBJ = ${AMDLIBM_O} ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${OPENLIBM_O} ${RLIBM_O} ${POVRAY_O} ${VDT_O}
-INC = -I${AMDLIBM_I} -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${OPENLIBM_I} -I${RLIBM_I} -I${POVRAY_I} -I${VDT_I}
+OBJ = ${CRLIBM_O} ${GLIBC_O} ${METALIBM_O} ${OPENLIBM_O} ${RLIBM_O} ${POVRAY_O} ${VDT_O}
+INC = -I${CRLIBM_I} -I${GLIBC_I} -I${METALIBM_I} -I${OPENLIBM_I} -I${RLIBM_I} -I${POVRAY_I} -I${VDT_I}
 
 
 CFILES = $(filter-out src/time_all.c,$(wildcard src/*.c))
@@ -79,8 +79,8 @@ out/expanded_all_functions.h: include/all_functions.h ${OBJ} | out
 	@echo "#endif" >> $@
 	@echo "#endif" >> $@
 
-${AMDLIBM_O}:
-	$(MAKE) -C ../amdlibm
+# ${AMDLIBM_O}:
+# 	$(MAKE) -C ../amdlibm
 
 ${CRLIBM_O}:
 	$(MAKE) -C ../crlibm
