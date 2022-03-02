@@ -11,7 +11,7 @@ mkdir -p implementations/timing/json
 
 run ()
 {
-    \time -f %e ./optuner benchmarks/$1.fpcore --verbosity medium >& logs/log_$1.txt
+    \time -f %e ./bin/optuner benchmarks/$1.fpcore --verbosity medium >& logs/log_$1.txt
     TIME=$(tail ./logs/log_$1.txt -n1)
     cd implementations/timing
     make > /dev/null
