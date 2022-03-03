@@ -13,10 +13,6 @@ run ()
 {
     \time -f %e ./bin/optuner benchmarks/$1.fpcore --verbosity medium >& logs/log_$1.txt
     TIME=$(tail ./logs/log_$1.txt -n1)
-    cd implementations/timing
-    make > /dev/null
-    ./bin/time_$1 > json/time_$1.json
-    cd ${SCRIPT_LOCATION}
     echo "\"$1\": $TIME" >> ./logs/tool_time.txt
 }
 export -f run
