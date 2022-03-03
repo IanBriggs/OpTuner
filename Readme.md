@@ -233,6 +233,36 @@ Starting from the directory `/home/ubuntu/Desktop/OpTuner`
 
 This will create a graph similar to Figure 3 a in the file `case_study_expression.png`
 
+Located on the Desktop is a folder named `CaseStudy`, inside it is three versions of POV-Ray.
+One utilizes GLibC's sin and cos, one uses the table based versions, and the third uses the versions selected by OpTuner.
+These are based off POV-Ray version 3.7.0.10.
+The version of POV-Ray used in SPEC2017 is between 3.6 and 3.7, but this version does not seem to be archived anywhere outside of SPEC.
+The code which we examined is still present.
+Notably the image rendered by this newer version is much brighter.
+
+The following will generate three `tga` files corresponding to the different versions.
+Starting from the directory `/home/ubuntu/Desktop/CaseStudy`
+
+    cd glibc_povray/grenadine
+    time ../unix/povray SPEC-benchmark-ref.ini
+    mv SPEC-benchmark.tga ../../glibc_render.tga
+
+    cd ../../table_povray/grenadine
+    time ../unix/povray SPEC-benchmark-ref.ini
+    mv SPEC-benchmark.tga ../../table_render.tga
+
+    cd ../../optuner_povray/grenadine
+    time ../unix/povray SPEC-benchmark-ref.ini
+    mv SPEC-benchmark.tga ../../optuner_render.tga
+
+To see the differences between the GLibC baseline the images can be compared.
+
+    compare glibc_render.tga table_render.tga table_diff.tga
+    compare glibc_render.tga optuner_render.tga optuner_diff.tga
+
+
+
+
 
 # Additional
 
