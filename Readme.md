@@ -1,11 +1,5 @@
 # Claims
 
-## Benchmark Results
-
-- Figure 9 part a and b demonstrate the claims of OpTuner's output quality
-
-
-
 1 Results
   - Pink plots
   - Individual exps detailed analysis
@@ -38,7 +32,7 @@ To run this image a modern x86-64 based computer and the [VirtualBox](https://ww
 The image contains a standard instance of the Ubuntu 20.04LTS operating system.
 In the Desktop directory is the OpTuner repository which has already been set up and requires no additional downloads.
 
-The file [ImagePreperation](ImagePreperation.md) contains instructions on how the artifact virtual machine was prepared.
+The file [ImagePreperation.md](ImagePreperation.md) contains instructions on how the artifact virtual machine was prepared.
 
 
 ## Costs
@@ -95,29 +89,29 @@ The last two rows are hard coded solutions using all GLiBC and all CRLibM based 
 After the configurations is a breakdown of tool runtime.
 Example output:
 
-> ; check_sat line: 3070 position: 19
-> model_cost model_error
-> 3.4143400646186346	6.481777551414871e-14
-> 2.5355912383282937	1.2764418379611066e-12
-> 1.6428011996837635	1.494160720975865e-07
-> 1.8974958429248558	4.05502326187133e-09
-> 2.8866020335417852	9.22889202029345e-14
-> 3.1816809188672606	6.528318293162588e-14
-> 54.06340150491056	6.304835181071573e-14
-> 1.3652675580375442	1.1687720475158836
-> 1.3664896773860575	0.06525020231226694
-> 1.5939288401735028	4.848601333481827e-06
-> 1.5932543412792048	0.0031926825438836058
-> 10.708267821707182	6.333632570239164e-14
-> -1.0	-1.0
-> -2.0	-2.0
->
-> Source  	Time
-> FPTaylor	58.088155411183834
-> Gelpia  	0.7393423281610012
-> Z3      	2.7018186915665865
-> Other   	2.0648984611034393
-> Total   	63.59421489201486
+> ; check_sat line: 3070 position: 19 \
+> model_cost model_error \
+> 3.4143400646186346	6.481777551414871e-14 \
+> 2.5355912383282937	1.2764418379611066e-12 \
+> 1.6428011996837635	1.494160720975865e-07 \
+> 1.8974958429248558	4.05502326187133e-09 \
+> 2.8866020335417852	9.22889202029345e-14 \
+> 3.1816809188672606	6.528318293162588e-14 \
+> 54.06340150491056	6.304835181071573e-14 \
+> 1.3652675580375442	1.1687720475158836 \
+> 1.3664896773860575	0.06525020231226694 \
+> 1.5939288401735028	4.848601333481827e-06 \
+> 1.5932543412792048	0.0031926825438836058 \
+> 10.708267821707182	6.333632570239164e-14 \
+> -1.0	-1.0 \
+> -2.0	-2.0 \
+> \
+> Source  	Time \
+> FPTaylor	58.088155411183834 \
+> Gelpia  	0.7393423281610012 \
+> Z3      	2.7018186915665865 \
+> Other   	2.0648984611034393 \
+> Total   	63.59421489201486 \
 
 
 After OpTuner has ran we can time the selections and graph those results.
@@ -132,12 +126,12 @@ Starting from the directory `/home/ubuntu/Desktop/OpTuner`
 Timing will take around two minutes.
 The graphing script will output how many points were removed for not being Pareto optimal.
 
-> json/time_exp1x.json
->  points: 12
->  non pareto points: 2
-> Total points: 12
-> Total skipped: 2
-> 0.881835268103925 10.450279739846719
+> json/time_exp1x.json \
+>  points: 12 \
+>  non pareto points: 2 \
+> Total points: 12 \
+> Total skipped: 2 \
+> 0.881835268103925 10.450279739846719 \
 
 You can view the generated graphs using `eog`
 
