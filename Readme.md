@@ -3,16 +3,14 @@
 1 Results
   - Pink plots
   - Individual exps detailed analysis
-  - CDF
-  - Minor claims
-    - % pts filtered out
+  - CDF of runtime
+  - % pts filtered out
 
 2 Functions
-  - Recalibrate speed
   - Function plots
-  - Our Impls
-    - Reverify
-    - src in metalibm
+  - Recalibrate speed
+  - Implementation source code
+  - Examine generated C code
 
 3 Case study
  - POV-Ray Source
@@ -28,51 +26,15 @@
 
 This artifact is distributed as a VirtualBox VDI file accompanied by this documentation.
 To run this image a modern x86-64 based computer and the [VirtualBox](https://www.virtualbox.org/) software is recommended.
+Note that M1 Apple products are not supported.
 
 The image contains a standard instance of the Ubuntu 20.04LTS operating system.
 In the Desktop directory is the OpTuner repository which has already been set up and requires no additional downloads.
+The login name and password are both `ubuntu`.
 
 The file [ImagePreperation.md](ImagePreperation.md) contains instructions on how the artifact virtual machine was prepared.
 
-
-## Costs
-
-The commands shown here are replicated in the file `AEC-remeasure.sh`, the purpose of the commands are explained here.
-
-OpTuner must know how fast each implementation it uses is.
-Since this varies from machine to machine these costs can be remeasured.
-
-First all of the implementations and timing code must be compiled.
-On the given VM the implementations are already downloaded and built to save time, as it is a lengthy step.
-
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
-
-    cd implementations/timing
-    make
-
-
-Then this timing binary is ran to determine function speed and output a `json` file.
-This step will take 28 minutes regardless of machine speed.
-After this data is converted to an average runtime and placed in the costs file, `implementations/all_costs.json`
-
-Continuing from the above directory.
-
-    ./bin/time_all > raw_counts.json
-    ./scripts/raw_counts_to_cost.py raw_counts.json > ../all_costs.json
-
-
-### Graphing costs
-
-Whether remeasured on the current system or not the selection of implementations can be plotted with the following:
-
-    ./bin/crate-function-graphs.py implementations/timing/all_costs.json implementations/timing/all_specifications.json
-
-This will read the cost and error values and generate the plots seen in Figure 7 as `<func>_error_vs_cost.png` for the five functions.
-
-
-
-
-## Sanity Testing
+## Installation, Setup, and Sanity Testing
 
 The commands shown here are replicated in the file `AEC-sanity.sh`, the purpose of the commands are explained here.
 
@@ -139,7 +101,71 @@ Continuing from the above directory.
 
     eog aggregate.png zoomed_aggregate.png
 
+## Claims
 
+### Large-scale Evaluation Results
+
+### Supported Functions
+
+### Case study
+
+Section 3 of the paper describes a case study using OpTuner to improve the speed and accuracy of the POV-Ray ray tracer, focusing on the version of POV-Ray distributed with SPEC 2017. In this artifact, we're unable to provide an exact comparison for this case study because SPEC 2017 cannot be redistributed. Instead, the artifact uses POV-Ray version 3.7 (reasonably similar to the version in SPEC), which yields a slightly different image but very similar differences between POV-Ray's `sin` and `cos` implementation and OpTuner's recommended configuration. We have modified the POV-Ray source code only to change the storage format for angles, since (as discussed in Section XXX) OpTuner does not currently support input types other than double-precision floating-point. 
+
+At a high level, this artifact allows the evaluator to validate the paper's description of the POV-Ray source code, run OpTuner on the photon incidence computation, and verify that the OpTuner configuration highlighted in the text (the red star in Figure XXX) is indeed both faster and more accurate than an un-tuned POV-Ray. Note that Figure XXX(b) in the paper cannot be reproduced by the evaluator, for a couple of reasons. First, we cannot redistribute the code to compute SSIM for images, since that code is part of SPEC. Second, that figure compares dozens of modified POV-Ray instances, and our tools for generating these modified instances all rely on tooling from SPEC. Finally, building and running each of the modified instances would take hours.
+
+The artifact allows the evaluator to test a couple of key claims. Specifically, the evaluator can:
+
+- Verify that POV-Ray includes an implementation of `sin` and `cos` specialized to a narrow input range
+- Verify that POV-Ray includes a "photon incidence" computation analogous to that described in the paper
+- Verify our transcription of the photon incidence computation to FPCore, OpTuner's input format
+- Run OpTuner on this input and compare the results to Figure XXX(a) in the paper
+- Compare OpTuner's linear error model to that given in Equation XXX in the paper
+- Run three versions of POV-Ray: with GLibC to establish a ground truth, un-tuned, and OpTuner-tuned
+- Verify that the three versions differ only in the `sin` and `cos` implementations used
+- Compare the output images for speed and quality (similar to Figure XXX in the paper)
+- Verify that the OpTuner-tuned version is both faster than the untuned version, and matches the ground truth
+
+## Re-calibrating OpTuner
+
+For the most part, this artifact is set up, with OpTuner installed and ready to go. However, for OpTuner to work correctly, it needs to have accurate cost functions for the mathematical library implementations it knows about. This requires a "calibration" step, since this will differ between machines. Note that, since you are running OpTuner in a virtual machine, it's best to ensure that you are not running any other applications during this calibration step, to ensure accurate timings.
+
+The artifact is calibrated to the authors' machines. This means that the calibration step can be skipped, but that this might lead to strange or unusual results if the evaluators' machines are very different from the authors'.
+
+To calibrate, complete the following steps, which are are replicated in the file `AEC-remeasure.sh`.
+
+First, starting from the directory `/home/ubuntu/Desktop/OpTuner`, run the following:
+
+    cd implementations/timing
+    make
+
+This generates a binary called `bin/time_all` which times each function implementation that OpTuner ships (see above).
+The binary runs for about 28 minutes and generates a JSON file called `raw_counts.json`:
+
+    ./bin/time_all > raw_counts.json
+
+After this data is converted to an average runtime and placed in the costs file, `implementations/all_costs.json`
+
+    ./scripts/raw_counts_to_cost.py raw_counts.json > ../all_costs.json
+    
+OpTuner should now be calibrated for your machine.
+
+## Supported Function Implementations 
+
+OpTuner's selection of supported function implementations can be plotted with this command:
+
+    ./bin/create-function-graphs.py implementations/timing/all_costs.json implementations/timing/all_specifications.json
+
+This will read cost and error values from the two JSON files listed as arguments, and generate five files named `<func>_error_vs_cost.png`, which are formatted identically to Figure 7 in the paper. We recommend evaluators open each file and compare it visually to the analogous plot in Figure 7.
+
+Note that the vertical dimension of this plot depends on timing information, which going to be different in the virtual machine compared to the machine we used for the paper's experiments. However, a few features should be shared among both plots:
+
+- The implementations should span a range of accuracy values from least to most accurate
+- There should be a green triangle, in the top-right corner, representing the `CRLibm` library implementation. These implementations are maximally accurate (correctly rounded) and also very slow.
+- The green dots, corresponding to library implementations, should appear in approximately two groupings horizontally. One should be along the right edge (these are double-precision library implementations) and another approximately in the middle (these are single-precision library implementations).
+- The blue, cyan, yellow, and (for `exp`) purple dots should span a wide range of accuracies with steadily increasing cost and accuracy increases. These are the various parameterized implementations used by OpTuner
+- The blue and cyan dots should be lower (meaning faster) than the yellow ones---the blue and cyan implementations do not use range reduction, while the yellow ones use a naive range reduction scheme, so the blue ones are valid over a narrower input range.
+
+One thing that *can* differ is that some of the green dots may be quite a bit faster or slower relative to others on your machine. This is because the GLibC library actually contains many different implementations that it can choose between based on the availability of various CPU instructions, and your machine may have more or fewer of them than ours. (The biggest factor is the quality of support for the fused multiply-add instruction.)
 
 
 # Evaluation
@@ -264,17 +290,16 @@ To see the differences between the GLibC baseline the images can be compared.
 
 
 
-# Additional
+# Further Exploration of OpTuner
 
-## Metalibm Regeneration
+Link to FPCore standard and explain limitations
 
-The implementations generated using metalibm are stored along with their error description with OpTuner.
-This is since there is no gain to regenerating the implementations or recalculating their error values.
+How to run Optuner on a few file
 
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+Where is the OpTuner source code
 
-    cd implementations/metalibm
-    make generate
+Where in the source code are some key interesting steps:
 
-This will create the kalray implementations along with our own versions and place them in `./gen`
-The actual metalibm code used is present in `scripts` for the kalray implementations and `my_scripts` for the others.
+- Calling FPTaylor (as in, wherever we get the error model)
+- Calling Z3 (as in, building the ILP problem)
+- Where in the code we generate the range constraints
