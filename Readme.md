@@ -67,12 +67,20 @@ Continuing from the above directory.
     ./scripts/raw_counts_to_cost.py raw_counts.json > ../all_costs.json
 
 
+### Graphing costs
+
+Whether remeasured on the current system or not the selection of implementations can be plotted with the following:
+
+    ./bin/crate-function-graphs.py implementations/timing/all_costs.json implementations/timing/all_specifications.json
+
+This will read the cost and error values and generate the plots seen in Figure 7 as `<func>_error_vs_cost.png` for the five functions.
+
 
 
 
 ## Sanity Testing
 
-The commands shown here are replicated in the file `AEC_sanity.sh`, the purpose of the commands are explained here.
+The commands shown here are replicated in the file `AEC-sanity.sh`, the purpose of the commands are explained here.
 
 To check that OpTuner and the graphing capabilities work you can run OpTuner directly on a benchmark.
 
@@ -132,6 +140,7 @@ The graphing script will output how many points were removed for not being Paret
 > 0.881835268103925 10.450279739846719
 
 You can view the generated graphs using `eog`
+
 Continuing from the above directory.
 
     eog aggregate.png zoomed_aggregate.png
@@ -141,7 +150,9 @@ Continuing from the above directory.
 
 # Evaluation
 
-## Run
+## Benchmarks
+
+### Run
 
 To run most benchmarks run the bash script `AEC-benchmarks-run.sh`.
 This will run OpTuner on all benchmarks except the complex sine benchmark, due to its unusually long runtime.
@@ -161,7 +172,7 @@ The commands in this script are not repeated here and must be run from the scrip
 > ...
 
 
-## Time
+### Time
 
 Now the generated configuration are timed by running the `AEC-benchmarks-time.sh` script.
 
@@ -178,9 +189,10 @@ The commands in this script are not repeated here and must be run from the scrip
 > ...
 
 
-# Graph
+### Graph
 
 Generating the graphs from this data is done similarly to before.
+This will create graphs similar to Figure 9 parts a and b.
 
 Starting from the directory `/home/ubuntu/Desktop/OpTuner`
 
@@ -200,6 +212,45 @@ This will report the number of points which turned out to be non-pareto due to t
 
 These files can be viewed in the same way as before.
 
-Continuing from the above directory.
+To generate the CDF, which is Figure 9 part c, run the following command.
 
-    eog aggregate.png zoomed_aggregate.png
+Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+
+    ./bin/create-cdf.py log/tool_time.txt
+
+This will report the average runtime and create `cdf.png` in the current directory.
+
+> <>
+>
+> ...
+
+
+
+## Case Study
+
+Since we utilized SPEC2017 as a source of build system, timing harness, and quality metric we cannot reproduce the results from the paper.
+As a proxy we can look at the expression level accuracy-speed tradeoff and generate images using the current release of POV-Ray.
+
+The expression used in the case study is part of the benchmarks ran in the above steps.
+
+Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+
+    ./bin/create-case-study-graph.py implementations/timing/json/time_povray_photons.json
+
+This will create a graph similar to Figure 3 a in the file `case_study_expression.png`
+
+
+# Additional
+
+## Metalibm Regeneration
+
+The implementations generated using metalibm are stored along with their error description with OpTuner.
+This is since there is no gain to regenerating the implementations or recalculating their error values.
+
+Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+
+    cd implementations/metalibm
+    make generate
+
+This will create the kalray implementations along with our own versions and place them in `./gen`
+The actual metalibm code used is present in `scripts` for the kalray implementations and `my_scripts` for the others.

@@ -139,16 +139,16 @@ if __name__ == "__main__":
             print("No error for '{}'".format(c))
 
     coss = [f for f in funcs if f["operation"] == "cos"]
-    generate_epsilon_vs_cost(coss, "Table 2 cos")
+    generate_epsilon_vs_cost(coss, "cos error vs cost")
 
     exps = [f for f in funcs if f["operation"] == "exp"]
-    generate_epsilon_vs_cost(exps, "Table 2 exp")
+    generate_epsilon_vs_cost(exps, "exp error vs cost")
 
     logs = [f for f in funcs if f["operation"] == "log"]
-    generate_epsilon_vs_cost(logs, "Table 2 log")
+    generate_epsilon_vs_cost(logs, "log error vs cost")
 
     sins = [f for f in funcs if f["operation"] == "sin"]
-    generate_epsilon_vs_cost(sins, "Table 2 sin")
+    generate_epsilon_vs_cost(sins, "sin error vs cost")
 
     tans = [f for f in funcs if f["operation"] == "tan"]
-    generate_epsilon_vs_cost(tans, "Table 2 tan")
+    generate_epsilon_vs_cost(tans, "tan error vs cost")

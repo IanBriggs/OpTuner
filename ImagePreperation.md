@@ -4,7 +4,7 @@ Install dependencies provided by `apt`
 
     sudo apt update
     sudo apt upgrade
-    sudo apt install bison build-essential cmake curl flex gawk git libboost-dev libgmp-dev libmpfr-dev python3-pip scons sollya libsollya-dev
+    sudo apt install bison build-essential cmake curl emacs flex gawk git libboost-dev libgmp-dev libmpfr-dev python3-pip scons sollya libsollya-dev
 
 Install `opam` and set compiler version
 
