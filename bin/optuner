@@ -291,7 +291,7 @@ def main(argv):
             error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
             model_error = -1.0
             cost = -1.0
-            print("{}\t{}\t{}".format(cost, model_error, error))
+            #print("{}\t{}\t{}".format(cost, model_error, error))
             functions.append({"error": error,
                               "assignment": glibc_assignment,
                               "cost": cost,
@@ -319,7 +319,7 @@ def main(argv):
             error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
             model_error = -2.0
             cost = -2.0
-            print("{}\t{}\t{}".format(cost, model_error, error))
+            #print("{}\t{}\t{}".format(cost, model_error, error))
             functions.append({"error": error,
                               "assignment": crlibm_assignment,
                               "cost": cost,
