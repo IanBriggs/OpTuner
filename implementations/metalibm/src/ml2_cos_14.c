@@ -1407,8 +1407,8 @@ double ml2_cos_14(double x){
 //spec:     "cname": "ml2_cos_14",
 //spec:     "delta": 8.606726359613706e-15,
 //spec:     "domain": [
-//spec:         -1.5707963267948966,
-//spec:         1.5707963267948966
+//spec:         -1.5717728892948966,
+//spec:         1.5717728892948966
 //spec:     ],
 //spec:     "epsilon": 4.9081283791026335e-15,
 //spec:     "operation": "cos"
@@ -1417,8 +1417,8 @@ double ml2_cos_14(double x){
 //spec:     "cname": "ml2_cos_14",
 //spec:     "delta": 8.638743909613705e-15,
 //spec:     "domain": [
-//spec:         -4.71238898038469,
-//spec:         4.71238898038469
+//spec:         -4.71336554288469,
+//spec:         4.71336554288469
 //spec:     ],
 //spec:     "epsilon": 4.9081283791026335e-15,
 //spec:     "operation": "cos"
@@ -1427,8 +1427,8 @@ double ml2_cos_14(double x){
 //spec:     "cname": "ml2_cos_14",
 //spec:     "delta": 8.704141489613705e-15,
 //spec:     "domain": [
-//spec:         -7.853981633974483,
-//spec:         7.853981633974483
+//spec:         -7.854958196474483,
+//spec:         7.854958196474483
 //spec:     ],
 //spec:     "epsilon": 4.9081283791026335e-15,
 //spec:     "operation": "cos"
@@ -1437,8 +1437,8 @@ double ml2_cos_14(double x){
 //spec:     "cname": "ml2_cos_14",
 //spec:     "delta": 8.747739889613705e-15,
 //spec:     "domain": [
-//spec:         -9.42477796076938,
-//spec:         9.42477796076938
+//spec:         -9.42575452326938,
+//spec:         9.42575452326938
 //spec:     ],
 //spec:     "epsilon": 4.9081283791026335e-15,
 //spec:     "operation": "cos"
@@ -1447,8 +1447,8 @@ double ml2_cos_14(double x){
 //spec:     "cname": "ml2_cos_14",
 //spec:     "delta": 8.839020193364851e-15,
 //spec:     "domain": [
-//spec:         -10.995574287564276,
-//spec:         10.995574287564276
+//spec:         -10.996550850064276,
+//spec:         10.996550850064276
 //spec:     ],
 //spec:     "epsilon": 4.9081283791026335e-15,
 //spec:     "operation": "cos"
@@ -1457,8 +1457,8 @@ double ml2_cos_14(double x){
 //spec:     "cname": "ml2_cos_14",
 //spec:     "delta": 8.88207149336485e-15,
 //spec:     "domain": [
-//spec:         -15.707963267948966,
-//spec:         15.707963267948966
+//spec:         -15.708939830448966,
+//spec:         15.708939830448966
 //spec:     ],
 //spec:     "epsilon": 4.9081283791026335e-15,
 //spec:     "operation": "cos"
@@ -1467,8 +1467,8 @@ double ml2_cos_14(double x){
 //spec:     "cname": "ml2_cos_14",
 //spec:     "delta": 9.18343129336485e-15,
 //spec:     "domain": [
-//spec:         -17.27875959474386,
-//spec:         17.27875959474386
+//spec:         -17.27973615724386,
+//spec:         17.27973615724386
 //spec:     ],
 //spec:     "epsilon": 4.9081283791026335e-15,
 //spec:     "operation": "cos"
@@ -1477,8 +1477,8 @@ double ml2_cos_14(double x){
 //spec:     "cname": "ml2_cos_14",
 //spec:     "delta": 9.57089229336485e-15,
 //spec:     "domain": [
-//spec:         -31.41592653589793,
-//spec:         31.41592653589793
+//spec:         -31.41690309839793,
+//spec:         31.41690309839793
 //spec:     ],
 //spec:     "epsilon": 4.9081283791026335e-15,
 //spec:     "operation": "cos"
@@ -1487,8 +1487,8 @@ double ml2_cos_14(double x){
 //spec:     "cname": "ml2_cos_14",
 //spec:     "delta": 1.0815875741871168e-14,
 //spec:     "domain": [
-//spec:         -32.98672286269283,
-//spec:         32.98672286269283
+//spec:         -32.98769942519283,
+//spec:         32.98769942519283
 //spec:     ],
 //spec:     "epsilon": 4.9081283791026335e-15,
 //spec:     "operation": "cos"
@@ -1497,8 +1497,8 @@ double ml2_cos_14(double x){
 //spec:     "cname": "ml2_cos_14",
 //spec:     "delta": 1.2151762741871164e-14,
 //spec:     "domain": [
-//spec:         -61.261056745000964,
-//spec:         61.261056745000964
+//spec:         -61.262033307500964,
+//spec:         61.262033307500964
 //spec:     ],
 //spec:     "epsilon": 4.9081283791026335e-15,
 //spec:     "operation": "cos"

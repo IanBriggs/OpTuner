@@ -1413,8 +1413,8 @@ double ml2_sin_17(double x){
 //spec:     "cname": "ml2_sin_17",
 //spec:     "delta": 4.977463845343907e-16,
 //spec:     "domain": [
-//spec:         -1.5707963267948966,
-//spec:         1.5707963267948966
+//spec:         -1.5717728892948966,
+//spec:         1.5717728892948966
 //spec:     ],
 //spec:     "epsilon": 2.921075995877466e-16,
 //spec:     "operation": "sin"
@@ -1423,8 +1423,8 @@ double ml2_sin_17(double x){
 //spec:     "cname": "ml2_sin_17",
 //spec:     "delta": 5.045895114668529e-16,
 //spec:     "domain": [
-//spec:         -3.141592653589793,
-//spec:         3.141592653589793
+//spec:         -3.142569216089793,
+//spec:         3.142569216089793
 //spec:     ],
 //spec:     "epsilon": 2.921075995877466e-16,
 //spec:     "operation": "sin"
@@ -1433,8 +1433,8 @@ double ml2_sin_17(double x){
 //spec:     "cname": "ml2_sin_17",
 //spec:     "delta": 6.043899281062602e-16,
 //spec:     "domain": [
-//spec:         -4.71238898038469,
-//spec:         4.71238898038469
+//spec:         -4.71336554288469,
+//spec:         4.71336554288469
 //spec:     ],
 //spec:     "epsilon": 2.921075995877466e-16,
 //spec:     "operation": "sin"
@@ -1443,8 +1443,8 @@ double ml2_sin_17(double x){
 //spec:     "cname": "ml2_sin_17",
 //spec:     "delta": 1.089686506806635e-15,
 //spec:     "domain": [
-//spec:         -7.853981633974483,
-//spec:         7.853981633974483
+//spec:         -7.854958196474483,
+//spec:         7.854958196474483
 //spec:     ],
 //spec:     "epsilon": 2.921075995877466e-16,
 //spec:     "operation": "sin"
@@ -1453,8 +1453,8 @@ double ml2_sin_17(double x){
 //spec:     "cname": "ml2_sin_17",
 //spec:     "delta": 1.5159778511746149e-15,
 //spec:     "domain": [
-//spec:         -9.42477796076938,
-//spec:         9.42477796076938
+//spec:         -9.42575452326938,
+//spec:         9.42575452326938
 //spec:     ],
 //spec:     "epsilon": 2.921075995877466e-16,
 //spec:     "operation": "sin"
@@ -1463,8 +1463,8 @@ double ml2_sin_17(double x){
 //spec:     "cname": "ml2_sin_17",
 //spec:     "delta": 1.842679851174615e-15,
 //spec:     "domain": [
-//spec:         -10.995574287564276,
-//spec:         10.995574287564276
+//spec:         -10.996550850064276,
+//spec:         10.996550850064276
 //spec:     ],
 //spec:     "epsilon": 2.921075995877466e-16,
 //spec:     "operation": "sin"
@@ -1473,8 +1473,8 @@ double ml2_sin_17(double x){
 //spec:     "cname": "ml2_sin_17",
 //spec:     "delta": 1.951580851174615e-15,
 //spec:     "domain": [
-//spec:         -15.707963267948966,
-//spec:         15.707963267948966
+//spec:         -15.708939830448966,
+//spec:         15.708939830448966
 //spec:     ],
 //spec:     "epsilon": 2.921075995877466e-16,
 //spec:     "operation": "sin"
@@ -1483,8 +1483,8 @@ double ml2_sin_17(double x){
 //spec:     "cname": "ml2_sin_17",
 //spec:     "delta": 2.7252508511746148e-15,
 //spec:     "domain": [
-//spec:         -17.27875959474386,
-//spec:         17.27875959474386
+//spec:         -17.27973615724386,
+//spec:         17.27973615724386
 //spec:     ],
 //spec:     "epsilon": 2.921075995877466e-16,
 //spec:     "operation": "sin"
@@ -1493,8 +1493,8 @@ double ml2_sin_17(double x){
 //spec:     "cname": "ml2_sin_17",
 //spec:     "delta": 3.698991981312003e-15,
 //spec:     "domain": [
-//spec:         -31.41592653589793,
-//spec:         31.41592653589793
+//spec:         -31.41690309839793,
+//spec:         31.41690309839793
 //spec:     ],
 //spec:     "epsilon": 2.921075995877466e-16,
 //spec:     "operation": "sin"
@@ -1503,8 +1503,8 @@ double ml2_sin_17(double x){
 //spec:     "cname": "ml2_sin_17",
 //spec:     "delta": 5.0499085068066346e-15,
 //spec:     "domain": [
-//spec:         -32.98672286269283,
-//spec:         32.98672286269283
+//spec:         -32.98769942519283,
+//spec:         32.98769942519283
 //spec:     ],
 //spec:     "epsilon": 2.921075995877466e-16,
 //spec:     "operation": "sin"
@@ -1513,8 +1513,8 @@ double ml2_sin_17(double x){
 //spec:     "cname": "ml2_sin_17",
 //spec:     "delta": 7.24822364782929e-15,
 //spec:     "domain": [
-//spec:         -61.261056745000964,
-//spec:         61.261056745000964
+//spec:         -61.262033307500964,
+//spec:         61.262033307500964
 //spec:     ],
 //spec:     "epsilon": 2.921075995877466e-16,
 //spec:     "operation": "sin"

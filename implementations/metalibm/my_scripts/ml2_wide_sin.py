@@ -394,7 +394,7 @@ class ML2_Sinusodial(ScalarUnaryFunction):
         else:
             specs = list()
             for k in range(1, reduction_k):
-                d = generate_json(errors, sollya.Interval(-k*n_pi, k*n_pi))
+                d = generate_json(errors, sollya.Interval(-k*n_pi-2**-7, k*n_pi+2**-7))
                 specs.append(d)
             for i in range(len(specs)):
                 d = specs[i]

@@ -749,8 +749,8 @@ double ml2_wide_sin_9(double x){
 //spec:     "cname": "ml2_wide_sin_9",
 //spec:     "delta": 1.9942283597642047e-05,
 //spec:     "domain": [
-//spec:         -3.141592653589793,
-//spec:         3.141592653589793
+//spec:         -3.149405153589793,
+//spec:         3.149405153589793
 //spec:     ],
 //spec:     "epsilon": 6.145507449745276e-06,
 //spec:     "operation": "sin"
@@ -759,8 +759,8 @@ double ml2_wide_sin_9(double x){
 //spec:     "cname": "ml2_wide_sin_9",
 //spec:     "delta": 1.994228359778106e-05,
 //spec:     "domain": [
-//spec:         -9.42477796076938,
-//spec:         9.42477796076938
+//spec:         -9.43259046076938,
+//spec:         9.43259046076938
 //spec:     ],
 //spec:     "epsilon": 6.145507449745276e-06,
 //spec:     "operation": "sin"
@@ -769,8 +769,8 @@ double ml2_wide_sin_9(double x){
 //spec:     "cname": "ml2_wide_sin_9",
 //spec:     "delta": 1.994228359833711e-05,
 //spec:     "domain": [
-//spec:         -15.707963267948966,
-//spec:         15.707963267948966
+//spec:         -15.715775767948966,
+//spec:         15.715775767948966
 //spec:     ],
 //spec:     "epsilon": 6.145507449745276e-06,
 //spec:     "operation": "sin"
@@ -779,8 +779,8 @@ double ml2_wide_sin_9(double x){
 //spec:     "cname": "ml2_wide_sin_9",
 //spec:     "delta": 1.9942283598707807e-05,
 //spec:     "domain": [
-//spec:         -18.84955592153876,
-//spec:         18.84955592153876
+//spec:         -18.85736842153876,
+//spec:         18.85736842153876
 //spec:     ],
 //spec:     "epsilon": 6.145507449745276e-06,
 //spec:     "operation": "sin"
@@ -789,8 +789,8 @@ double ml2_wide_sin_9(double x){
 //spec:     "cname": "ml2_wide_sin_9",
 //spec:     "delta": 1.9942283599078506e-05,
 //spec:     "domain": [
-//spec:         -31.41592653589793,
-//spec:         31.41592653589793
+//spec:         -31.42373903589793,
+//spec:         31.42373903589793
 //spec:     ],
 //spec:     "epsilon": 6.145507449745276e-06,
 //spec:     "operation": "sin"
@@ -799,8 +799,8 @@ double ml2_wide_sin_9(double x){
 //spec:     "cname": "ml2_wide_sin_9",
 //spec:     "delta": 1.9942283599819904e-05,
 //spec:     "domain": [
-//spec:         -34.55751918948772,
-//spec:         34.55751918948772
+//spec:         -34.56533168948772,
+//spec:         34.56533168948772
 //spec:     ],
 //spec:     "epsilon": 6.145507449745276e-06,
 //spec:     "operation": "sin"
@@ -809,8 +809,8 @@ double ml2_wide_sin_9(double x){
 //spec:     "cname": "ml2_wide_sin_9",
 //spec:     "delta": 1.9942283600561302e-05,
 //spec:     "domain": [
-//spec:         -59.690260418206066,
-//spec:         59.690260418206066
+//spec:         -59.698072918206066,
+//spec:         59.698072918206066
 //spec:     ],
 //spec:     "epsilon": 6.145507449745276e-06,
 //spec:     "operation": "sin"
