@@ -50,15 +50,15 @@ def graph(items, outname):
         povray_y = [povray["speedup"]]
     ax.plot(povray_x, povray_y, marker="*", color="green", markersize=11)
 
-    if outname == "case_study_end_to_end":
-        selected_1 = [i for i in items if i["name"] == "optuner_74"][0]
-        selected_1_x = [selected_1["error"]]
-        selected_1_y = [selected_1["speedup"]]
-    else:
-        selected_1 = [i for i in items if i["name"] == "povray_photons_74"][0]
-        selected_1_x = [selected_1["error"]]
-        selected_1_y = [selected_1["speedup"]]
-    ax.plot(selected_1_x, selected_1_y, marker="*", color="red", markersize=11)
+    # if outname == "case_study_end_to_end":
+    #     selected_1 = [i for i in items if i["name"] == "optuner_74"][0]
+    #     selected_1_x = [selected_1["error"]]
+    #     selected_1_y = [selected_1["speedup"]]
+    # else:
+    #     selected_1 = [i for i in items if i["name"] == "povray_photons_74"][0]
+    #     selected_1_x = [selected_1["error"]]
+    #     selected_1_y = [selected_1["speedup"]]
+    # ax.plot(selected_1_x, selected_1_y, marker="*", color="red", markersize=11)
 
 
     if outname == "case_study_end_to_end":
