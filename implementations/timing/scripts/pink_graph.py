@@ -12,6 +12,16 @@ import math
 
 from os import path
 
+def to_step(xs, ys):
+    new_xs = [xs[0]]
+    new_ys = [ys[0], ys[0]]
+    for i in range(1, len(xs)):
+        new_xs.append(xs[i])
+        new_xs.append(xs[i])
+        new_ys.append(ys[i])
+        new_ys.append(ys[i])
+    new_ys.pop()
+    return new_xs, new_ys
 
 def graph(errorss, speedupss, outname, zoomed=False):
     assert(len(errorss) == len(speedupss))
@@ -21,7 +31,13 @@ def graph(errorss, speedupss, outname, zoomed=False):
     # plot
     fig, ax = plt.subplots()
     for i in range(len(errorss)):
-        ax.plot(errorss[i], speedupss[i], marker="o", mfc="#ff007f", color="pink", alpha=0.7)
+        #line
+        xs, ys = to_step(errorss[i], speedupss[i])
+        ax.plot(xs, ys, marker=" ", mfc="#ff007f", color="pink", alpha=0.7)
+
+        # points
+        ax.plot(errorss[i], speedupss[i], marker="o", linestyle="None", mfc="#ff007f", color="pink", alpha=0.7)
+
     #ax.scatter(x_errors, y_speedups, alpha=0.60, s=60, color="#ff007f")
     ax.set_xscale('log')
     ax.set_xlabel("Accuracy vs GLibC")
@@ -32,6 +48,7 @@ def graph(errorss, speedupss, outname, zoomed=False):
     #ax.set_title("Aggregate", fontsize=20)
 
     ax.axhline(1, color="grey")
+    ax.axvline(1, color="grey")
 
     if zoomed:
         xmin = min(x_errors)
@@ -46,7 +63,6 @@ def graph(errorss, speedupss, outname, zoomed=False):
         xmax += xextra
         ymin -= yextra
         ymax += yextra
-        print(xmin, xmax)
         ax.set_xlim(xmin, xmax)
         ax.set_ylim(ymin, ymax)
 
@@ -62,13 +78,13 @@ def read_all(filenames):
     total_points = 0
     total_skipped = 0
     for fname in filenames:
-        print(fname)
+        #print(fname)
         with open(fname) as f:
             data = json.loads(f.read())
             errors = list()
             averages = list()
             if len(data["runs"]) == 0:
-                print("  no data")
+                #print("  no data")
                 continue
             glibc_e = None
             glibc_a = None
@@ -83,7 +99,7 @@ def read_all(filenames):
             errors, speedups = normalize(errors, averages, glibc_e, glibc_a)
             tot = len(errors)
             total_points += tot
-            print("  points: {}".format(tot))
+            #print("  points: {}".format(tot))
             old_es = list(zip(errors, speedups))
             errors = list()
             speedups = list()
@@ -97,10 +113,10 @@ def read_all(filenames):
                     speedups.append(s)
                     current = s
             total_skipped += skipped
-            print("  non pareto points: {}".format(skipped))
+            #print("  non pareto points: {}".format(skipped))
             errorss.append(errors)
             speedupss.append(speedups)
-            graph([errors], [speedups], path.basename(fname).replace(".json",""))
+            #graph([errors], [speedups], path.basename(fname).replace(".json",""))
 
     return errorss, speedupss, total_points, total_skipped
 
@@ -125,4 +141,3 @@ if __name__ == "__main__":
     print("Total skipped: {}".format(total_skipped))
     graph(errorss, speedupss, "aggregate")
     graph(errorss, speedupss, "zoomed_aggregate", zoomed=True)
-
