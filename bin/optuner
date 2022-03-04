@@ -162,9 +162,16 @@ def main(argv):
         data = f.read()
     costs = json.loads(data)
 
+    to_remove = list()
     for A in accuracy_specs:
         cname = A.cname
-        A.set_cost(costs[cname])
+        if cname in costs:
+            A.set_cost(costs[cname])
+        else:
+            to_remove.append(A)
+
+    for tr in to_remove:
+        accuracy_specs.remove(tr)
 
     functions = set(a.operation for a in accuracy_specs)
     implementations = {f:list() for f in functions}
