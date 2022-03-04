@@ -36,82 +36,115 @@ The file [ImagePreperation.md](ImagePreperation.md) contains instructions on how
 
 ## Installation, Setup, and Sanity Testing
 
-The commands shown here are replicated in the file `AEC-sanity.sh`, the purpose of the commands are explained here.
+This section walks the evaluator through running OpTuner on a single small benchmark, with the purpose of each command explained. The commands are also replicated in the file `AEC-sanity.sh`.
 
-To check that OpTuner and the graphing capabilities work you can run OpTuner directly on a benchmark.
-
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+Starting from the directory `/home/ubuntu/Desktop/OpTuner`, run OpTuner on the `exp1x` benchmark:
 
     ./bin/optuner benchmarks/exp1x.fpcore
 
-OpTuner will then run for around a minute displaying selected configuration costs and error as they are found.
-Due to how Z3's Pareto search works the results are found in a jumbled order, your results may be in a different order.
-If you have remeasured function costs your results will also likely vary.
-The last two rows are hard coded solutions using all GLiBC and all CRLibM based configurations which we use for normalization in our graphs.
-After the configurations is a breakdown of tool runtime.
-Example output:
-
-> ; check_sat line: 3070 position: 19 \
-> model_cost model_error \
-> 3.4143400646186346	6.481777551414871e-14 \
-> 2.5355912383282937	1.2764418379611066e-12 \
-> 1.6428011996837635	1.494160720975865e-07 \
-> 1.8974958429248558	4.05502326187133e-09 \
-> 2.8866020335417852	9.22889202029345e-14 \
-> 3.1816809188672606	6.528318293162588e-14 \
-> 54.06340150491056	6.304835181071573e-14 \
-> 1.3652675580375442	1.1687720475158836 \
-> 1.3664896773860575	0.06525020231226694 \
-> 1.5939288401735028	4.848601333481827e-06 \
-> 1.5932543412792048	0.0031926825438836058 \
-> 10.708267821707182	6.333632570239164e-14 \
-> -1.0	-1.0 \
-> -2.0	-2.0 \
-> \
-> Source  	Time \
-> FPTaylor	58.088155411183834 \
-> Gelpia  	0.7393423281610012 \
-> Z3      	2.7018186915665865 \
-> Other   	2.0648984611034393 \
-> Total   	63.59421489201486 \
+OpTuner will run for around a minute, printing selected configuration costs and errors to the console as they are found.
+Due to how Z3's Pareto search works, the results are found in a jumbled order, so your results may be in a different order,
+but will otherwise look similar to those below:
 
 
-After OpTuner has ran we can time the selections and graph those results.
+```
+; check_sat line: 3070 position: 19
+model_cost model_error
+3.4143400646186346	6.481777551414871e-14
+2.5355912383282937	1.2764418379611066e-12
+1.6428011996837635	1.494160720975865e-07
+1.8974958429248558	4.05502326187133e-09
+2.8866020335417852	9.22889202029345e-14
+3.1816809188672606	6.528318293162588e-14
+54.06340150491056	6.304835181071573e-14
+1.3652675580375442	1.1687720475158836
+1.3664896773860575	0.06525020231226694
+1.5939288401735028	4.848601333481827e-06
+1.5932543412792048	0.0031926825438836058
+10.708267821707182	6.333632570239164e-14
 
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+Source  	Time
+FPTaylor	58.088155411183834
+Gelpia  	0.7393423281610012
+Z3      	2.7018186915665865
+Other   	2.0648984611034393
+Total   	63.59421489201486
+```
+
+The first line comes from Z3 and can be ignored. Then follow the cost and accuracy of configurations found by OpTuner, and finally a breakdown of OpTuner's runtime. In this case, OpTuner finds 12 configurations in about 63 seconds. (Of course, the runtime will differ on your machine. If you have recalibrated costs for your machine, as described below, your results may also change.)
+
+After OpTuner has run, we can validate its chosen configurations and graph those results.
+
+To do so, starting from the directory `/home/ubuntu/Desktop/OpTuner` run these commands:
 
     cd implementations/timing
     mkdir -p json
     ./bin/time_exp1x > json/time_exp1x.json
     ./scripts/pink_graph.py json/time_exp1x.json
 
-Timing will take around two minutes.
-The graphing script will output how many points were removed for not being Pareto optimal.
+The first two commands set up directories, and the third command times each of OpTuner's chosen configurations.
+Timing takes around two minutes.
+The fourth command runs the graphing script, which writes saves the plot to `aggregate.png` and also a zoomed-in version to `zoomed_aggregate.png`.
 
-> json/time_exp1x.json \
->  points: 12 \
->  non pareto points: 2 \
-> Total points: 12 \
-> Total skipped: 2 \
-> 0.881835268103925 10.450279739846719 \
-
-You can view the generated graphs using `eog`
-
-Continuing from the above directory.
+You can view the generated graphs using any image viewer. For example, you can use `eog`:
 
     eog aggregate.png zoomed_aggregate.png
+
+The graphing script also outputs how many points were removed for not being Pareto optimal:
+
+```
+Total points: 12
+Total skipped: 2
+```
+
+This means that of the 12 configurations, 10 were discovered to not be pareto-optimal after re-verifying and re-timing the resulting configurations.
+
 
 ## Claims
 
 ### Large-scale Evaluation Results
 
+OpTuner is applied to a benchmark suite in section 8 of the paper. This is used to evaluate the tool for both its effectiveness at implementation selection and to determine the runtime of the tool itself. The benchmarks themselves come from the FPBench suite and the benchmark suite for the Herbie tool. Multiple claims are made about the tool usage and effectiveness.
+
+In this artifact the evaluator can run OpTuner on the benchmark suite to determine the tool's runtime, as well as measure the speeds of OpTuner's selected implementation configurations. This information can be graphed and compared to figures 9 and 10 in the paper. However, note that the examination of selected benchmarks, described in the text of section 8.2, cannot be reproduced in the artifact due to performance non-portability.
+
+The evaluator can:
+
+- Examine the benchmarks used by OpTuner
+- Run OpTuner on the benchamarks
+- Measure the speed of OpTuner's selected configurations
+- Verify that around 26 percent of points generated are removed due to differences between the linear models and more accurate measurements
+- Verify that some configurations more accurate than using GLibC's implementations
+- Verify that some configurations are faster than GLibC while increasing error by less than one decimal digit
+- Verify that large increases in error correspond to faster runtimes
+- Verify that between these extremes are multiple points that trade off speed and accuracy
+- Verify that OpTuner's average runtime is on the range of a few minutes
+- Verify that most benchmarks finish in under five minutes
+
+
 ### Supported Functions
+
+Section 4 of the paper describes how choices made when implementing a mathematical function lead to differences in speed and accuracy of the resulting implementation, and that OpTuner comes equipped with a selection of implementations that span both speed and accuracy.
+
+In this artifact, the supported implementations can be plotted to create a similar set of graphics to Figure 7 in the paper. However, note that due to limitations of the virtualization software used, the version of OpTuner in this artifact has support for AMD's Libm disabled. The evaluator can also examine the parameterized libraries (implemented using MetaLibm) supported by OpTuner. Note that the artifact does not actually support verifying these implementations, but both the generated C code and the generation code may be examined.
+
+One tricky aspect to verifying OpTuner's claims about its supported library functions is that the runtimes of the various implementations may change from machine to machine, and as such the artifact supports recalibrating these costs. This will change the results to cause OpTuner to get better results on the evaluator's machine. That said, this step is time-consuming and optional.
+
+The evaluator can:
+
+- (optionally) Recalibrate OpTuner to the machine being used
+- Verify that OpTuner's equipped implementations span speed and accuracy
+- Verify that the most accurate implementations are the slowest by far
+- Verify that removing range reduction leads to an implementation speedup
+- Examine the Metalibm based function generation code
+- Examine the generated C code
+
 
 ### Case study
 
-Section 3 of the paper describes a case study using OpTuner to improve the speed and accuracy of the POV-Ray ray tracer, focusing on the version of POV-Ray distributed with SPEC 2017. In this artifact, we're unable to provide an exact comparison for this case study because SPEC 2017 cannot be redistributed. Instead, the artifact uses POV-Ray version 3.7 (reasonably similar to the version in SPEC), which yields a slightly different image but very similar differences between POV-Ray's `sin` and `cos` implementation and OpTuner's recommended configuration. We have modified the POV-Ray source code only to change the storage format for angles, since (as discussed in Section XXX) OpTuner does not currently support input types other than double-precision floating-point. 
+Section 3 of the paper describes a case study using OpTuner to improve the speed and accuracy of the POV-Ray ray tracer, focusing on the version of POV-Ray distributed with SPEC 2017. In this artifact, we're unable to provide an exact comparison for this case study because SPEC 2017 cannot be redistributed. Instead, the artifact uses POV-Ray version 3.7 (reasonably similar to the version in SPEC), which yields a slightly different image but very similar differences between POV-Ray's `sin` and `cos` implementation and OpTuner's recommended configuration. We have modified the POV-Ray source code only to change the storage format for angles, since (as discussed in Section 10) OpTuner does not currently support input types other than double-precision floating-point. 
 
-At a high level, this artifact allows the evaluator to validate the paper's description of the POV-Ray source code, run OpTuner on the photon incidence computation, and verify that the OpTuner configuration highlighted in the text (the red star in Figure XXX) is indeed both faster and more accurate than an un-tuned POV-Ray. Note that Figure XXX(b) in the paper cannot be reproduced by the evaluator, for a couple of reasons. First, we cannot redistribute the code to compute SSIM for images, since that code is part of SPEC. Second, that figure compares dozens of modified POV-Ray instances, and our tools for generating these modified instances all rely on tooling from SPEC. Finally, building and running each of the modified instances would take hours.
+At a high level, this artifact allows the evaluator to validate the paper's description of the POV-Ray source code, run OpTuner on the photon incidence computation, and verify that the OpTuner configuration highlighted in the text (the red star in Figure 3) is indeed both faster and more accurate than an un-tuned POV-Ray. Note that Figure 3(b) in the paper cannot be reproduced by the evaluator, for a couple of reasons. First, we cannot redistribute the code to compute SSIM for images, since that code is part of SPEC. Second, that figure compares dozens of modified POV-Ray instances, and our tools for generating these modified instances all rely on tooling from SPEC. Finally, building and running each of the modified instances would take hours.
 
 The artifact allows the evaluator to test a couple of key claims. Specifically, the evaluator can:
 
@@ -125,11 +158,135 @@ The artifact allows the evaluator to test a couple of key claims. Specifically, 
 - Compare the output images for speed and quality (similar to Figure XXX in the paper)
 - Verify that the OpTuner-tuned version is both faster than the untuned version, and matches the ground truth
 
-## Re-calibrating OpTuner
 
-For the most part, this artifact is set up, with OpTuner installed and ready to go. However, for OpTuner to work correctly, it needs to have accurate cost functions for the mathematical library implementations it knows about. This requires a "calibration" step, since this will differ between machines. Note that, since you are running OpTuner in a virtual machine, it's best to ensure that you are not running any other applications during this calibration step, to ensure accurate timings.
 
-The artifact is calibrated to the authors' machines. This means that the calibration step can be skipped, but that this might lead to strange or unusual results if the evaluators' machines are very different from the authors'.
+
+
+
+
+
+
+
+# Evaluation
+
+## Large-scale Evaluation Results
+
+### Examine the benchmarks used by OpTuner
+
+The benchmarks used by OpTuner are present in the `/home/ubuntu/Desktop/OpTuner/benchmarks` directory.
+You can use your favorite editor (emacs, vim, and vscode have been installed) to view these files.
+The file used in the sanity test is `exp1x.fpcore` whose contents are below.
+
+```scheme
+;; -*- mode: scheme -*-
+
+(FPCore (x)
+        :name "logexp"
+        :description "Generated by FPTaylor"
+        :precision binary64
+        :pre (<= 0 x 8)
+        (log (+ 1 (exp x))))
+```
+
+This benchmark computes $$log(exp(x)+1)$$ for $$x \in [0,8]$$.
+The domain of this function is given as metadata corresponding to the `:pre` tag.
+
+
+
+### Run OpTuner on the benchmarks
+
+To use OpTuner on the majority of benchmarks run the bash script `AEC-benchmarks-run.sh`.
+This will run OpTuner on all benchmarks except the complex sine benchmark (which is removed due to its unusually long runtime).
+In addition the runtime of OpTuner is collected in `./logs/tool_time.txt`.
+This script should run for approximately XXX minutes.
+
+Starting from the directory `/home/ubuntu/Desktop/OpTuner`, run this:
+
+    ./AEC-benchmark-run.sh
+
+You will see the commands echoed as they run.
+The commands in this script are not repeated here and must be run from the script.
+Partial example output:
+
+```
+<>
+...
+```
+
+The evaluator should look out for clear error messages printed the console, which would indicate that something has gone wrong.
+
+
+### Measure the speed of OpTuner's selected configurations
+
+OpTuner's selections have now been made, but we need to evaluate their actual runtime.
+The generated configurations are timed by running the `AEC-benchmarks-time.sh` script.
+This script should run for approximately XXX minutes.
+
+Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+
+    ./AEC-benchmark-time.sh
+
+You will see the commands echoed as they run.
+The commands in this script are not repeated here and must be run from the script.
+Partial example output:
+
+```
+<>
+...
+```
+
+The evaluator should look out for clear error messages printed the console, which would indicate that something has gone wrong.
+
+
+### Graph Results and Evaluate Remaining Claims
+
+Once OpTuner has made its selections and those configurations have been timed,
+graphs can be generated from this data similarly to the sanity test.
+This creates graphs in the current directory called `zoomed_aggregate.png` and `aggregate.png`,
+similar to Figure 9 parts (a) and (b).
+
+Starting from the directory `/home/ubuntu/Desktop/OpTuner`, run:
+
+    cd implementations/timing
+    ./scripts/pink_graph.py json/time_*.json
+
+Once this has completed, the evaluator should be able to look at the generated files, for example using `eog`, and verify:
+
+- There are points to the left of 1 on the x-axis, these indicate more accurate configurations than using GLibC
+- In the zoomed graph, which spans one decimal digit of error over GLibC, there are points corresponding to non-negligable speedups
+- In the unzoomed graph some points reach large speedups toward the right hand side of the graph
+- Both graphs show many configurations in between these extremes forming a smooth tradeoff
+
+The graphing script will also report the number of points which turned out to be non-pareto due to the linear models.
+You should expect roughly 26% of points to be non-pareto, with the variance due to machine performance differences and likely in the range of 20–30%.
+
+```
+<>
+```
+
+To generate the CDF, analogous to the paper's Figure 9(c), start in the directory `/home/ubuntu/Desktop/OpTuner` and run the following command:
+
+    ./bin/create-cdf.py log/tool_time.txt
+
+This will report the average runtime and create `cdf.png` in the current directory.
+You should expect an average runtime on the range of XXX
+
+Example output:
+```
+...
+```
+
+Looking at the generated plot you should see that most benchmarks finish in under five minutes, which is the region highlighted by the inset plot.
+
+
+
+## Supported Functions
+
+### (optional) Re-calibrating OpTuner
+
+For the most part, this artifact is set up, with OpTuner installed and ready to go. However, for OpTuner to work correctly, it needs to have accurate cost functions for the mathematical library implementations it knows about. This requires a "calibration" step, since this will differ between machines.
+
+The artifact is calibrated to the authors' machines. This means that the calibration step can be skipped, but that this might lead to strange or unusual results if the evaluators' machines are very different from the authors'. We expect that most evaluators will not need to recalibrate OpTuner. If you do, note that, since you are running OpTuner in a virtual machine, it's best to ensure that you are not running any other applications outside the VM during this calibration step, to ensure accurate timings.
 
 To calibrate, complete the following steps, which are are replicated in the file `AEC-remeasure.sh`.
 
@@ -138,7 +295,7 @@ First, starting from the directory `/home/ubuntu/Desktop/OpTuner`, run the follo
     cd implementations/timing
     make
 
-This generates a binary called `bin/time_all` which times each function implementation that OpTuner ships (see above).
+This generates a binary called `bin/time_all` which times each function implementation that OpTuner ships.
 The binary runs for about 28 minutes and generates a JSON file called `raw_counts.json`:
 
     ./bin/time_all > raw_counts.json
@@ -149,7 +306,8 @@ After this data is converted to an average runtime and placed in the costs file,
     
 OpTuner should now be calibrated for your machine.
 
-## Supported Function Implementations 
+
+### Implementation Graphs
 
 OpTuner's selection of supported function implementations can be plotted with this command:
 
@@ -165,109 +323,29 @@ Note that the vertical dimension of this plot depends on timing information, whi
 - The blue, cyan, yellow, and (for `exp`) purple dots should span a wide range of accuracies with steadily increasing cost and accuracy increases. These are the various parameterized implementations used by OpTuner
 - The blue and cyan dots should be lower (meaning faster) than the yellow ones---the blue and cyan implementations do not use range reduction, while the yellow ones use a naive range reduction scheme, so the blue ones are valid over a narrower input range.
 
-One thing that *can* differ is that some of the green dots may be quite a bit faster or slower relative to others on your machine. This is because the GLibC library actually contains many different implementations that it can choose between based on the availability of various CPU instructions, and your machine may have more or fewer of them than ours. (The biggest factor is the quality of support for the fused multiply-add instruction.)
+One thing that *can* differ is that some of the green dots may be quite a bit faster or slower relative to others on your machine. This is because the GLibC library actually contains many different implementations that it can choose between based on the availability of various CPU instructions, and your machine may have more or fewer of them than ours. (The biggest factor is the quality of support for fused multiply-adds.)
 
 
-# Evaluation
-
-## Benchmarks
-
-### Run
-
-To run most benchmarks run the bash script `AEC-benchmarks-run.sh`.
-This will run OpTuner on all benchmarks except the complex sine benchmark, due to its unusually long runtime.
-In addition the runtime of OpTuner is collected in `./logs/tool_time.txt`
-This would be a good time to go for tea or coffee, as it will run for approximately <> minutes.
-
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
-
-    ./AEC-benchmark-run.sh
-
-As this runs you will see the commands echoed as they run.
-The commands in this script are not repeated here and must be run from the script.
-
-> <>
->
->
-> ...
-
-
-### Time
-
-Now the generated configuration are timed by running the `AEC-benchmarks-time.sh` script.
-
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
-
-    ./AEC-benchmark-time.sh
-
-As this runs you will see the commands echoed as they run.
-The commands in this script are not repeated here and must be run from the script.
-
-> <>
->
->
-> ...
-
-
-### Graph
-
-Generating the graphs from this data is done similarly to before.
-This will create graphs similar to Figure 9 parts a and b.
-
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
-
-    cd implementations/timing
-    ./scripts/pink_graph.py json/time_*.json
-
-
-This will report the number of points which turned out to be non-pareto due to the linear models.
-
-> <>
->
->
-> ...
->
->
-
-
-These files can be viewed in the same way as before.
-
-To generate the CDF, which is Figure 9 part c, run the following command.
-
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
-
-    ./bin/create-cdf.py log/tool_time.txt
-
-This will report the average runtime and create `cdf.png` in the current directory.
-
-> <>
->
-> ...
-
-
+### Examine Generated Code
 
 ## Case Study
 
-Since we utilized SPEC2017 as a source of build system, timing harness, and quality metric we cannot reproduce the results from the paper.
-As a proxy we can look at the expression level accuracy-speed tradeoff and generate images using the current release of POV-Ray.
+In our case study, we used SPEC2017 for our POV-Ray source code, build system, timing harness, and quality metric. Since we cannot redistribute SPEC 2017, this artifact instead looks at the expression level accuracy-speed tradeoff and generates images using the current release of POV-Ray, version 3.7.0.10.
 
-The expression used in the case study is part of the benchmarks ran in the above steps.
+Note that the version of POV-Ray used in SPEC2017 is not quite identical (it seems to be a version intermediate between 3.6 and 3.7).
+However, version 3.7.0.10 still contains the custom `sin` and `cos` implementations highlighted in the text. Do note that it generates slightly different images---specifically, its rendered images are much brighter. The comparison between OpTuner's suggested `sin` and `cos` and the POV-Ray developers' hand-written `sin` and `cos` is still basically the same.
 
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+The steps in the "Large-scale Evaluation" section already ran OpTuner on the expression in the case study.
+
+To create a graph similar to Figure 3(a), start from the directory `/home/ubuntu/Desktop/OpTuner` and run:
 
     ./bin/create-case-study-graph.py implementations/timing/json/time_povray_photons.json
 
-This will create a graph similar to Figure 3 a in the file `case_study_expression.png`
+The graph is then written to the file `case_study_expression.png`. This graph should look similar to Figure 3(a), with the usual differences due to machine speed and possibly recalibration. However, should should see a set of dozens of points sloping up and to the right. Each configuration represents one suggested configuration of OpTuner.
 
-Located on the Desktop is a folder named `CaseStudy`, inside it is three versions of POV-Ray.
-One utilizes GLibC's sin and cos, one uses the table based versions, and the third uses the versions selected by OpTuner.
-These are based off POV-Ray version 3.7.0.10.
-The version of POV-Ray used in SPEC2017 is between 3.6 and 3.7, but this version does not seem to be archived anywhere outside of SPEC.
-The code which we examined is still present.
-Notably the image rendered by this newer version is much brighter.
+In this artifact, we don't provide copies of POV-Ray tuned to each of these configurations (since our tooling for generating and compiling them relies on SPEC). Instead, we provide three copies of POV-Ray in a folder named `CaseStudy` on the desktop: one utilizes GLibC's sin and cos, one uses the table based versions that the POV-Ray developers wrote, and the third one uses implementations selected by OpTuner and highlighted in the text. The following will generate three `tga` files corresponding to the different versions.
 
-The following will generate three `tga` files corresponding to the different versions.
-Starting from the directory `/home/ubuntu/Desktop/CaseStudy`
+Starting from the directory `/home/ubuntu/Desktop/CaseStudy`, run:
 
     cd glibc_povray/grenadine
     time ../unix/povray SPEC-benchmark-ref.ini
@@ -280,13 +358,17 @@ Starting from the directory `/home/ubuntu/Desktop/CaseStudy`
     cd ../../optuner_povray/grenadine
     time ../unix/povray SPEC-benchmark-ref.ini
     mv SPEC-benchmark.tga ../../optuner_render.tga
+    
+In each group of three commands, the second command runs POV-Ray and prints timing information. The evaluator should verify that the first run of POV-Ray (using GLibC) is the slowest, the second one (using the table-based implementations) is faster, and the last one (using OpTuner's suggested configuration) is even faster than that. This shows that OpTuner's suggested tuning is faster than using the table-based implementations.
 
-To see the differences between the GLibC baseline the images can be compared.
+To see the effect on accuracy, the difference between the GLibC baseline the images generated using the table-based and OpTuner `sin` and `cos` can be visualized using these commands:
 
     compare glibc_render.tga table_render.tga table_diff.tga
     compare glibc_render.tga optuner_render.tga optuner_diff.tga
 
+The first command will generate the file `table_diff.tga`, analogous to Figure 2(a) in the paper. The second generates the file `optuner_diff.tga`, analogous to Figure 2(b) in the paper. Note that, for reasons we do not understand, on some machines the image appears to be rotated upside down by the `compare` command. It is, however, otherwise correct.
 
+The evaluator should see that `table_diff.tga` contains many red dots, where each red dot identifies a pixel that differs between the baseline and the image generated using the table-based `sin` and `cos`. However, in `optuner_diff.tga`, these dots should be absent or very rare, meaning that the OpTuner-suggested tuning matches the baseline image.
 
 
 
