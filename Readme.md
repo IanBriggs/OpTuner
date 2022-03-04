@@ -193,14 +193,14 @@ The domain of this function is given as metadata corresponding to the `:pre` tag
 
 
 
-### Run OpTuner on the benchamarks
+### Run OpTuner on the benchmarks
 
 To use OpTuner on the majority of benchmarks run the bash script `AEC-benchmarks-run.sh`.
-This will run OpTuner on all benchmarks except the complex sine benchmark, due to its unusually long runtime.
+This will run OpTuner on all benchmarks except the complex sine benchmark (which is removed due to its unusually long runtime).
 In addition the runtime of OpTuner is collected in `./logs/tool_time.txt`.
-This script should run for approximately <> minutes.
+This script should run for approximately XXX minutes.
 
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+Starting from the directory `/home/ubuntu/Desktop/OpTuner`, run this:
 
     ./AEC-benchmark-run.sh
 
@@ -213,12 +213,14 @@ Partial example output:
 ...
 ```
 
+The evaluator should look out for clear error messages printed the console, which would indicate that something has gone wrong.
+
 
 ### Measure the speed of OpTuner's selected configurations
 
 OpTuner's selections have now been made, but we need to evaluate their actual runtime.
-The generated configuration are timed by running the `AEC-benchmarks-time.sh` script.
-This script should run for approximately <> minutes.
+The generated configurations are timed by running the `AEC-benchmarks-time.sh` script.
+This script should run for approximately XXX minutes.
 
 Starting from the directory `/home/ubuntu/Desktop/OpTuner`
 
@@ -233,41 +235,41 @@ Partial example output:
 ...
 ```
 
+The evaluator should look out for clear error messages printed the console, which would indicate that something has gone wrong.
+
 
 ### Graph Results and Evaluate Remaining Claims
 
-Generating the graphs from this data is done similarly to the sanity test.
-This will create graphs in the current directory similar to Figure 9 parts a and b, called `zoomed_aggregate.png` and `aggregate.png`.
+Once OpTuner has made its selections and those configurations have been timed,
+graphs can be generated from this data similarly to the sanity test.
+This creates graphs in the current directory called `zoomed_aggregate.png` and `aggregate.png`,
+similar to Figure 9 parts (a) and (b).
 
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+Starting from the directory `/home/ubuntu/Desktop/OpTuner`, run:
 
     cd implementations/timing
     ./scripts/pink_graph.py json/time_*.json
 
-
-This will report the number of points which turned out to be non-pareto due to the linear models.
-You should expect a value near 26%, with a little variance due to machine performance differences.
-
-```
-<>
-```
-
-Looking at the generated plots these features should be present:
+Once this has completed, the evaluator should be able to look at the generated files, for example using `eog`, and verify:
 
 - There are points to the left of 1 on the x-axis, these indicate more accurate configurations than using GLibC
 - In the zoomed graph, which spans one decimal digit of error over GLibC, there are points corresponding to non-negligable speedups
 - In the unzoomed graph some points reach large speedups toward the right hand side of the graph
 - Both graphs show many configurations in between these extremes forming a smooth tradeoff
 
+The graphing script will also report the number of points which turned out to be non-pareto due to the linear models.
+You should expect roughly 26% of points to be non-pareto, with the variance due to machine performance differences and likely in the range of 20–30%.
 
-To generate the CDF, which is Figure 9 part c, run the following command.
+```
+<>
+```
 
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+To generate the CDF, analogous to the paper's Figure 9(c), start in the directory `/home/ubuntu/Desktop/OpTuner` and run the following command:
 
     ./bin/create-cdf.py log/tool_time.txt
 
 This will report the average runtime and create `cdf.png` in the current directory.
-You should expect an average runtime on the range of <>
+You should expect an average runtime on the range of XXX
 
 Example output:
 ```
