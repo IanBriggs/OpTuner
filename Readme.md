@@ -284,9 +284,9 @@ Looking at the generated plot you should see that most benchmarks finish in unde
 
 ### (optional) Re-calibrating OpTuner
 
-For the most part, this artifact is set up, with OpTuner installed and ready to go. However, for OpTuner to work correctly, it needs to have accurate cost functions for the mathematical library implementations it knows about. This requires a "calibration" step, since this will differ between machines. Note that, since you are running OpTuner in a virtual machine, it's best to ensure that you are not running any other applications during this calibration step, to ensure accurate timings.
+For the most part, this artifact is set up, with OpTuner installed and ready to go. However, for OpTuner to work correctly, it needs to have accurate cost functions for the mathematical library implementations it knows about. This requires a "calibration" step, since this will differ between machines.
 
-The artifact is calibrated to the authors' machines. This means that the calibration step can be skipped, but that this might lead to strange or unusual results if the evaluators' machines are very different from the authors'.
+The artifact is calibrated to the authors' machines. This means that the calibration step can be skipped, but that this might lead to strange or unusual results if the evaluators' machines are very different from the authors'. We expect that most evaluators will not need to recalibrate OpTuner. If you do, note that, since you are running OpTuner in a virtual machine, it's best to ensure that you are not running any other applications outside the VM during this calibration step, to ensure accurate timings.
 
 To calibrate, complete the following steps, which are are replicated in the file `AEC-remeasure.sh`.
 
@@ -295,7 +295,7 @@ First, starting from the directory `/home/ubuntu/Desktop/OpTuner`, run the follo
     cd implementations/timing
     make
 
-This generates a binary called `bin/time_all` which times each function implementation that OpTuner ships (see above).
+This generates a binary called `bin/time_all` which times each function implementation that OpTuner ships.
 The binary runs for about 28 minutes and generates a JSON file called `raw_counts.json`:
 
     ./bin/time_all > raw_counts.json
@@ -323,33 +323,29 @@ Note that the vertical dimension of this plot depends on timing information, whi
 - The blue, cyan, yellow, and (for `exp`) purple dots should span a wide range of accuracies with steadily increasing cost and accuracy increases. These are the various parameterized implementations used by OpTuner
 - The blue and cyan dots should be lower (meaning faster) than the yellow ones---the blue and cyan implementations do not use range reduction, while the yellow ones use a naive range reduction scheme, so the blue ones are valid over a narrower input range.
 
-One thing that *can* differ is that some of the green dots may be quite a bit faster or slower relative to others on your machine. This is because the GLibC library actually contains many different implementations that it can choose between based on the availability of various CPU instructions, and your machine may have more or fewer of them than ours. (The biggest factor is the quality of support for the fused multiply-add instruction.)
+One thing that *can* differ is that some of the green dots may be quite a bit faster or slower relative to others on your machine. This is because the GLibC library actually contains many different implementations that it can choose between based on the availability of various CPU instructions, and your machine may have more or fewer of them than ours. (The biggest factor is the quality of support for fused multiply-adds.)
 
 
 ### Examine Generated Code
 
 ## Case Study
 
-Since we utilized SPEC2017 as a source of build system, timing harness, and quality metric we cannot reproduce the results from the paper.
-As a proxy we can look at the expression level accuracy-speed tradeoff and generate images using the current release of POV-Ray.
+In our case study, we used SPEC2017 for our POV-Ray source code, build system, timing harness, and quality metric. Since we cannot redistribute SPEC 2017, this artifact instead looks at the expression level accuracy-speed tradeoff and generates images using the current release of POV-Ray, version 3.7.0.10.
 
-The expression used in the case study is part of the benchmarks ran in the above steps.
+Note that the version of POV-Ray used in SPEC2017 is not quite identical (it seems to be a version intermediate between 3.6 and 3.7).
+However, version 3.7.0.10 still contains the custom `sin` and `cos` implementations highlighted in the text. Do note that it generates slightly different images---specifically, its rendered images are much brighter. The comparison between OpTuner's suggested `sin` and `cos` and the POV-Ray developers' hand-written `sin` and `cos` is still basically the same.
 
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+The steps in the "Large-scale Evaluation" section already ran OpTuner on the expression in the case study.
+
+To create a graph similar to Figure 3(a), start from the directory `/home/ubuntu/Desktop/OpTuner` and run:
 
     ./bin/create-case-study-graph.py implementations/timing/json/time_povray_photons.json
 
-This will create a graph similar to Figure 3 a in the file `case_study_expression.png`
+The graph is then written to the file `case_study_expression.png`. This graph should look similar to Figure 3(a), with the usual differences due to machine speed and possibly recalibration. However, should should see a set of dozens of points sloping up and to the right. Each configuration represents one suggested configuration of OpTuner.
 
-Located on the Desktop is a folder named `CaseStudy`, inside it is three versions of POV-Ray.
-One utilizes GLibC's sin and cos, one uses the table based versions, and the third uses the versions selected by OpTuner.
-These are based off POV-Ray version 3.7.0.10.
-The version of POV-Ray used in SPEC2017 is between 3.6 and 3.7, but this version does not seem to be archived anywhere outside of SPEC.
-The code which we examined is still present.
-Notably the image rendered by this newer version is much brighter.
+In this artifact, we don't provide copies of POV-Ray tuned to each of these configurations (since our tooling for generating and compiling them relies on SPEC). Instead, we provide three copies of POV-Ray in a folder named `CaseStudy` on the desktop: one utilizes GLibC's sin and cos, one uses the table based versions that the POV-Ray developers wrote, and the third one uses implementations selected by OpTuner and highlighted in the text. The following will generate three `tga` files corresponding to the different versions.
 
-The following will generate three `tga` files corresponding to the different versions.
-Starting from the directory `/home/ubuntu/Desktop/CaseStudy`
+Starting from the directory `/home/ubuntu/Desktop/CaseStudy`, run:
 
     cd glibc_povray/grenadine
     time ../unix/povray SPEC-benchmark-ref.ini
@@ -362,13 +358,17 @@ Starting from the directory `/home/ubuntu/Desktop/CaseStudy`
     cd ../../optuner_povray/grenadine
     time ../unix/povray SPEC-benchmark-ref.ini
     mv SPEC-benchmark.tga ../../optuner_render.tga
+    
+In each group of three commands, the second command runs POV-Ray and prints timing information. The evaluator should verify that the first run of POV-Ray (using GLibC) is the slowest, the second one (using the table-based implementations) is faster, and the last one (using OpTuner's suggested configuration) is even faster than that. This shows that OpTuner's suggested tuning is faster than using the table-based implementations.
 
-To see the differences between the GLibC baseline the images can be compared.
+To see the effect on accuracy, the difference between the GLibC baseline the images generated using the table-based and OpTuner `sin` and `cos` can be visualized using these commands:
 
     compare glibc_render.tga table_render.tga table_diff.tga
     compare glibc_render.tga optuner_render.tga optuner_diff.tga
 
+The first command will generate the file `table_diff.tga`, analogous to Figure 2(a) in the paper. The second generates the file `optuner_diff.tga`, analogous to Figure 2(b) in the paper. Note that, for reasons we do not understand, on some machines the image appears to be rotated upside down by the `compare` command. It is, however, otherwise correct.
 
+The evaluator should see that `table_diff.tga` contains many red dots, where each red dot identifies a pixel that differs between the baseline and the image generated using the table-based `sin` and `cos`. However, in `optuner_diff.tga`, these dots should be absent or very rare, meaning that the OpTuner-suggested tuning matches the baseline image.
 
 
 
