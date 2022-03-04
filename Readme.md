@@ -36,20 +36,16 @@ The file [ImagePreperation.md](ImagePreperation.md) contains instructions on how
 
 ## Installation, Setup, and Sanity Testing
 
-The commands shown here are replicated in the file `AEC-sanity.sh`, the purpose of the commands are explained here.
+This section walks the evaluator through running OpTuner on a single small benchmark, with the purpose of each command explained. The commands are also replicated in the file `AEC-sanity.sh`.
 
-To check that OpTuner and the graphing capabilities work you can run OpTuner directly on a benchmark.
-
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+Starting from the directory `/home/ubuntu/Desktop/OpTuner`, run OpTuner on the `exp1x` benchmark:
 
     ./bin/optuner benchmarks/exp1x.fpcore
 
-OpTuner will then run for around a minute displaying selected configuration costs and error as they are found.
-Due to how Z3's Pareto search works the results are found in a jumbled order, your results may be in a different order.
-If you have remeasured function costs your results will also likely vary.
-The first line of output is a print coming from Z3.
-After the configurations is a breakdown of tool runtime.
-Example output:
+OpTuner will run for around a minute, printing selected configuration costs and errors to the console as they are found.
+Due to how Z3's Pareto search works, the results are found in a jumbled order, so your results may be in a different order,
+but will otherwise look similar to those below:
+
 
 ```
 ; check_sat line: 3070 position: 19
@@ -75,39 +71,42 @@ Other   	2.0648984611034393
 Total   	63.59421489201486
 ```
 
-After OpTuner has ran we can time the selections and graph those results.
+The first line comes from Z3 and can be ignored. Then follow the cost and accuracy of configurations found by OpTuner, and finally a breakdown of OpTuner's runtime. In this case, OpTuner finds 12 configurations in about 63 seconds. (Of course, the runtime will differ on your machine. If you have recalibrated costs for your machine, as described below, your results may also change.)
 
-Starting from the directory `/home/ubuntu/Desktop/OpTuner`
+After OpTuner has run, we can validate its chosen configurations and graph those results.
+
+To do so, starting from the directory `/home/ubuntu/Desktop/OpTuner` run these commands:
 
     cd implementations/timing
     mkdir -p json
     ./bin/time_exp1x > json/time_exp1x.json
     ./scripts/pink_graph.py json/time_exp1x.json
 
-Timing will take around two minutes.
-The graphing script will output how many points were removed for not being Pareto optimal.
-Example output:
+The first two commands set up directories, and the third command times each of OpTuner's chosen configurations.
+Timing takes around two minutes.
+The fourth command runs the graphing script, which writes saves the plot to `aggregate.png` and also a zoomed-in version to `zoomed_aggregate.png`.
+
+You can view the generated graphs using any image viewer. For example, you can use `eog`:
+
+    eog aggregate.png zoomed_aggregate.png
+
+The graphing script also outputs how many points were removed for not being Pareto optimal:
 
 ```
 Total points: 12
 Total skipped: 2
 ```
 
-You can view the generated graphs using `eog`
-
-Continuing from the above directory.
-
-    eog aggregate.png zoomed_aggregate.png
-
+This means that of the 12 configurations, 10 were discovered to not be pareto-optimal after re-verifying and re-timing the resulting configurations.
 
 
 ## Claims
 
 ### Large-scale Evaluation Results
 
-OpTuner is applied to a benchmark suite in section 8 of the paper. This is used to evaluate the tool for both its effectiveness in acomplishing the task of implementation selection and to determine the runtime of the tool itself. The benchmarks themselves come from the FPBench suite and the benchmark suite for the Herbie tool.
+OpTuner is applied to a benchmark suite in section 8 of the paper. This is used to evaluate the tool for both its effectiveness at implementation selection and to determine the runtime of the tool itself. The benchmarks themselves come from the FPBench suite and the benchmark suite for the Herbie tool. Multiple claims are made about the tool usage and effectiveness.
 
-Multiple claims are made about the tool usage and effectiveness. In this artifact the evaluator can run OpTuner on the benchmark suite to determine the tool's runtime, as well as measure the speeds of OpTuner's implementation selections. This information when graphed, similarly to figure 9 in the paper, shows overall patterns in the results. In section 8.2 detailed examination of selected benchmarks claim exact implementation selections made by OpTuner, due to performance non-portability these will not be reproduced in the artifact.
+In this artifact the evaluator can run OpTuner on the benchmark suite to determine the tool's runtime, as well as measure the speeds of OpTuner's selected implementation configurations. This information can be graphed and compared to figures 9 and 10 in the paper. However, note that the examination of selected benchmarks, described in the text of section 8.2, cannot be reproduced in the artifact due to performance non-portability.
 
 The evaluator can:
 
@@ -116,7 +115,7 @@ The evaluator can:
 - Measure the speed of OpTuner's selected configurations
 - Verify that around 26 percent of points generated are removed due to differences between the linear models and more accurate measurements
 - Verify that some configurations more accurate than using GLibC's implementations
-- Verify that some configurations speed up compuations with increased error of less than a decimal digit
+- Verify that some configurations are faster than GLibC while increasing error by less than one decimal digit
 - Verify that large increases in error correspond to faster runtimes
 - Verify that between these extremes are multiple points that trade off speed and accuracy
 - Verify that OpTuner's average runtime is on the range of a few minutes
@@ -125,11 +124,11 @@ The evaluator can:
 
 ### Supported Functions
 
-Section 4 of the paper describes that the choices made when implementing a mathematical function lead to differences in speed and accuracy of the resulting implementation, and that OpTuner comes equipped with a selection of implementations that span both speed and accuracy.
+Section 4 of the paper describes how choices made when implementing a mathematical function lead to differences in speed and accuracy of the resulting implementation, and that OpTuner comes equipped with a selection of implementations that span both speed and accuracy.
 
-Since the runtime of code depends on the machine being used the evaluator may opt into recalibrating OpTuner's measured runtimes to the system being used. We expect the differences to be minor due to running in a virtual machine.
+In this artifact, the supported implementations can be plotted to create a similar set of graphics to Figure 7 in the paper. However, note that due to limitations of the virtualization software used, the version of OpTuner in this artifact has support for AMD's Libm disabled. The evaluator can also examine the parameterized libraries (implemented using MetaLibm) supported by OpTuner. Note that the artifact does not actually support verifying these implementations, but both the generated C code and the generation code may be examined.
 
-To demonstrate this span the error and runtime of the equipped implementations these values can be plotted to create a similar set of graphics to Figure 7 in the paper. The runtimes of the various implementations may change from machine to machine, and as such the evaluator may optionally recalibrate the costs which OpTuner uses in its decision making. Apart from the mainstream math library implementations OpTuner also uses generated implementations utilizing Metalibm. Generating these implementations is outside the scope of the Artifact evaluation, but both the generated C code and the generation code may be examined.
+One tricky aspect to verifying OpTuner's claims about its supported library functions is that the runtimes of the various implementations may change from machine to machine, and as such the artifact supports recalibrating these costs. This will change the results to cause OpTuner to get better results on the evaluator's machine. That said, this step is time-consuming and optional.
 
 The evaluator can:
 
