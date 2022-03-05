@@ -98,7 +98,7 @@ def read_all(filenames):
                     glibc_a = total_time / total_count
             errors, speedups = normalize(errors, averages, glibc_e, glibc_a)
             tot = len(errors)
-            total_points += tot
+            total_points += tot - 2 # we force 2 configurations
             #print("  points: {}".format(tot))
             old_es = list(zip(errors, speedups))
             errors = list()
