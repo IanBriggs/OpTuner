@@ -15,7 +15,7 @@ def generate_cactus_plot(raw_runtimes):
     runtimes.sort(key=lambda t:t[1])
 
     avg = sum(t[1] for t in runtimes) / len(runtimes)
-    print("Average time: {} minutes".format(avg))
+    print("Average time: {} minutes".format(avg/60))
 
     old_xs = [r[1] for r in runtimes]
     old_ys = list(range(len(old_xs)))
