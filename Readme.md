@@ -166,8 +166,7 @@ The file used in the sanity test is `exp1x.fpcore` whose contents are below.
         (/ (- (exp x) 1) x))
 ```
 
-This benchmark computes ![formula](https://render.githubusercontent.com/render/math?math=(\exp(x)-1)/x)
-for ![formula](https://render.githubusercontent.com/render/math?math=x \in [0,8]).
+This benchmark computes (exp(x)-1)/x for x in [0.0078125, 0.5].
 The domain of this function is given as metadata corresponding to the `:pre` tag.
 
 
