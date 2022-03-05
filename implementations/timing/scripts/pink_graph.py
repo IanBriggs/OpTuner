@@ -104,7 +104,7 @@ def read_all(filenames):
             errors = list()
             speedups = list()
             current = old_es[0][1] - 1
-            skipped = 0
+            skipped = -2 # we force 2 configurations
             for e,s in old_es:
                 if s < current:
                     skipped += 1
@@ -112,7 +112,7 @@ def read_all(filenames):
                     errors.append(e)
                     speedups.append(s)
                     current = s
-            total_skipped += skipped
+            total_skipped += max(skipped, 0)
             #print("  non pareto points: {}".format(skipped))
             errorss.append(errors)
             speedupss.append(speedups)
@@ -139,5 +139,6 @@ if __name__ == "__main__":
     errorss, speedupss, total_points, total_skipped = read_all(sys.argv[1:])
     print("Total points: {}".format(total_points))
     print("Total skipped: {}".format(total_skipped))
+    print("Percentage: {}".format((total_skipped/total_points)*100))
     graph(errorss, speedupss, "aggregate")
     graph(errorss, speedupss, "zoomed_aggregate", zoomed=True)
