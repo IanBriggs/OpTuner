@@ -128,7 +128,8 @@ if __name__ == "__main__":
             f["cost"] = costs[f["cname"]]
             funcs.append(f)
         else:
-            print("No cost for '{}'".format(f["cname"]))
+            pass
+            #print("No cost for '{}'".format(f["cname"]))
 
     for c in costs:
         found = False
