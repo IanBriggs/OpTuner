@@ -40,8 +40,6 @@ run logexp
 run logexp2
 run nmse_example_3_10
 run nmse_example_3_3
-run nmse_example_3_4
-run nmse_example_3_7
 run nmse_example_3_8
 run nmse_problem_3_3_2
 run nmse_problem_3_3_6
@@ -50,7 +48,3 @@ run nmse_problem_3_4_4
 run nmse_section_3_11
 run nmse_section_3_5
 run sphere
-
-run povray_photons
-
-run Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2

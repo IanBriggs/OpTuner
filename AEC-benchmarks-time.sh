@@ -41,8 +41,6 @@ time_func logexp
 time_func logexp2
 time_func nmse_example_3_10
 time_func nmse_example_3_3
-time_func nmse_example_3_4
-time_func nmse_example_3_7
 time_func nmse_example_3_8
 time_func nmse_problem_3_3_2
 time_func nmse_problem_3_3_6
@@ -51,7 +49,3 @@ time_func nmse_problem_3_4_4
 time_func nmse_section_3_11
 time_func nmse_section_3_5
 time_func sphere
-
-time_func povray_photons
-
-time_func Numeric_SpecFunctions_logGammaL_from_math_functions_0_1_5_2
