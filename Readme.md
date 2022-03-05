@@ -1,27 +1,3 @@
-# Claims
-
-1 Results
-  - Pink plots
-  - Individual exps detailed analysis
-  - CDF of runtime
-  - % pts filtered out
-
-2 Functions
-  - Function plots
-  - Recalibrate speed
-  - Implementation source code
-  - Examine generated C code
-
-3 Case study
- - POV-Ray Source
- - Error Model
- - Results of running OpTuner
- - Results of end-to-end
-
-
-
-
-
 # Artifact Download and Setup
 
 This artifact is distributed as a VirtualBox VDI file accompanied by this documentation.
@@ -48,30 +24,32 @@ but will otherwise look similar to those below:
 
 
 ```
-; check_sat line: 3070 position: 19
-model_cost model_error
-3.4143400646186346	6.481777551414871e-14
-2.5355912383282937	1.2764418379611066e-12
-1.6428011996837635	1.494160720975865e-07
-1.8974958429248558	4.05502326187133e-09
-2.8866020335417852	9.22889202029345e-14
-3.1816809188672606	6.528318293162588e-14
-54.06340150491056	6.304835181071573e-14
-1.3652675580375442	1.1687720475158836
-1.3664896773860575	0.06525020231226694
-1.5939288401735028	4.848601333481827e-06
-1.5932543412792048	0.0031926825438836058
-10.708267821707182	6.333632570239164e-14
+; check_sat line: 3070 position: 10
+model_cost	model_error
+130.56257235909234	6.304835181071573e-14
+9.625093676744388	1.2764418379611066e-12
+8.039844725343087	6.515623157622824e-11
+7.348120357649075	4.05502326187133e-09
+6.346709312662316	1.494160720975865e-07
+4.70588390206715	4.848601333481827e-06
+2.952687270884649	1.1687720475158836
+15.57058947947906	6.481777551414871e-14
+12.686842606815489	6.528318293162588e-14
+12.531050528266709	9.22889202029345e-14
+28.136817771284473	6.333632570239164e-14
+3.894633142525333	0.00012676842705815677
+3.022699684397775	0.06525020231226694
+3.411813705494953	0.0031926825438836058
 
 Source  	Time
-FPTaylor	58.088155411183834
-Gelpia  	0.7393423281610012
-Z3      	2.7018186915665865
-Other   	2.0648984611034393
-Total   	63.59421489201486
+FPTaylor	109.59800878200622
+Gelpia  	0.890481929985981
+Z3      	4.634908273990732
+Other   	2.808934910019161
+Total   	117.93233389600209
 ```
 
-The first line comes from Z3 and can be ignored. Then follow the cost and accuracy of configurations found by OpTuner, and finally a breakdown of OpTuner's runtime. In this case, OpTuner finds 12 configurations in about 63 seconds. (Of course, the runtime will differ on your machine. If you have recalibrated costs for your machine, as described below, your results may also change.)
+The first line comes from Z3 and can be ignored. Then follow the cost and accuracy of configurations found by OpTuner, and finally a breakdown of OpTuner's runtime. In this case, OpTuner finds 14 configurations in about 63 seconds. (Of course, the runtime will differ on your machine. If you have recalibrated costs for your machine, as described below, your results may also change.)
 
 After OpTuner has run, we can validate its chosen configurations and graph those results.
 
@@ -93,11 +71,12 @@ You can view the generated graphs using any image viewer. For example, you can u
 The graphing script also outputs how many points were removed for not being Pareto optimal:
 
 ```
-Total points: 12
-Total skipped: 2
+Total points: 14
+Total skipped: 5
+Percentage: 35.71
 ```
 
-This means that of the 12 configurations, 10 were discovered to not be pareto-optimal after re-verifying and re-timing the resulting configurations.
+This means that of the 14 configurations, 5 were discovered to not be pareto-optimal after re-verifying and re-timing the resulting configurations.
 
 
 ## Claims
@@ -151,11 +130,10 @@ The artifact allows the evaluator to test a couple of key claims. Specifically, 
 - Verify that POV-Ray includes an implementation of `sin` and `cos` specialized to a narrow input range
 - Verify that POV-Ray includes a "photon incidence" computation analogous to that described in the paper
 - Verify our transcription of the photon incidence computation to FPCore, OpTuner's input format
-- Run OpTuner on this input and compare the results to Figure XXX(a) in the paper
-- Compare OpTuner's linear error model to that given in Equation XXX in the paper
+- Run OpTuner on this input and compare the results to Figure 3(a) in the paper
 - Run three versions of POV-Ray: with GLibC to establish a ground truth, un-tuned, and OpTuner-tuned
 - Verify that the three versions differ only in the `sin` and `cos` implementations used
-- Compare the output images for speed and quality (similar to Figure XXX in the paper)
+- Compare the output images for speed and quality (similar to Figure 2 in the paper)
 - Verify that the OpTuner-tuned version is both faster than the untuned version, and matches the ground truth
 
 
@@ -197,9 +175,9 @@ The domain of this function is given as metadata corresponding to the `:pre` tag
 ### Run OpTuner on the benchmarks
 
 To use OpTuner on the majority of benchmarks run the bash script `AEC-benchmarks-run.sh`.
-This will run OpTuner on all benchmarks except the complex sine benchmark (which is removed due to its unusually long runtime).
+This will run OpTuner on all but the five longest running benchmarks.
 In addition the runtime of OpTuner is collected in `./logs/tool_time.txt`.
-This script should run for approximately XXX minutes.
+This script should run for approximately 1.5 hours.
 
 Starting from the directory `/home/ubuntu/Desktop/OpTuner`, run this:
 
@@ -210,18 +188,27 @@ The commands in this script are not repeated here and must be run from the scrip
 Partial example output:
 
 ```
-<>
++ mkdir -p logs
++ mkdir -p implementations/timing/json
++ export -f run
++ run Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A
++ time -f %e ./bin/optuner benchmarks/Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A.fpcore --verbosity medium
+++ tail ./logs/log_Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A.txt -n1
++ TIME=53.71
++ echo '"Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A": 53.71'
++ run Data_Number_Erf_dmerfcx_from_erf_2_0_0_0
++ time -f %e ./bin/optuner benchmarks/Data_Number_Erf_dmerfcx_from_erf_2_0_0_0.fpcore --verbosity medium
 ...
 ```
 
-The evaluator should look out for clear error messages printed the console, which would indicate that something has gone wrong.
+The evaluator should look out for clear error messages printed to the console, which would indicate that something has gone wrong.
 
 
 ### Measure the speed of OpTuner's selected configurations
 
 OpTuner's selections have now been made, but we need to evaluate their actual runtime.
 The generated configurations are timed by running the `AEC-benchmarks-time.sh` script.
-This script should run for approximately XXX minutes.
+This script should run for approximately 1.5 hours.
 
 Starting from the directory `/home/ubuntu/Desktop/OpTuner`
 
@@ -232,11 +219,17 @@ The commands in this script are not repeated here and must be run from the scrip
 Partial example output:
 
 ```
-<>
++ mkdir -p logs
++ mkdir -p implementations/timing/json
++ export -f time_func
++ cd implementations/timing
++ make
++ time_func Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A
++ ./bin/time_Data_HyperLogLog_Type_size_from_hyperloglog_0_3_4_A
 ...
 ```
 
-The evaluator should look out for clear error messages printed the console, which would indicate that something has gone wrong.
+The evaluator should look out for clear error messages printed to the console, which would indicate that something has gone wrong.
 
 
 ### Graph Results and Evaluate Remaining Claims
@@ -259,22 +252,27 @@ Once this has completed, the evaluator should be able to look at the generated f
 - Both graphs show many configurations in between these extremes forming a smooth tradeoff
 
 The graphing script will also report the number of points which turned out to be non-pareto due to the linear models.
-You should expect roughly 26% of points to be non-pareto, with the variance due to machine performance differences and likely in the range of 20–30%.
+The number of points will change due to performance variance.
+You should expect roughly 26% of points to be non-pareto, with the variance due to machine performance differences and likely in the range of 20–35%.
+
+Example output:
 
 ```
-<>
+Total points: 775
+Total skipped: 241
+Percentage: 31.096774193548388
 ```
 
 To generate the CDF, analogous to the paper's Figure 9(c), start in the directory `/home/ubuntu/Desktop/OpTuner` and run the following command:
 
-    ./bin/create-cdf.py log/tool_time.txt
+    ./bin/create-cdf.py logs/tool_time.txt
 
 This will report the average runtime and create `cdf.png` in the current directory.
-You should expect an average runtime on the range of XXX
+You should expect an average runtime on the range of 3 to 8 minutes.
 
 Example output:
 ```
-...
+Average time: 3.6663978494623652 minutes
 ```
 
 Looking at the generated plot you should see that most benchmarks finish in under five minutes, which is the region highlighted by the inset plot.
@@ -312,7 +310,7 @@ OpTuner should now be calibrated for your machine.
 
 OpTuner's selection of supported function implementations can be plotted with this command:
 
-    ./bin/create-function-graphs.py implementations/timing/all_costs.json implementations/timing/all_specifications.json
+    ./bin/create-function-plot.py implementations/all_specifications.json implementations/all_costs.json
 
 This will read cost and error values from the two JSON files listed as arguments, and generate five files named `<func>_error_vs_cost.png`, which are formatted identically to Figure 7 in the paper. We recommend evaluators open each file and compare it visually to the analogous plot in Figure 7.
 
@@ -426,7 +424,16 @@ In our case study, we used SPEC2017 for our POV-Ray source code, build system, t
 Note that the version of POV-Ray used in SPEC2017 is not quite identical (it seems to be a version intermediate between 3.6 and 3.7).
 However, version 3.7.0.10 still contains the custom `sin` and `cos` implementations highlighted in the text. Do note that it generates slightly different images---specifically, its rendered images are much brighter. The comparison between OpTuner's suggested `sin` and `cos` and the POV-Ray developers' hand-written `sin` and `cos` is still basically the same.
 
-The steps in the "Large-scale Evaluation" section already ran OpTuner on the expression in the case study.
+We have noticed an unexplained instability when running OpTuner in a virtual machine that seems to be triggered by the povray expression.
+On some VM hosts OpTuner will run for hours on the expression waiting for Z3 to return while on other it simply takes a very long time.
+As such it was seperated from the more well behaved benchmarks and ran seperately here.
+When ran without the VM this benchmark usually takes around 20 minutes, under the VM this increases to 90 minutes.
+
+To run the expression through OpTuner and time the results all at once, start from the directory `/home/ubuntu/Desktop/OpTuner` and run:
+
+    ./AEC-case-expression.sh
+
+If this finishes then you can generate a plot of the data.
 
 To create a graph similar to Figure 3(a), start from the directory `/home/ubuntu/Desktop/OpTuner` and run:
 
@@ -482,14 +489,17 @@ The evaluator should see that `table_diff.tga` contains many red dots, where eac
 
 # Further Exploration of OpTuner
 
-Link to FPCore standard and explain limitations
+You can write your own inputs to OpTuner utilizing the FPCore langauge as defined by the [FPBench](https://fpbench.org/) standard.
+Due to the nature of OpTuner some langauge features like loops and conditionals are not supported.
+OpTuner requires that the input FPCore contains the `:pre` metadata constraining its input variable.
 
-How to run Optuner on a few file
+OpTuner can be ran on new input in the same way as described in the sanity testing portion.
+Doing so will generate files in the `implementations/timing/kern` and `implementations/timing/kern_main` directories to allow timing of the code.
+The names of these files are based on the `:name` metadata field of the FPCore.
+This can be made by running `make` in the timing directory and executing the corresponding binary in `bin`.
 
-Where is the OpTuner source code
+In the source code of OpTuner there are some files that may interest some:
 
-Where in the source code are some key interesting steps:
+- `src/fptaylor/result.py` contains the code which parses the output of FPTaylor to get the nonlinear error model
+- `src/ast_modifications/to_z3.py` contains the code that generated the ILP query by setting up the constraints from Figure 8 and the range bounding from section 7.1
 
-- Calling FPTaylor (as in, wherever we get the error model)
-- Calling Z3 (as in, building the ILP problem)
-- Where in the code we generate the range constraints
