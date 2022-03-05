@@ -234,7 +234,7 @@ def main(argv):
         ctx = z3.Context("model_validate", "true")
         optimizer = z3.Optimize(ctx=ctx)
         optimizer.from_string(z3_query)
-        print("model_cost\tmodel_error\terror")
+        print("model_cost\tmodel_error")
         while True:
             z3_timer.start()
             state = optimizer.check()
@@ -253,7 +253,7 @@ def main(argv):
                 error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
                 model_error = float(fractions.Fraction(str(model["total_error"])))
                 cost = float(fractions.Fraction(str(model["total_cost"])))
-                print("{}\t{}\t{}".format(cost, model_error, error))
+                print("{}\t{}".format(cost, model_error))
                 functions.append({"error": error,
                                   "assignment": assignment,
                                   "cost": cost})
