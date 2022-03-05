@@ -432,9 +432,26 @@ To create a graph similar to Figure 3(a), start from the directory `/home/ubuntu
 
     ./bin/create-case-study-graph.py implementations/timing/json/time_povray_photons.json
 
-The graph is then written to the file `case_study_expression.png`. This graph should look similar to Figure 3(a), with the usual differences due to machine speed and possibly recalibration. However, should should see a set of dozens of points sloping up and to the right. Each configuration represents one suggested configuration of OpTuner.
+The graph is then written to the file `case_study_expression.png`. This graph should look similar to Figure 3(a), with the usual differences due to machine speed and possibly recalibration. However, should should see a set of dozens of points sloping up and to the right. Each configuration represents one suggested configuration of OpTuner. The red star will not be present since we manually highlighted that point based on the index of the configuration, which will not be reproducible. 
 
-In this artifact, we don't provide copies of POV-Ray tuned to each of these configurations (since our tooling for generating and compiling them relies on SPEC). Instead, we provide three copies of POV-Ray in a folder named `CaseStudy` on the desktop: one utilizes GLibC's sin and cos, one uses the table based versions that the POV-Ray developers wrote, and the third one uses implementations selected by OpTuner and highlighted in the text. The following will generate three `tga` files corresponding to the different versions.
+In this artifact, we don't provide copies of POV-Ray tuned to each of these configurations (since our tooling for generating and compiling them relies on SPEC). Instead, we provide three copies of POV-Ray in a folder named `CaseStudy` on the desktop: one utilizes GLibC's sin and cos, one uses the table based versions that the POV-Ray developers wrote, and the third one uses implementations selected by OpTuner and highlighted in the text. 
+
+Starting with the least modified we can look at the `table_povray` version.
+The cusom table based implementaion is split across multiple files.
+Line 1278 in `source/backend/photons.cpp` begins the function that fills the tables with output from libm sin and cos calls.
+This will be accessed as `sinCosData` when used.
+
+If you just want to see all modified lines you can simply `grep OPTUNER source/* -r` from the `table_povray` directory.
+The `photons.h` modification changes the type of theta and phi to double, from char.
+In `photons.cpp` the raw angle values are stored instead of the char index of the angle, this computation is moved into the `table_sin` and `table_cos` functions.
+Both `trace.cpp` and `media.cpp` have the `table_sin` and `table_cos` functions added, and later in the files these functions are called.
+
+The two other directories, `glibc_povray` and `optuner_povray`, have the same changes made in order to store thata and phi as doubles.
+The GLibC version just uses standard libm sin and cos in place of `table_sin` and `table_cos`.
+OpTuner's version has the largest changes with the addition of two versions of sin and one of cos placed in both the `media.cpp` and `trace.cpp` files.
+
+Now that we have looked at parts of POV-Ray and know the changes made we can run the three versions.
+The following will generate three `tga` files corresponding to the different versions.
 
 Starting from the directory `/home/ubuntu/Desktop/CaseStudy`, run:
 
