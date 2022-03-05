@@ -150,7 +150,7 @@ def print_on_domain_violation(fpc, e, error, assignment):
         return
 
     if new_error > min_gap:
-        print("AAAHHH range violation")
+        #print("AAAHHH range violation")
         raise AAAHHH()
 
 def main(argv):
