@@ -52,5 +52,11 @@ if __name__ == "__main__":
     with open(sys.argv[1], 'r') as f:
         raw = f.read()
 
+    # catch non json input
+    lines = raw.splitlines()
+    if lines[0] != "{":
+        inner = ",\n".join(lines)
+        raw = "{\n" + inner + "\n}"
+
     raw_runtimes = json.loads(raw)
     generate_cactus_plot(raw_runtimes)
