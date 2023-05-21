@@ -744,8 +744,8 @@ double ml2_wide_cos_8(double x){
 //spec:     "cname": "ml2_wide_cos_8",
 //spec:     "delta": 7.000769645555295e-05,
 //spec:     "domain": [
-//spec:         -3.141592653589793,
-//spec:         3.141592653589793
+//spec:         -3.149405153589793,
+//spec:         3.149405153589793
 //spec:     ],
 //spec:     "epsilon": 1.64986221203266e-05,
 //spec:     "operation": "cos"
@@ -754,8 +754,8 @@ double ml2_wide_cos_8(double x){
 //spec:     "cname": "ml2_wide_cos_8",
 //spec:     "delta": 7.00076964555938e-05,
 //spec:     "domain": [
-//spec:         -6.283185307179586,
-//spec:         6.283185307179586
+//spec:         -6.290997807179586,
+//spec:         6.290997807179586
 //spec:     ],
 //spec:     "epsilon": 1.64986221203266e-05,
 //spec:     "operation": "cos"
@@ -764,8 +764,8 @@ double ml2_wide_cos_8(double x){
 //spec:     "cname": "ml2_wide_cos_8",
 //spec:     "delta": 7.000769645563738e-05,
 //spec:     "domain": [
-//spec:         -9.42477796076938,
-//spec:         9.42477796076938
+//spec:         -9.43259046076938,
+//spec:         9.43259046076938
 //spec:     ],
 //spec:     "epsilon": 1.64986221203266e-05,
 //spec:     "operation": "cos"
@@ -774,8 +774,8 @@ double ml2_wide_cos_8(double x){
 //spec:     "cname": "ml2_wide_cos_8",
 //spec:     "delta": 7.000769645589886e-05,
 //spec:     "domain": [
-//spec:         -18.84955592153876,
-//spec:         18.84955592153876
+//spec:         -18.85736842153876,
+//spec:         18.85736842153876
 //spec:     ],
 //spec:     "epsilon": 1.64986221203266e-05,
 //spec:     "operation": "cos"
@@ -784,8 +784,8 @@ double ml2_wide_cos_8(double x){
 //spec:     "cname": "ml2_wide_cos_8",
 //spec:     "delta": 7.00076964562475e-05,
 //spec:     "domain": [
-//spec:         -34.55751918948772,
-//spec:         34.55751918948772
+//spec:         -34.56533168948772,
+//spec:         34.56533168948772
 //spec:     ],
 //spec:     "epsilon": 1.64986221203266e-05,
 //spec:     "operation": "cos"
@@ -794,8 +794,8 @@ double ml2_wide_cos_8(double x){
 //spec:     "cname": "ml2_wide_cos_8",
 //spec:     "delta": 7.000769645694478e-05,
 //spec:     "domain": [
-//spec:         -59.690260418206066,
-//spec:         59.690260418206066
+//spec:         -59.698072918206066,
+//spec:         59.698072918206066
 //spec:     ],
 //spec:     "epsilon": 1.64986221203266e-05,
 //spec:     "operation": "cos"

@@ -150,7 +150,7 @@ def print_on_domain_violation(fpc, e, error, assignment):
         return
 
     if new_error > min_gap:
-        print("AAAHHH range violation")
+        #print("AAAHHH range violation")
         raise AAAHHH()
 
 def main(argv):
@@ -162,9 +162,16 @@ def main(argv):
         data = f.read()
     costs = json.loads(data)
 
+    to_remove = list()
     for A in accuracy_specs:
         cname = A.cname
-        A.set_cost(costs[cname])
+        if cname in costs:
+            A.set_cost(costs[cname])
+        else:
+            to_remove.append(A)
+
+    for tr in to_remove:
+        accuracy_specs.remove(tr)
 
     functions = set(a.operation for a in accuracy_specs)
     implementations = {f:list() for f in functions}
@@ -227,7 +234,7 @@ def main(argv):
         ctx = z3.Context("model_validate", "true")
         optimizer = z3.Optimize(ctx=ctx)
         optimizer.from_string(z3_query)
-        print("model_cost\tmodel_error\terror")
+        print("model_cost\tmodel_error")
         while True:
             z3_timer.start()
             state = optimizer.check()
@@ -246,7 +253,7 @@ def main(argv):
                 error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
                 model_error = float(fractions.Fraction(str(model["total_error"])))
                 cost = float(fractions.Fraction(str(model["total_cost"])))
-                print("{}\t{}\t{}".format(cost, model_error, error))
+                print("{}\t{}".format(cost, model_error))
                 functions.append({"error": error,
                                   "assignment": assignment,
                                   "cost": cost})
@@ -284,7 +291,7 @@ def main(argv):
             error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
             model_error = -1.0
             cost = -1.0
-            print("{}\t{}\t{}".format(cost, model_error, error))
+            #print("{}\t{}\t{}".format(cost, model_error, error))
             functions.append({"error": error,
                               "assignment": glibc_assignment,
                               "cost": cost,
@@ -312,7 +319,7 @@ def main(argv):
             error = float(fpt_res.result["absolute_errors"]["final_total"]["value"])
             model_error = -2.0
             cost = -2.0
-            print("{}\t{}\t{}".format(cost, model_error, error))
+            #print("{}\t{}\t{}".format(cost, model_error, error))
             functions.append({"error": error,
                               "assignment": crlibm_assignment,
                               "cost": cost,

@@ -1389,8 +1389,8 @@ double ml2_sin_5(double x){
 //spec:     "cname": "ml2_sin_5",
 //spec:     "delta": 0.0001067435652092382,
 //spec:     "domain": [
-//spec:         -1.5707963267948966,
-//spec:         1.5707963267948966
+//spec:         -1.5717728892948966,
+//spec:         1.5717728892948966
 //spec:     ],
 //spec:     "epsilon": 2.330586576475759e-05,
 //spec:     "operation": "sin"
@@ -1399,8 +1399,8 @@ double ml2_sin_5(double x){
 //spec:     "cname": "ml2_sin_5",
 //spec:     "delta": 0.00010674356520924516,
 //spec:     "domain": [
-//spec:         -3.141592653589793,
-//spec:         3.141592653589793
+//spec:         -3.142569216089793,
+//spec:         3.142569216089793
 //spec:     ],
 //spec:     "epsilon": 2.330586576475759e-05,
 //spec:     "operation": "sin"
@@ -1409,8 +1409,8 @@ double ml2_sin_5(double x){
 //spec:     "cname": "ml2_sin_5",
 //spec:     "delta": 0.00010674356520931131,
 //spec:     "domain": [
-//spec:         -4.71238898038469,
-//spec:         4.71238898038469
+//spec:         -4.71336554288469,
+//spec:         4.71336554288469
 //spec:     ],
 //spec:     "epsilon": 2.330586576475759e-05,
 //spec:     "operation": "sin"
@@ -1419,8 +1419,8 @@ double ml2_sin_5(double x){
 //spec:     "cname": "ml2_sin_5",
 //spec:     "delta": 0.00010674356520941576,
 //spec:     "domain": [
-//spec:         -7.853981633974483,
-//spec:         7.853981633974483
+//spec:         -7.854958196474483,
+//spec:         7.854958196474483
 //spec:     ],
 //spec:     "epsilon": 2.330586576475759e-05,
 //spec:     "operation": "sin"
@@ -1429,8 +1429,8 @@ double ml2_sin_5(double x){
 //spec:     "cname": "ml2_sin_5",
 //spec:     "delta": 0.00010674356520976403,
 //spec:     "domain": [
-//spec:         -15.707963267948966,
-//spec:         15.707963267948966
+//spec:         -15.708939830448966,
+//spec:         15.708939830448966
 //spec:     ],
 //spec:     "epsilon": 2.330586576475759e-05,
 //spec:     "operation": "sin"
@@ -1439,8 +1439,8 @@ double ml2_sin_5(double x){
 //spec:     "cname": "ml2_sin_5",
 //spec:     "delta": 0.00010674356520979874,
 //spec:     "domain": [
-//spec:         -17.27875959474386,
-//spec:         17.27875959474386
+//spec:         -17.27973615724386,
+//spec:         17.27973615724386
 //spec:     ],
 //spec:     "epsilon": 2.330586576475759e-05,
 //spec:     "operation": "sin"
@@ -1449,8 +1449,8 @@ double ml2_sin_5(double x){
 //spec:     "cname": "ml2_sin_5",
 //spec:     "delta": 0.00010674356521000067,
 //spec:     "domain": [
-//spec:         -31.41592653589793,
-//spec:         31.41592653589793
+//spec:         -31.41690309839793,
+//spec:         31.41690309839793
 //spec:     ],
 //spec:     "epsilon": 2.330586576475759e-05,
 //spec:     "operation": "sin"
@@ -1459,8 +1459,8 @@ double ml2_sin_5(double x){
 //spec:     "cname": "ml2_sin_5",
 //spec:     "delta": 0.00010674356521038365,
 //spec:     "domain": [
-//spec:         -32.98672286269283,
-//spec:         32.98672286269283
+//spec:         -32.98769942519283,
+//spec:         32.98769942519283
 //spec:     ],
 //spec:     "epsilon": 2.330586576475759e-05,
 //spec:     "operation": "sin"
@@ -1469,8 +1469,8 @@ double ml2_sin_5(double x){
 //spec:     "cname": "ml2_sin_5",
 //spec:     "delta": 0.00010674356521078057,
 //spec:     "domain": [
-//spec:         -61.261056745000964,
-//spec:         61.261056745000964
+//spec:         -61.262033307500964,
+//spec:         61.262033307500964
 //spec:     ],
 //spec:     "epsilon": 2.330586576475759e-05,
 //spec:     "operation": "sin"

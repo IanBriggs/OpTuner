@@ -1387,8 +1387,8 @@ double ml2_cos_4(double x){
 //spec:     "cname": "ml2_cos_4",
 //spec:     "delta": 0.0026203106008990144,
 //spec:     "domain": [
-//spec:         -1.5707963267948966,
-//spec:         1.5707963267948966
+//spec:         -1.5717728892948966,
+//spec:         1.5717728892948966
 //spec:     ],
 //spec:     "epsilon": 0.00043205304683159134,
 //spec:     "operation": "cos"
@@ -1397,8 +1397,8 @@ double ml2_cos_4(double x){
 //spec:     "cname": "ml2_cos_4",
 //spec:     "delta": 0.0026203106008990456,
 //spec:     "domain": [
-//spec:         -4.71238898038469,
-//spec:         4.71238898038469
+//spec:         -4.71336554288469,
+//spec:         4.71336554288469
 //spec:     ],
 //spec:     "epsilon": 0.00043205304683159134,
 //spec:     "operation": "cos"
@@ -1407,8 +1407,8 @@ double ml2_cos_4(double x){
 //spec:     "cname": "ml2_cos_4",
 //spec:     "delta": 0.00262031060089911,
 //spec:     "domain": [
-//spec:         -7.853981633974483,
-//spec:         7.853981633974483
+//spec:         -7.854958196474483,
+//spec:         7.854958196474483
 //spec:     ],
 //spec:     "epsilon": 0.00043205304683159134,
 //spec:     "operation": "cos"
@@ -1417,8 +1417,8 @@ double ml2_cos_4(double x){
 //spec:     "cname": "ml2_cos_4",
 //spec:     "delta": 0.0026203106008991527,
 //spec:     "domain": [
-//spec:         -9.42477796076938,
-//spec:         9.42477796076938
+//spec:         -9.42575452326938,
+//spec:         9.42575452326938
 //spec:     ],
 //spec:     "epsilon": 0.00043205304683159134,
 //spec:     "operation": "cos"
@@ -1437,8 +1437,8 @@ double ml2_cos_4(double x){
 //spec:     "cname": "ml2_cos_4",
 //spec:     "delta": 0.0026203106008991957,
 //spec:     "domain": [
-//spec:         -17.27875959474386,
-//spec:         17.27875959474386
+//spec:         -17.27973615724386,
+//spec:         17.27973615724386
 //spec:     ],
 //spec:     "epsilon": 0.00043205304683159134,
 //spec:     "operation": "cos"
@@ -1447,8 +1447,8 @@ double ml2_cos_4(double x){
 //spec:     "cname": "ml2_cos_4",
 //spec:     "delta": 0.002620310600899367,
 //spec:     "domain": [
-//spec:         -32.98672286269283,
-//spec:         32.98672286269283
+//spec:         -32.98769942519283,
+//spec:         32.98769942519283
 //spec:     ],
 //spec:     "epsilon": 0.00043205304683159134,
 //spec:     "operation": "cos"
@@ -1457,8 +1457,8 @@ double ml2_cos_4(double x){
 //spec:     "cname": "ml2_cos_4",
 //spec:     "delta": 0.002620310600899709,
 //spec:     "domain": [
-//spec:         -61.261056745000964,
-//spec:         61.261056745000964
+//spec:         -61.262033307500964,
+//spec:         61.262033307500964
 //spec:     ],
 //spec:     "epsilon": 0.00043205304683159134,
 //spec:     "operation": "cos"

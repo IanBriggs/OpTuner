@@ -45,9 +45,6 @@ else
     cd "${SCRIPT_LOCATION}/amdlibm_src"
     grep znver2 * -r | grep -o '^[^:]*' | xargs sed "s|znver2|native|g" -i
     grep znver3 * -r | grep -o '^[^:]*' | xargs sed "s|znver3|native|g" -i
-    sed -i "s|\+ vec_objs|#+ vec_objs|g" src/optmized/SConscript
-    sed -i "s|\#source = Glob('\*\.c')|source = [f for f in source if 'vrd' not in f.path and 'vrs' not in f.path]|g" src/arch/zen2/SConscript
-    sed -i "s|\#source = Glob('\*\.c')|source = [f for f in source if 'vrd' not in f.path and 'vrs' not in f.path]|g" src/arch/zen3/SConscript
 
     echo "  Building"
     cd "${SCRIPT_LOCATION}/amdlibm_src"

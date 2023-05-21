@@ -397,7 +397,7 @@ class ML2_Sinusodial(ScalarUnaryFunction):
             return d
 
         if self.skip_reduction:
-            d = generate_json(errors, sollya.Interval(-n_hpi, n_hpi))
+            d = generate_json(errors, sollya.Interval(-n_hpi-2**-10, n_hpi+2**-10))
             json_str = json.dumps(d, sort_keys=True, indent=4)
             json_str = "spec: " + json_str.replace("\n", "\nspec: ")
             print(json_str)
@@ -405,7 +405,7 @@ class ML2_Sinusodial(ScalarUnaryFunction):
         else:
             specs = list()
             for k in range(1, reduction_k):
-                d = generate_json(errors, sollya.Interval(-k*n_hpi, k*n_hpi))
+                d = generate_json(errors, sollya.Interval(-k*n_hpi-2**-10, k*n_hpi+2**-10))
                 specs.append(d)
             for i in range(len(specs)):
                 d = specs[i]

@@ -1397,8 +1397,8 @@ double ml2_sin_9(double x){
 //spec:     "cname": "ml2_sin_9",
 //spec:     "delta": 5.335369640134337e-09,
 //spec:     "domain": [
-//spec:         -1.5707963267948966,
-//spec:         1.5707963267948966
+//spec:         -1.5717728892948966,
+//spec:         1.5717728892948966
 //spec:     ],
 //spec:     "epsilon": 1.8507401235283497e-09,
 //spec:     "operation": "sin"
@@ -1407,8 +1407,8 @@ double ml2_sin_9(double x){
 //spec:     "cname": "ml2_sin_9",
 //spec:     "delta": 5.335369645529537e-09,
 //spec:     "domain": [
-//spec:         -3.141592653589793,
-//spec:         3.141592653589793
+//spec:         -3.142569216089793,
+//spec:         3.142569216089793
 //spec:     ],
 //spec:     "epsilon": 1.8507401235283497e-09,
 //spec:     "operation": "sin"
@@ -1417,8 +1417,8 @@ double ml2_sin_9(double x){
 //spec:     "cname": "ml2_sin_9",
 //spec:     "delta": 5.3353696830590365e-09,
 //spec:     "domain": [
-//spec:         -4.71238898038469,
-//spec:         4.71238898038469
+//spec:         -4.71336554288469,
+//spec:         4.71336554288469
 //spec:     ],
 //spec:     "epsilon": 1.8507401235283497e-09,
 //spec:     "operation": "sin"
@@ -1427,8 +1427,8 @@ double ml2_sin_9(double x){
 //spec:     "cname": "ml2_sin_9",
 //spec:     "delta": 5.335369745687036e-09,
 //spec:     "domain": [
-//spec:         -9.42477796076938,
-//spec:         9.42477796076938
+//spec:         -9.42575452326938,
+//spec:         9.42575452326938
 //spec:     ],
 //spec:     "epsilon": 1.8507401235283497e-09,
 //spec:     "operation": "sin"
@@ -1437,8 +1437,8 @@ double ml2_sin_9(double x){
 //spec:     "cname": "ml2_sin_9",
 //spec:     "delta": 5.335369854757637e-09,
 //spec:     "domain": [
-//spec:         -10.995574287564276,
-//spec:         10.995574287564276
+//spec:         -10.996550850064276,
+//spec:         10.996550850064276
 //spec:     ],
 //spec:     "epsilon": 1.8507401235283497e-09,
 //spec:     "operation": "sin"
@@ -1447,8 +1447,8 @@ double ml2_sin_9(double x){
 //spec:     "cname": "ml2_sin_9",
 //spec:     "delta": 5.335369860152737e-09,
 //spec:     "domain": [
-//spec:         -15.707963267948966,
-//spec:         15.707963267948966
+//spec:         -15.708939830448966,
+//spec:         15.708939830448966
 //spec:     ],
 //spec:     "epsilon": 1.8507401235283497e-09,
 //spec:     "operation": "sin"
@@ -1457,8 +1457,8 @@ double ml2_sin_9(double x){
 //spec:     "cname": "ml2_sin_9",
 //spec:     "delta": 5.3353699692233366e-09,
 //spec:     "domain": [
-//spec:         -17.27875959474386,
-//spec:         17.27875959474386
+//spec:         -17.27973615724386,
+//spec:         17.27973615724386
 //spec:     ],
 //spec:     "epsilon": 1.8507401235283497e-09,
 //spec:     "operation": "sin"
@@ -1467,8 +1467,8 @@ double ml2_sin_9(double x){
 //spec:     "cname": "ml2_sin_9",
 //spec:     "delta": 5.335370089084237e-09,
 //spec:     "domain": [
-//spec:         -31.41592653589793,
-//spec:         31.41592653589793
+//spec:         -31.41690309839793,
+//spec:         31.41690309839793
 //spec:     ],
 //spec:     "epsilon": 1.8507401235283497e-09,
 //spec:     "operation": "sin"
@@ -1477,8 +1477,8 @@ double ml2_sin_9(double x){
 //spec:     "cname": "ml2_sin_9",
 //spec:     "delta": 5.335370312620736e-09,
 //spec:     "domain": [
-//spec:         -32.98672286269283,
-//spec:         32.98672286269283
+//spec:         -32.98769942519283,
+//spec:         32.98769942519283
 //spec:     ],
 //spec:     "epsilon": 1.8507401235283497e-09,
 //spec:     "operation": "sin"
@@ -1487,8 +1487,8 @@ double ml2_sin_9(double x){
 //spec:     "cname": "ml2_sin_9",
 //spec:     "delta": 5.335370546947737e-09,
 //spec:     "domain": [
-//spec:         -61.261056745000964,
-//spec:         61.261056745000964
+//spec:         -61.262033307500964,
+//spec:         61.262033307500964
 //spec:     ],
 //spec:     "epsilon": 1.8507401235283497e-09,
 //spec:     "operation": "sin"
